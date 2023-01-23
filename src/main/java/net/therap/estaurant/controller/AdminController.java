@@ -1,11 +1,15 @@
 package net.therap.estaurant.controller;
 
+import net.therap.estaurant.propertyEditor.CategoryEditor;
+import net.therap.estaurant.propertyEditor.ItemEditor;
+import net.therap.estaurant.propertyEditor.RestaurantTableEditor;
 import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.*;
 import net.therap.estaurant.service.CategoryService;
 import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.RestaurantTableService;
 import net.therap.estaurant.service.UserService;
+import net.therap.estaurant.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -19,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -29,7 +35,7 @@ import java.util.Objects;
  */
 @Controller
 @RequestMapping("admin/*")
-@SessionAttributes({Constants.CATEGORY, Constants.ITEM, Constants.CHEF, Constants.RESTAURANT_TABLE})
+@SessionAttributes({Constants.CATEGORY, Constants.ITEM, Constants.CHEF, Constants.WAITER, Constants.RESTAURANT_TABLE})
 public class AdminController {
 
     private static final String HOME_URL = "/";
@@ -62,6 +68,16 @@ public class AdminController {
     private static final String CHEF_ID_PARAM = "chefId";
     private static final String CHEF_DELETE_URL = "chef/delete";
 
+    private static final String WAITER_REDIRECT_URL = "admin/waiter";
+    private static final String WAITER_URL = "waiter";
+    private static final String WAITER_VIEW = "waiter-list";
+    private static final String WAITER_FORM_URL = "waiter/form";
+    private static final String WAITER_FORM_SAVE_URL = "waiter/save";
+    private static final String WAITER_FORM_VIEW = "waiter-form";
+    private static final String WAITER_ID_PARAM = "waiterId";
+    private static final String WAITER_DELETE_URL = "waiter/delete";
+
+
     private static final String RES_TABLE_REDIRECT_URL = "admin/res-table";
     private static final String RES_TABLE_URL = "res-table";
     private static final String RES_TABLE_VIEW = "res-table-list";
@@ -83,21 +99,53 @@ public class AdminController {
     @Autowired
     private RestaurantTableService restaurantTableService;
 
-    private void setupReferenceDataItemForm(ModelMap modelMap){
+    @Autowired
+    private RestaurantTableEditor restaurantTableEditor;
+
+    @Autowired
+    private ItemEditor itemEditor;
+
+    @Autowired
+    private CategoryEditor categoryEditor;
+
+    @Autowired
+    private EmailValidator emailValidator;
+
+    private void setupReferenceDataItemForm(ModelMap modelMap) {
         modelMap.put(Constants.CATEGORY_LIST, categoryService.findAll());
         modelMap.put(Constants.AVAILABILITY_LIST, Availability.values());
+        modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
     }
 
-    private void setupReferenceDataChefForm(ModelMap modelMap){
+    private void setupReferenceDataChefForm(ModelMap modelMap, User user) {
         modelMap.put(Constants.ITEM_OPTION_LIST, itemService.findAll());
         modelMap.put(Constants.NAV_ITEM, Constants.CHEF);
+
+        if(!user.isNew()){
+            modelMap.put(Constants.UPDATE_PAGE, true);
+        }
+    }
+
+    private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) {
+        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+        modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
+
+        if(!user.isNew()){
+            modelMap.put(Constants.UPDATE_PAGE, true);
+        }
     }
 
     @InitBinder()
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
-        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true ));
+
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+        webDataBinder.registerCustomEditor(Category.class, categoryEditor);
+        webDataBinder.registerCustomEditor(Item.class, itemEditor);
+        webDataBinder.registerCustomEditor(RestaurantTable.class, restaurantTableEditor);
+
+        webDataBinder.addValidators(emailValidator);
     }
 
     @GetMapping(HOME_URL)
@@ -127,12 +175,15 @@ public class AdminController {
     @PostMapping(CATEGORY_FORM_SAVE_URL)
     public String saveOrUpdateCategory(
             @Valid @ModelAttribute(Constants.CATEGORY) Category category,
-            SessionStatus sessionStatus,
             BindingResult bindingResult,
+            ModelMap modelMap,
+            SessionStatus sessionStatus,
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
+            modelMap.put(Constants.NAV_ITEM, Constants.CATEGORY);
+
             return CATEGORY_FORM_VIEW;
         }
 
@@ -168,7 +219,6 @@ public class AdminController {
 
         modelMap.put(Constants.ITEM, item);
         setupReferenceDataItemForm(modelMap);
-        modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
 
         return ITEM_FORM_VIEW;
     }
@@ -182,8 +232,9 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             setupReferenceDataItemForm(modelMap);
+
             return ITEM_FORM_VIEW;
         }
 
@@ -214,10 +265,10 @@ public class AdminController {
     }
 
     @GetMapping(CHEF_FORM_URL)
-    public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId, ModelMap modelMap) {
+    public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User chef = Objects.nonNull(chefId) ? userService.findById(Integer.parseInt(chefId)) : new User();
         modelMap.put(Constants.CHEF, chef);
-        setupReferenceDataChefForm(modelMap);
+        setupReferenceDataChefForm(modelMap, chef);
 
         return CHEF_FORM_VIEW;
     }
@@ -231,8 +282,8 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
-        if(bindingResult.hasErrors()){
-            setupReferenceDataItemForm(modelMap);
+        if (bindingResult.hasErrors()) {
+            setupReferenceDataChefForm(modelMap, user);
 
             return CHEF_FORM_VIEW;
         }
@@ -254,6 +305,57 @@ public class AdminController {
         redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
 
         return Constants.REDIRECT + CHEF_REDIRECT_URL;
+    }
+
+    @GetMapping(WAITER_URL)
+    public String showWaiter(ModelMap modelMap) {
+        modelMap.put(Constants.WAITER_LIST, userService.findWaiter());
+        modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
+
+        return WAITER_VIEW;
+    }
+
+    @GetMapping(WAITER_FORM_URL)
+    public String showWaiterForm(@RequestParam(value = WAITER_ID_PARAM, required = false) String waiterId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        User waiter = Objects.nonNull(waiterId) ? userService.findById(Integer.parseInt(waiterId)) : new User();
+        modelMap.put(Constants.WAITER, waiter);
+        setupReferenceDataWaiterForm(modelMap, waiter);
+
+        return WAITER_FORM_VIEW;
+    }
+
+    @PostMapping(WAITER_FORM_SAVE_URL)
+    public String saveOrUpdateWaiter(
+            @Valid @ModelAttribute(Constants.WAITER) User user,
+            BindingResult bindingResult,
+            ModelMap modelMap,
+            SessionStatus sessionStatus,
+            RedirectAttributes redirectAttributes
+    ) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+            setupReferenceDataWaiterForm(modelMap, user);
+
+            return WAITER_FORM_VIEW;
+        }
+
+        user.setType(Type.WAITER);
+        userService.saveOrUpdate(user);
+        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        sessionStatus.setComplete();
+
+        return Constants.REDIRECT + WAITER_REDIRECT_URL;
+    }
+
+    @PostMapping(WAITER_DELETE_URL)
+    public String deleteWaiter(
+            @RequestParam(WAITER_ID_PARAM) String waiterId,
+            RedirectAttributes redirectAttributes
+    ) throws Exception {
+        userService.delete(Integer.parseInt(waiterId));
+        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+
+        return Constants.REDIRECT + WAITER_REDIRECT_URL;
     }
 
     @GetMapping(RES_TABLE_URL)
@@ -282,7 +384,7 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             modelMap.put(Constants.NAV_ITEM, Constants.RESTAURANT_TABLE);
 
             return RES_TABLE_FORM_VIEW;

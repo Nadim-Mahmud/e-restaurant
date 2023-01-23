@@ -22,6 +22,10 @@ public class UserService {
         return userDao.findChef();
     }
 
+    public List<User> findWaiter(){
+        return userDao.findWaiter();
+    }
+
     public List<User> findAll() {
         return userDao.findAll();
     }
@@ -38,5 +42,22 @@ public class UserService {
     @Transactional
     public User saveOrUpdate(User user) throws Exception {
         return userDao.saveOrUpdate(user);
+    }
+
+    public boolean isValidCredential(User user){
+        User savedUser = userDao.findByEmail(user.getEmail()).get(0);
+
+        return user.equals(savedUser);
+    }
+
+    public boolean isDuplicateEmail(User user){
+
+        List<User> userList = userDao.findByEmail(user.getEmail());
+
+        if(userList.size() == 0){
+            return false;
+        }
+
+        return userList.get(0).getId() != user.getId();
     }
 }

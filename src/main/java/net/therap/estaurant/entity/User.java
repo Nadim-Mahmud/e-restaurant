@@ -14,6 +14,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -25,6 +26,7 @@ import java.util.List;
         @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
         @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE email= :email"),
         @NamedQuery(name = "User.findChef", query = "SELECT u FROM User u WHERE u.type = 'CHEF'"),
+        @NamedQuery(name = "User.findWaiter", query = "SELECT u FROM User u WHERE u.type = 'WAITER'")
 })
 public class User implements Serializable {
 
@@ -60,7 +62,8 @@ public class User implements Serializable {
     @NotNull(message = "{input.date}")
     private Date joiningDate;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name ="userId")
     private List<RestaurantTable> restaurantTableList;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -79,6 +82,7 @@ public class User implements Serializable {
 
     public User() {
         itemList = new ArrayList<>();
+        restaurantTableList = new ArrayList<>();
     }
 
     public User(String firstName, String lastName, Date dateOfBirth, String email, String password, Type type, Date joiningDate, List<RestaurantTable> restaurantTableList, List<Item> itemList) {
@@ -193,6 +197,23 @@ public class User implements Serializable {
 
     public boolean isNew(){
         return id == 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        return Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmail(), getPassword());
     }
 
     @Override

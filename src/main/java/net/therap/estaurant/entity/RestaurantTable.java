@@ -105,16 +105,4 @@ public class RestaurantTable implements Serializable {
     public boolean isNew() {
         return id == 0;
     }
-
-    @Override
-    public String toString() {
-        return "RestaurantTable{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", user=" + user +
-                ", order=" + order +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

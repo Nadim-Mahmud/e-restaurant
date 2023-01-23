@@ -21,8 +21,8 @@
 <div class="container">
   <jsp:include page="nvabar.jsp"/>
   <div class="d-flex justify-content-end mt-3 mb-1">
-    <form:form class="m-0" action="${pageContext.request.contextPath}/admin/chef/form" method="get">
-      <button class="btn btn-success btn-sm">+ Add Chef</button>
+    <form:form class="m-0" action="${pageContext.request.contextPath}/admin/waiter/form" method="get">
+      <button class="btn btn-success btn-sm">+ Add Waiter</button>
     </form:form>
   </div>
   <div class="text-center">
@@ -41,56 +41,56 @@
       <th scope="col" class="text-center">DOB</th>
       <th scope="col" class="text-center">Email</th>
       <th scope="col" class="text-center">Join Date</th>
-      <th scope="col" class="text-center">Item List</th>
+      <th scope="col" class="text-center">Table</th>
       <th scope="col" class="text-center">Created At</th>
       <th scope="col" class="text-center">Updated At</th>
       <th scope="col" class="text-center">Action</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${chefList}" var="chef" varStatus="chefStat">
+    <c:forEach items="${waiterList}" var="waiter" varStatus="waiterStat">
       <tr>
         <td class="text-center">
-          <c:out value="${chefStat.count}"/>
+          <c:out value="${waiterStat.count}"/>
         </td>
         <td class="text-center">
-          <c:out value="${chef.firstName}"/>
+          <c:out value="${waiter.firstName}"/>
         </td>
         <td class="text-center">
-          <c:out value="${chef.lastName}"/>
+          <c:out value="${waite.lastName}"/>
         </td>
         <td class="text-center">
-          <fmt:formatDate value="${chef.dateOfBirth}" type="date"/>
+          <fmt:formatDate value="${waiter.dateOfBirth}" type="date"/>
         </td>
         <td class="text-center">
-          <c:out value="${chef.email}"/>
+          <c:out value="${waiter.email}"/>
         </td>
         <td class="text-center">
-          <c:out value="${chef.joiningDate}"/>
+          <fmt:formatDate value="${waiter.joiningDate}" type="date"/>
         </td>
         <td class="text-center">
           <ul>
-            <c:forEach items="${chef.itemList}" var="item">
-              <li><c:out value="${item.name}"/></li>
+            <c:forEach items="${waiter.restaurantTableList}" var="resTable">
+              <li><c:out value="${resTable.name}"/></li>
             </c:forEach>
           </ul>
         </td>
         <td class="text-center">
-          <fmt:formatDate value="${chef.createdAt}" type="date"/>
+          <fmt:formatDate value="${waiter.createdAt}" type="date"/>
         </td>
         <td class="text-center">
-          <fmt:formatDate value="${chef.updatedAt}" type="date"/>
+          <fmt:formatDate value="${waiter.updatedAt}" type="date"/>
         </td>
         <td>
           <div class="d-flex justify-content-center my-1">
-            <c:url var="updateUrl" value="${pageContext.request.contextPath}/admin/chef/form">
-              <c:param name="chefId" value="${chef.id}"/>
+            <c:url var="updateUrl" value="${pageContext.request.contextPath}/admin/waiter/form">
+              <c:param name="waiterId" value="${waiter.id}"/>
             </c:url>
             <a class="text-center my-0 mx-2 p-0" href="${updateUrl}">
               <button class="btn btn-outline-primary center btn-sm">Update</button>
             </a>
-            <c:url var="deleteUrl" value="${pageContext.request.contextPath}/admin/chef/delete">
-              <c:param name="chefId" value="${chef.id}"/>
+            <c:url var="deleteUrl" value="${pageContext.request.contextPath}/admin/waiter/delete">
+              <c:param name="waiterId" value="${waiter.id}"/>
             </c:url>
             <form:form class="text-center my-0 mx-2 p-0" action="${deleteUrl}" method="post">
               <button class="btn btn-outline-danger center btn-sm"

@@ -13,16 +13,17 @@ public interface Constants {
     String CHEF = "chef";
     String WAITER = "waiter";
     String RESTAURANT_TABLE = "resTable";
-    String AVAILABILITY_LIST = "availabilityList";
-    String ITEM = "item";
-    String TABLE = "table";
-    String CATEGORY = "category";
-    String NAV_ITEM = "navItem";
     String ITEM_LIST = "itemList";
+    String ITEM = "item";
     String ITEM_OPTION_LIST = "itemOptionList";
     String CATEGORY_LIST = "categoryList";
+    String WAITER_LIST = "waiterList";
     String RESTAURANT_TABLE_LIST = "resTableList";
     String CHEF_LIST = "chefList";
-    String ACTIVE_USER = "ACTIVE_USER";
+    String AVAILABILITY_LIST = "availabilityList";
+    String CATEGORY = "category";
+    String NAV_ITEM = "navItem";
+    String ACTIVE_USER = "activeUser";
     String SUCCESS = "success";
+    String UPDATE_PAGE = "updatePage";
 }

@@ -25,12 +25,12 @@ Date: 12/7/22
             <c:if test="${admin != null}">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active underline-hover" aria-current="page" href="chef">
+                        <a class="nav-link active underline-hover" aria-current="page" href="/admin/chef">
                                 ${navItem == chef ? '<b>Chef</b>' : 'Chef'}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active underline-hover" aria-current="page" href="waiter">
+                        <a class="nav-link active underline-hover" aria-current="page" href="/admin/waiter">
                                 ${navItem == waiter ? '<b>Waiter</b>' : 'Waiter'}
                         </a>
                     </li>

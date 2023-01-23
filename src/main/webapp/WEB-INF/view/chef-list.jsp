@@ -66,7 +66,7 @@
           <c:out value="${chef.email}"/>
         </td>
         <td class="text-center">
-          <c:out value="${chef.joiningDate}"/>
+          <fmt:formatDate value="${chef.joiningDate}" type="date"/>
         </td>
         <td class="text-center">
           <ul>

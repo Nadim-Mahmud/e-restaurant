@@ -22,6 +22,10 @@ public class UserDao extends AbstractDao<User> {
         return entityManager.createNamedQuery("User.findChef", User.class).getResultList();
     }
 
+    public List<User> findWaiter() {
+        return entityManager.createNamedQuery("User.findWaiter", User.class).getResultList();
+    }
+
     @Override
     public List<User> findAll() {
         return entityManager.createNamedQuery("User.findAll", User.class).getResultList();

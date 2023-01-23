@@ -63,9 +63,7 @@ CREATE TABLE restaurant.chef_item
 (
     user_id INT NOT NULL,
     item_id INT NOT NULL,
-    PRIMARY KEY (user_id, item_id),
-    FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (item_id) REFERENCES item (id)
+    PRIMARY KEY (user_id, item_id)
 );
 
 CREATE TABLE restaurant.order_table

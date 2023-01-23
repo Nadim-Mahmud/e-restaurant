@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Chef Form</title>
+    <title>Waiter Form</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,8 +21,8 @@
     <div class="container col-md-5 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Chef form</h5>
-                <form:form action="/admin/chef/save" modelAttribute="chef" method="post">
+                <h5 class="text-center mb-3">Waiter form</h5>
+                <form:form action="/admin/waiter/save" modelAttribute="waiter" method="post">
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name</label>
                         <form:input path="firstName" class="form-control"/>
@@ -44,8 +44,8 @@
                         <form:errors path="joiningDate" cssClass="text-danger"/>
                     </div>
                     <div class="mb-2">
-                        <label for="itemList" class="form-label">Item List :</label>
-                        <form:checkboxes path="itemList" items="${itemOptionList}" itemLabel="name"
+                        <label for="restaurantTableList" class="form-label">Table List :</label>
+                        <form:checkboxes path="restaurantTableList" items="${resTableList}" itemLabel="name"
                                          itemValue="id" class="form-check-input ms-2 me-2"/>
                     </div>
                     <div class="mb-3">

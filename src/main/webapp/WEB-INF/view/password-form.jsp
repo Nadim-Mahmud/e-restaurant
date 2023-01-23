@@ -3,10 +3,11 @@
   Since: 1/19/23
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Table Form</title>
+    <title>Password Update</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -16,15 +17,16 @@
 <body>
 <div class="container">
     <%@ include file="nvabar.jsp" %>
+    <c:set var="br" value="<br>" scope="page"/>
     <div class="container col-md-5 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Restaurant table form</h5>
-                <form:form action="/admin/res-table/save" modelAttribute="resTable" method="post">
+                <h5 class="text-center mb-3">Password update form</h5>
+                <form:form action="/admin/password/save" modelAttribute="password" method="post">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Table Id </label>
-                        <form:input path="name" class="form-control"/>
-                        <form:errors path="name" cssClass="text-danger"/>
+                        <label for="password" class="form-label">Password </label>
+                        <form:input type="password" path="password" class="form-control"/>
+                        <form:errors path="password" cssClass="text-danger"/>
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </form:form>
