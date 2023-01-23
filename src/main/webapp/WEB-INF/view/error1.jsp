@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="container p-3 text-center">
-    <img src="${pageContext.request.contextPath}/assets/exclamation-triangle-fill.svg" class="img-fluid">
+    <img src="${pageContext.request.contextPath}/assets/images/exclamation-triangle-fill.svg" class="img-fluid">
     <h1 class="display-3">Opps! Something went wrong!</h1>
     <a class="btn btn-outline-primary" href="/">Go Back Home</a>
     <br><br>

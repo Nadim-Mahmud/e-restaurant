@@ -1,0 +1,36 @@
+package net.therap.estaurant.filter;
+
+import net.therap.estaurant.constant.Constants;
+import net.therap.estaurant.entity.Type;
+import net.therap.estaurant.entity.User;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Objects;
+
+/**
+ * @author nadimmahmud
+ * @since 1/8/23
+ */
+public class AdminFIlter implements Filter {
+
+    private static final String LOGIN = "/";
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpSession httpSession = ((HttpServletRequest) request).getSession();
+        User login = (User) httpSession.getAttribute(Constants.ACTIVE_USER);
+
+        //if (Objects.nonNull(login) && login.getType().equals(Type.ADMIN)) {
+            request.setAttribute(Constants.USER, login);
+            request.setAttribute(Constants.ADMIN, Constants.ADMIN);
+            chain.doFilter(request, response);
+
+            //return;
+        //}
+
+        //request.getRequestDispatcher(LOGIN).forward(request, response);
+    }
+}

@@ -1,5 +1,6 @@
-package net.therap.springForm;
+package net.therap.estaurant;
 
+import net.therap.estaurant.SpringBootRestaurantApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
@@ -11,6 +12,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+
 		return application.sources(SpringBootRestaurantApplication.class);
 	}
 
