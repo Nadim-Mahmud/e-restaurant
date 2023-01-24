@@ -28,7 +28,7 @@ public class EmailValidator implements Validator {
 
         ValidationUtils.rejectIfEmpty(errors, "email", "input.email");
 
-        if(userService.isDuplicateEmail((User) target)){
+        if (userService.isDuplicateEmail((User) target)) {
             errors.rejectValue("email", "input.email.duplicate");
         }
     }

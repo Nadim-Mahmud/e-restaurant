@@ -117,21 +117,29 @@ public class AdminController {
         modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
     }
 
-    private void setupReferenceDataChefForm(ModelMap modelMap, User user) {
+    private void setupReferenceDataChefForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
         modelMap.put(Constants.ITEM_OPTION_LIST, itemService.findAll());
         modelMap.put(Constants.NAV_ITEM, Constants.CHEF);
 
-        if(!user.isNew()){
+        if (!user.isNew()) {
             modelMap.put(Constants.UPDATE_PAGE, true);
+        }
+
+        if (user.isNew()) {
+            user.setPassword("");
         }
     }
 
-    private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) {
+    private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
         modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
         modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
 
-        if(!user.isNew()){
+        if (!user.isNew()) {
             modelMap.put(Constants.UPDATE_PAGE, true);
+        }
+
+        if (user.isNew()) {
+            user.setPassword("");
         }
     }
 
@@ -149,8 +157,9 @@ public class AdminController {
     }
 
     @GetMapping(HOME_URL)
-    public String adminHome(HttpSession httpSession) {
+    public String adminHome(HttpSession httpSession, ModelMap modelMap) {
         httpSession.setAttribute(Constants.USER, userService.findById(1));
+        modelMap.put("role", "Admin");
 
         return HOME_VIEW;
     }
