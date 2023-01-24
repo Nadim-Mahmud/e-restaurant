@@ -32,6 +32,8 @@ public class CategoryEditor extends PropertyEditorSupport {
 
         if(Objects.isNull(categoryId) || categoryId.isEmpty()){
             setValue(null);
+
+            return;
         }
 
         setValue(categoryService.findById(Integer.parseInt(categoryId)));

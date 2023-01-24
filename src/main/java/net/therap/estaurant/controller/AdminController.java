@@ -34,7 +34,7 @@ import java.util.Objects;
  * @since 1/18/23
  */
 @Controller
-@RequestMapping("admin/*")
+@RequestMapping("/admin/*")
 @SessionAttributes({Constants.CATEGORY, Constants.ITEM, Constants.CHEF, Constants.WAITER, Constants.RESTAURANT_TABLE})
 public class AdminController {
 
@@ -158,7 +158,7 @@ public class AdminController {
 
     @GetMapping(HOME_URL)
     public String adminHome(HttpSession httpSession, ModelMap modelMap) {
-        httpSession.setAttribute(Constants.USER, userService.findById(1));
+        httpSession.setAttribute(Constants.ACTIVE_USER, userService.findById(1));
         modelMap.put("role", "Admin");
 
         return HOME_VIEW;

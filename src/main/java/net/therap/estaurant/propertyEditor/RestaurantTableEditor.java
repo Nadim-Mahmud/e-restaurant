@@ -1,19 +1,15 @@
 package net.therap.estaurant.propertyEditor;
 
+import net.therap.estaurant.entity.Category;
 import net.therap.estaurant.entity.RestaurantTable;
+import net.therap.estaurant.service.CategoryService;
 import net.therap.estaurant.service.RestaurantTableService;
-import org.springframework.beans.PropertyValuesEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.util.Objects;
 
-/**
- * @author nadimmahmud
- * @since 1/23/23
- */
 @Component
 public class RestaurantTableEditor extends PropertyEditorSupport {
 
@@ -28,12 +24,14 @@ public class RestaurantTableEditor extends PropertyEditorSupport {
     }
 
     @Override
-    public void setAsText(String resTableId){
+    public void setAsText(String restaurantTableId){
 
-        if(Objects.isNull(resTableId) || resTableId.isEmpty()){
+        if(Objects.isNull(restaurantTableId) || restaurantTableId.isEmpty()){
             setValue(null);
+
+            return;
         }
 
-        setValue(restaurantTableService.findById(Integer.parseInt(resTableId)));
+        setValue(restaurantTableService.findById(Integer.parseInt(restaurantTableId)));
     }
 }

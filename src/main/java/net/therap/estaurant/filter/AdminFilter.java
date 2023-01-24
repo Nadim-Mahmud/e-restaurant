@@ -1,20 +1,18 @@
 package net.therap.estaurant.filter;
 
 import net.therap.estaurant.constant.Constants;
-import net.therap.estaurant.entity.Type;
 import net.therap.estaurant.entity.User;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * @author nadimmahmud
  * @since 1/8/23
  */
-public class AdminFIlter implements Filter {
+public class AdminFilter implements Filter {
 
     private static final String LOGIN = "/";
 

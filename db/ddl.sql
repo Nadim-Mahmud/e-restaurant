@@ -70,7 +70,7 @@ CREATE TABLE restaurant.order_table
 (
     id             INT NOT NULL PRIMARY KEY,
     placed_at      DATE,
-    est_serve_time DATE,
+    est_serve_time INT,
     status         VARCHAR(50),
     restaurant_table_id       INT,
     created_at     DATE,

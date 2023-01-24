@@ -33,6 +33,7 @@ public class ItemEditor extends PropertyEditorSupport {
 
         if(Objects.isNull(itemId) || itemId.isEmpty()){
             setValue(null);
+            return;
         }
 
         setValue(itemService.findById(Integer.parseInt(itemId)));

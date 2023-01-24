@@ -11,6 +11,8 @@ Date: 12/7/22
     <c:set var="category" value="category" scope="page"/>
     <c:set var="item" value="item" scope="page"/>
     <c:set var="resTable" value="resTable" scope="page"/>
+    <c:set var="orderList" value="orderList" scope="page"/>
+    <c:set var="orderForm" value="orderForm" scope="page"/>
     <div class="container-fluid">
         <form:form cssClass="m-0" action="/login" method="post">
             <button class="navbar-brand btn">
@@ -22,8 +24,8 @@ Date: 12/7/22
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <c:if test="${admin != null}">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <c:if test="${admin != null}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/admin/chef">
                                 ${navItem == chef ? '<b>Chef</b>' : 'Chef'}
@@ -49,26 +51,42 @@ Date: 12/7/22
                                 ${navItem == resTable ? '<b>Table</b>' : 'Table'}
                         </a>
                     </li>
-                </ul>
-            </c:if>
+                </c:if>
+                <c:if test="${waiter != null}">
+                    <li class="nav-item">
+                        <a class="nav-link active underline-hover" aria-current="page" href="/waiter/orders">
+                                ${navItem == orderList ? '<b>Orders</b>' : 'Orders'}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active underline-hover" aria-current="page" href="/waiter/new-order">
+                                ${navItem == orderForm ? '<b>New Order</b>' : 'New Order'}
+                        </a>
+                    </li>
+                    <a class="nav-link active underline-hover" aria-current="page" href="/waiter/notification">
+                            ${navItem == notification ? '<b>Notification</b>' : 'Notification'}
+                    </a>
+                </c:if>
+            </ul>
             <span class="navbar-text">
                 <div class="nav-item dropdown">
-                <p class="nav-link dropdown-toggle text-black m-0" role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false">${user.email}</p>
-                <ul class="dropdown-menu">
-                    <c:if test="${admin==null}">
+                    <p class="nav-link dropdown-toggle text-black m-0" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">${activeUser.firstName} &nbsp; ${activeUser.lastName} &nbsp;
+                    </p>
+                    <ul class="dropdown-menu">
+                        <c:if test="${admin==null}">
+                            <li>
+                                <a class="dropdown-item" href="update">Update Profile</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </c:if>
                         <li>
-                            <a class="dropdown-item" href="update">Update Profile</a>
+                            <a class="m-0 dropdown-item" href="/logout">Log Out</a>
                         </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                    </c:if>
-                    <li>
-                        <a class="m-0 dropdown-item" href="/logout">Log Out</a>
-                    </li>
-                </ul>
-            </div>
+                    </ul>
+                </div>
             </span>
         </div>
     </div>

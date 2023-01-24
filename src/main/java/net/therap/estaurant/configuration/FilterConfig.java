@@ -1,6 +1,7 @@
 package net.therap.estaurant.configuration;
 
-import net.therap.estaurant.filter.AdminFIlter;
+import net.therap.estaurant.filter.AdminFilter;
+import net.therap.estaurant.filter.WaiterFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +14,19 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean<AdminFIlter> adminLoginFilter() {
-        FilterRegistrationBean<AdminFIlter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AdminFIlter());
+    public FilterRegistrationBean<AdminFilter> adminLoginFilter() {
+        FilterRegistrationBean<AdminFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new AdminFilter());
         registrationBean.addUrlPatterns("/admin/*");
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<WaiterFilter> waiterLoginFilter() {
+        FilterRegistrationBean<WaiterFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new WaiterFilter());
+        registrationBean.addUrlPatterns("/waiter/*");
 
         return registrationBean;
     }

@@ -28,11 +28,11 @@ public class Order implements Serializable {
     @SequenceGenerator(name = "orderTableSeq", sequenceName = "order_table_seq", allocationSize = 1)
     private int id;
 
-    @NotNull(message = "{input.date}")
+    @CreationTimestamp
     private Date placedAt;
 
     @NotNull(message = "{input.date}")
-    private Date estServeTime;
+    private int estServeTime;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -41,7 +41,8 @@ public class Order implements Serializable {
     @JoinColumn(name = "restaurantTableId")
     private RestaurantTable restaurantTable;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "orderId")
     private List<OrderLineItem> orderLineItemList;
 
     @CreationTimestamp
@@ -54,7 +55,7 @@ public class Order implements Serializable {
         orderLineItemList = new ArrayList<>();
     }
 
-    public Order(int id, Date placedAt, Date estServeTime, Status status, RestaurantTable restaurantTable, List<OrderLineItem> orderLineItemList) {
+    public Order(int id, Date placedAt, int estServeTime, Status status, RestaurantTable restaurantTable, List<OrderLineItem> orderLineItemList) {
         this.id = id;
         this.placedAt = placedAt;
         this.estServeTime = estServeTime;
@@ -79,11 +80,11 @@ public class Order implements Serializable {
         this.placedAt = placedAt;
     }
 
-    public Date getEstServeTime() {
+    public int getEstServeTime() {
         return estServeTime;
     }
 
-    public void setEstServeTime(Date estServeTime) {
+    public void setEstServeTime(int estServeTime) {
         this.estServeTime = estServeTime;
     }
 
