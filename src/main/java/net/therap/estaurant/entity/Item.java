@@ -65,14 +65,10 @@ public class Item implements Serializable {
         userList = new ArrayList<>();
     }
 
-    public Item(String name, String description, double price, Availability availability, Category category) {
+    public Item(int id) {
         super();
 
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.availability = availability;
-        this.category = category;
+        this.id = id;
     }
 
     public int getId() {

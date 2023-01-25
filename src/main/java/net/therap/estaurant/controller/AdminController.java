@@ -146,14 +146,11 @@ public class AdminController {
     @InitBinder()
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
-
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
         webDataBinder.registerCustomEditor(Category.class, categoryEditor);
         webDataBinder.registerCustomEditor(Item.class, itemEditor);
         webDataBinder.registerCustomEditor(RestaurantTable.class, restaurantTableEditor);
-
-        webDataBinder.addValidators(emailValidator);
     }
 
     @GetMapping(HOME_URL)
@@ -291,6 +288,8 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
+        emailValidator.validate(user, bindingResult);
+
         if (bindingResult.hasErrors()) {
             setupReferenceDataChefForm(modelMap, user);
 
@@ -341,6 +340,7 @@ public class AdminController {
             SessionStatus sessionStatus,
             RedirectAttributes redirectAttributes
     ) throws Exception {
+        emailValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
             setupReferenceDataWaiterForm(modelMap, user);

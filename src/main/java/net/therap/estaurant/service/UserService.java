@@ -18,11 +18,11 @@ public class UserService {
     @Autowired
     public UserDao userDao;
 
-    public List<User> findChef(){
+    public List<User> findChef() {
         return userDao.findChef();
     }
 
-    public List<User> findWaiter(){
+    public List<User> findWaiter() {
         return userDao.findWaiter();
     }
 
@@ -44,17 +44,17 @@ public class UserService {
         return userDao.saveOrUpdate(user);
     }
 
-    public boolean isValidCredential(User user){
+    public boolean isValidCredential(User user) {
         User savedUser = userDao.findByEmail(user.getEmail()).get(0);
 
         return user.equals(savedUser);
     }
 
-    public boolean isDuplicateEmail(User user){
+    public boolean isDuplicateEmail(User user) {
 
         List<User> userList = userDao.findByEmail(user.getEmail());
 
-        if(userList.size() == 0){
+        if (userList.size() == 0) {
             return false;
         }
 

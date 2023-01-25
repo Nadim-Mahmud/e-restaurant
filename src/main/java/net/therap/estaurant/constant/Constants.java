@@ -30,5 +30,6 @@ public interface Constants {
     String NAV_ITEM = "navItem";
     String ACTIVE_USER = "activeUser";
     String SUCCESS = "success";
+    String EMPTY_LIST = "emptyList";
     String UPDATE_PAGE = "updatePage";
 }

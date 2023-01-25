@@ -17,7 +17,8 @@ import java.util.List;
 @Entity
 @Table(name = "order_table")
 @NamedQueries({
-        @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o")
+        @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o"),
+        @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId")
 })
 public class Order implements Serializable {
 
@@ -31,7 +32,6 @@ public class Order implements Serializable {
     @CreationTimestamp
     private Date placedAt;
 
-    @NotNull(message = "{input.date}")
     private int estServeTime;
 
     @Enumerated(EnumType.STRING)
@@ -41,7 +41,7 @@ public class Order implements Serializable {
     @JoinColumn(name = "restaurantTableId")
     private RestaurantTable restaurantTable;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany( fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "orderId")
     private List<OrderLineItem> orderLineItemList;
 
@@ -53,15 +53,6 @@ public class Order implements Serializable {
 
     public Order() {
         orderLineItemList = new ArrayList<>();
-    }
-
-    public Order(int id, Date placedAt, int estServeTime, Status status, RestaurantTable restaurantTable, List<OrderLineItem> orderLineItemList) {
-        this.id = id;
-        this.placedAt = placedAt;
-        this.estServeTime = estServeTime;
-        this.status = status;
-        this.restaurantTable = restaurantTable;
-        this.orderLineItemList = orderLineItemList;
     }
 
     public int getId() {

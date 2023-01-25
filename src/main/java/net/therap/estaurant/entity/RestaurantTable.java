@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -45,13 +46,6 @@ public class RestaurantTable implements Serializable {
     private Date updatedAt;
 
     public RestaurantTable() {
-    }
-
-    public RestaurantTable(int id, String name, User user, Order order) {
-        this.id = id;
-        this.name = name;
-        this.user = user;
-        this.order = order;
     }
 
     public int getId() {
@@ -104,5 +98,22 @@ public class RestaurantTable implements Serializable {
 
     public boolean isNew() {
         return id == 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+
+        if (!(o instanceof RestaurantTable)) return false;
+
+        RestaurantTable that = (RestaurantTable) o;
+
+        return getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

@@ -7,12 +7,13 @@ Date: 12/7/22
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light">
     <c:set var="chef" value="chef" scope="page"/>
-    <c:set var="waiter" value="waiter" scope="page"/>
     <c:set var="category" value="category" scope="page"/>
+    <c:set var="waiter" value="waiter" scope="page"/>
     <c:set var="item" value="item" scope="page"/>
     <c:set var="resTable" value="resTable" scope="page"/>
     <c:set var="orderList" value="orderList" scope="page"/>
     <c:set var="orderForm" value="orderForm" scope="page"/>
+    <c:set var="notification" value="notification" scope="page"/>
     <div class="container-fluid">
         <form:form cssClass="m-0" action="/login" method="post">
             <button class="navbar-brand btn">
@@ -52,7 +53,7 @@ Date: 12/7/22
                         </a>
                     </li>
                 </c:if>
-                <c:if test="${waiter != null}">
+                <c:if test="${waiterUser != null}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/waiter/orders">
                                 ${navItem == orderList ? '<b>Orders</b>' : 'Orders'}
@@ -60,11 +61,11 @@ Date: 12/7/22
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/waiter/new-order">
-                                ${navItem == orderForm ? '<b>New Order</b>' : 'New Order'}
+                                ${navItem == orderForm ? '<b>Order form</b>' : 'New order'}
                         </a>
                     </li>
                     <a class="nav-link active underline-hover" aria-current="page" href="/waiter/notification">
-                            ${navItem == notification ? '<b>Notification</b>' : 'Notification'}
+                            ${navItem ==  notification? '<b>Notification</b>' : 'Notification'}
                     </a>
                 </c:if>
             </ul>

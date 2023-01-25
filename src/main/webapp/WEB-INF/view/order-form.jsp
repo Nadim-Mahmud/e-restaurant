@@ -22,19 +22,17 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="text-center mb-3">Order form</h5>
-                <form:form action="/waiter/new-order/add/order-form/save" modelAttribute="order" method="post">
+                <form:form action="/waiter/new-order/next-page" modelAttribute="order" method="post">
                     <div class="mb-3">
                         <label for="restaurantTable" class="form-label">Select Table </label>
                         <form:select path="restaurantTable" class="form-select">
                             <form:options items="${resTableList}" itemLabel="name" itemValue="id"/>
                         </form:select>
+                        <form:errors path="restaurantTable" cssClass="text-danger"/>
                     </div>
-                    <div class="mb-3">
-                        <label for="estServeTime" class="form-label">EST Time (minuits)</label>
-                        <form:input  path="estServeTime" class="form-control"/>
-                        <form:errors path="estServeTime" cssClass="text-danger"/>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-sm btn-primary">Next Page &rarr;</button>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </form:form>
             </div>
         </div>

@@ -35,4 +35,15 @@ public class OrderService {
     public Order saveOrUpdate(Order order) throws Exception {
         return orderDao.saveOrUpdate(order);
     }
+
+    public boolean tableExists(Order order) {
+
+        List<Order> orderList = orderDao.findOrderByTableId(order.getRestaurantTable().getId());
+
+        if (orderList.size() == 0) {
+            return false;
+        }
+
+        return orderList.get(0).getId() != order.getId();
+    }
 }

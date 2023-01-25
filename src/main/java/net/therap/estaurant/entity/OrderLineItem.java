@@ -53,12 +53,8 @@ public class OrderLineItem implements Serializable {
     public OrderLineItem() {
     }
 
-    public OrderLineItem(int id, int quantity, Status status, Item item, Order order) {
-        this.id = id;
-        this.quantity = quantity;
-        this.status = status;
-        this.item = item;
-        this.order = order;
+    public OrderLineItem(int id) {
+        this.item = new Item(id);
     }
 
     public boolean isNew() {
@@ -128,9 +124,9 @@ public class OrderLineItem implements Serializable {
 
         if (!(o instanceof OrderLineItem)) return false;
 
-        OrderLineItem that = (OrderLineItem) o;
+        OrderLineItem orderLineItem = (OrderLineItem) o;
 
-        return getItem().getName().equals(that.getItem().getName());
+        return getItem().getId() == orderLineItem.getItem().getId();
     }
 
     @Override

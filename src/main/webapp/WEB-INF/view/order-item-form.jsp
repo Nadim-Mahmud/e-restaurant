@@ -21,7 +21,14 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="text-center mb-3">Order items form</h5>
-                <form:form action="/waiter/new-order/add" modelAttribute="orderLineItem" method="post">
+                <div class="text-center">
+                    <c:if test="${emptyList != null}">
+                        <p class="text-danger">
+                            No item is selected!
+                        </p>
+                    </c:if>
+                </div>
+                <form:form action="/waiter/new-order/items/add" modelAttribute="orderLineItem" method="post">
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-sm btn-success">&plus; Add Item</button>
                     </div>
@@ -69,11 +76,11 @@
                                     <c:out value="${orderLineItem.quantity}"/>
                                 </td>
                                 <td>
-                                    <form:form class="text-center my-0 mx-2 p-0" action="/waiter/new-order/add/delete"
-                                               method="post">
-                                        <button class="btn btn-outline-danger center btn-sm"
-                                                onclick="return confirm('Are you sure to delete?')">Delete
-                                        </button>
+                                    <c:url var="removeUrl" value="/waiter/new-order/items/remove">
+                                        <c:param name="orderLineItemId" value="${orderLineItem.item.id}"/>
+                                    </c:url>
+                                    <form:form class="text-center my-0 mx-2 p-0" action="${removeUrl}" method="post">
+                                        <button class="btn btn-outline-danger center btn-sm">Remove</button>
                                     </form:form>
                                 </td>
                             </tr>
@@ -82,7 +89,9 @@
                     </table>
                 </c:if>
                 <div class="d-flex justify-content-end">
-                    <a href="/waiter/new-order/add/order-form" class="btn btn-sm btn-primary">Next Page &rarr;</a>
+                    <form:form class="m-0 p - 0 " action="/waiter/new-order/list/save" method="post">
+                        <button type="submit" class="btn btn-sm btn-primary">Order</button>
+                    </form:form>
                 </div>
             </div>
         </div>

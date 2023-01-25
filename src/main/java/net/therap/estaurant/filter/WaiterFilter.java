@@ -23,7 +23,7 @@ public class WaiterFilter implements Filter {
 
         //if (Objects.nonNull(login) && login.getType().equals(Type.ADMIN)) {
             request.setAttribute(Constants.ACTIVE_USER, login);
-            request.setAttribute(Constants.WAITER, Constants.WAITER);
+            request.setAttribute("waiterUser", Constants.WAITER);
             chain.doFilter(request, response);
 
             //return;

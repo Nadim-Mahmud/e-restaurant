@@ -46,11 +46,6 @@ public class Category implements Serializable {
         itemList = new ArrayList<>();
     }
 
-    public Category(String name, List<Item> itemList) {
-        this.name = name;
-        this.itemList = itemList;
-    }
-
     public int getId() {
         return id;
     }

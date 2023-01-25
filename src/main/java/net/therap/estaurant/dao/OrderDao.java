@@ -14,6 +14,12 @@ import java.util.List;
 @Repository
 public class OrderDao extends AbstractDao<Order> {
 
+    public List<Order> findOrderByTableId(int id){
+        return entityManager.createNamedQuery("Order.findOrderByTable", Order.class)
+                .setParameter("tableId", id)
+                .getResultList();
+    }
+
     @Override
     public List<Order> findAll() {
         return entityManager.createNamedQuery("Order.findAll", Order.class).getResultList();

@@ -56,7 +56,7 @@
                 <td class="text-center">
                     <c:out value="${order.estServeTime}"/>
                 </td>
-                <td class="text-center">
+                <td class="text-start">
                     <ul>
                         <c:forEach items="${order.orderLineItemList}" var="orderLineItem">
                             <li><c:out value="${orderLineItem.item.name} x ${orderLineItem.quantity}"/></li>
@@ -74,18 +74,18 @@
                 </td>
                 <td>
                     <div class="d-flex justify-content-center my-1">
-                        <c:url var="updateUrl" value="${pageContext.request.contextPath}/waiter/order/form">
+                        <c:url var="updateUrl" value="${pageContext.request.contextPath}/waiter/new-order">
                             <c:param name="orderId" value="${order.id}"/>
                         </c:url>
                         <a class="text-center my-0 mx-2 p-0" href="${updateUrl}">
                             <button class="btn btn-outline-primary center btn-sm">Update</button>
                         </a>
-                        <c:url var="deleteUrl" value="${pageContext.request.contextPath}/waiter/order/delete">
+                        <c:url var="cancelUrl" value="${pageContext.request.contextPath}/waiter/order/cancel">
                             <c:param name="orderId" value="${order.id}"/>
                         </c:url>
-                        <form:form class="text-center my-0 mx-2 p-0" action="${deleteUrl}" method="post">
+                        <form:form class="text-center my-0 mx-2 p-0" action="${cancelUrl}" method="post">
                             <button class="btn btn-outline-danger center btn-sm"
-                                    onclick="return confirm('Are you sure to delete?')">Delete
+                                    onclick="return confirm('Are you sure to cancel the order?')">Cancel
                             </button>
                         </form:form>
                     </div>
