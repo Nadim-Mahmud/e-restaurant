@@ -1,5 +1,6 @@
 package net.therap.estaurant.dao;
 
+import net.therap.estaurant.entity.Item;
 import net.therap.estaurant.entity.OrderLineItem;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,13 @@ import java.util.List;
  */
 @Repository
 public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
+
+
+    public List<OrderLineItem> findOrderedItemByChef(List<Item> itemList){
+        return entityManager.createNamedQuery("OrderLineItem.findChefNotificationORDERD", OrderLineItem.class)
+                .setParameter("itemList", itemList)
+                .getResultList();
+    }
 
     @Override
     public List<OrderLineItem> findAll() {

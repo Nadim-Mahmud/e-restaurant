@@ -18,6 +18,13 @@ public class OrderLineItemService {
     @Autowired
     private OrderLineItemDao orderLineDao;
 
+    @Autowired
+    private UserService userService;
+
+    public List<OrderLineItem> getOrderedNotificationByUserId(int id){
+        return orderLineDao.findOrderedItemByChef(userService.findById(id).getItemList());
+    }
+
     public List<OrderLineItem> findAll() {
         return orderLineDao.findAll();
     }

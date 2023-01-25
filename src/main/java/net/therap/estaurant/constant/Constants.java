@@ -8,11 +8,13 @@ public interface Constants {
 
     String REDIRECT ="redirect:/";
     String DATE_PATTERN = "yyyy-MM-dd";
+    String ROLE = "role";
     String ADMIN = "admin";
     String USER = "user";
     String CHEF = "chef";
     String WAITER = "waiter";
     String ORDER = "order";
+    String PASSWORD = "password";
     String RESTAURANT_TABLE = "resTable";
     String ITEM_LIST = "itemList";
     String ITEM = "item";
@@ -32,4 +34,5 @@ public interface Constants {
     String SUCCESS = "success";
     String EMPTY_LIST = "emptyList";
     String UPDATE_PAGE = "updatePage";
+    String NOTIFICATION = "notification";
 }

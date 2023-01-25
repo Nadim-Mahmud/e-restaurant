@@ -13,6 +13,8 @@ import java.security.spec.InvalidKeySpecException;
  */
 public class Password {
 
+    private String storedUserPassword;
+
     @NotNull(message = "{input.text}")
     @Size(min = 1, max = 45, message = "{input.text}")
     private String oldPassword;
@@ -25,12 +27,20 @@ public class Password {
     @Size(min = 1, max = 45, message = "{input.text}")
     private String confirmPassword;
 
+    public String getStoredUserPassword() {
+        return storedUserPassword;
+    }
+
+    public void setStoredUserPassword(String storedUserPassword) {
+        this.storedUserPassword = storedUserPassword;
+    }
+
     public String getOldPassword() {
         return oldPassword;
     }
 
     public void setOldPassword(String oldPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.oldPassword = Encryption.getPBKDF2(oldPassword);
+        this.oldPassword = oldPassword;
     }
 
     public String getNewPassword() {
@@ -38,7 +48,7 @@ public class Password {
     }
 
     public void setNewPassword(String newPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.newPassword = Encryption.getPBKDF2(newPassword);
+        this.newPassword = newPassword;
     }
 
     public String getConfirmPassword() {
@@ -46,6 +56,6 @@ public class Password {
     }
 
     public void setConfirmPassword(String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.confirmPassword = Encryption.getPBKDF2(confirmPassword);
+        this.confirmPassword = confirmPassword;
     }
 }

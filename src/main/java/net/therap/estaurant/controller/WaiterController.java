@@ -33,7 +33,7 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping("/waiter/*")
-@SessionAttributes({Constants.ORDER, Constants.ORDER_LINE_ITEM_LIST})
+@SessionAttributes({Constants.ORDER})
 public class WaiterController {
 
     private static final String HOME_URL = "/";
@@ -48,13 +48,12 @@ public class WaiterController {
     private static final String ORDER_ID_PARAM = "orderId";
     private static final String ORDER_CANCEL_URL = "order/cancel";
 
-    private static final String REDIRECT_ADD_ORDER_ITEM_URL = "waiter/new-order/items/add";
+    private static final String NEXT_PAGE = "new-order/next-page";
+    private static final String ORDER_ITEMS_URL = "new-order/items";
+    private static final String ORDER_ITEMS_VIEW = "order-item-form";
     private static final String ADD_ORDER_ITEM_URL = "new-order/items/add";
     private static final String REMOVE_ORDER_ITEM_URL = "new-order/items/remove";
     private static final String REDIRECT_ORDER_ITEMS_URL = "waiter/new-order/items";
-    private static final String ORDER_ITEMS_URL = "new-order/items";
-    private static final String ORDER_ITEMS_VIEW = "order-item-form";
-    private static final String NEXT_PAGE = "new-order/next-page";
     private static final String ORDER_LINE_ITEM_ID = "orderLineItemId";
 
 
@@ -95,7 +94,6 @@ public class WaiterController {
     @GetMapping(HOME_URL)
     public String adminHome(HttpSession httpSession, ModelMap modelMap) {
         httpSession.setAttribute(Constants.ACTIVE_USER, userService.findById(29));
-        modelMap.put("role", "Waiter");
 
         return HOME_VIEW;
     }

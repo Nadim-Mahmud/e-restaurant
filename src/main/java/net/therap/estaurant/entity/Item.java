@@ -2,6 +2,7 @@ package net.therap.estaurant.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,6 @@ public class Item implements Serializable {
     @NotNull(message = "{input.text}")
     @Size(min = 1, max = 3000, message = "{input.text}")
     private String description;
-
 
     @NotNull(message = "{input.number}")
     private double price;

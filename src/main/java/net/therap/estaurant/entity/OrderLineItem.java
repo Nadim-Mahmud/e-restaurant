@@ -19,7 +19,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "order_line_item")
 @NamedQueries({
-        @NamedQuery(name = "OrderLineItem.findAll", query = "SELECT o FROM OrderLineItem o")
+        @NamedQuery(name = "OrderLineItem.findAll", query = "SELECT o FROM OrderLineItem o"),
+        @NamedQuery(name = "OrderLineItem.findChefNotificationORDERD", query = "SELECT o FROM OrderLineItem o WHERE o.status = 'ORDERED' and o.item in :itemList")
 })
 public class OrderLineItem implements Serializable {
 

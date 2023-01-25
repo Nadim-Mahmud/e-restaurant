@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author nadimmahmud
  * @since 1/8/23
  */
-public class WaiterFilter implements Filter {
+public class ChefFilter implements Filter {
 
     private static final String LOGIN = "/";
 
@@ -23,7 +23,7 @@ public class WaiterFilter implements Filter {
 
         //if (Objects.nonNull(login) && login.getType().equals(Type.ADMIN)) {
             request.setAttribute(Constants.ACTIVE_USER, login);
-            request.setAttribute(Constants.ROLE, Constants.WAITER);
+            request.setAttribute(Constants.ROLE, Constants.CHEF);
             chain.doFilter(request, response);
 
             //return;

@@ -6,9 +6,10 @@ Date: 12/7/22
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light">
+    <c:set var="admin" value="admin" scope="page"/>
     <c:set var="chef" value="chef" scope="page"/>
-    <c:set var="category" value="category" scope="page"/>
     <c:set var="waiter" value="waiter" scope="page"/>
+    <c:set var="category" value="category" scope="page"/>
     <c:set var="item" value="item" scope="page"/>
     <c:set var="resTable" value="resTable" scope="page"/>
     <c:set var="orderList" value="orderList" scope="page"/>
@@ -26,7 +27,7 @@ Date: 12/7/22
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <c:if test="${admin != null}">
+                <c:if test="${role == admin}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/admin/chef">
                                 ${navItem == chef ? '<b>Chef</b>' : 'Chef'}
@@ -53,7 +54,7 @@ Date: 12/7/22
                         </a>
                     </li>
                 </c:if>
-                <c:if test="${waiterUser != null}">
+                <c:if test="${role == waiter}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/waiter/orders">
                                 ${navItem == orderList ? '<b>Orders</b>' : 'Orders'}
@@ -68,21 +69,27 @@ Date: 12/7/22
                             ${navItem ==  notification? '<b>Notification</b>' : 'Notification'}
                     </a>
                 </c:if>
+                <c:if test="${role == chef}">
+                    <a class="nav-link active underline-hover" aria-current="page" href="/chef/notification">
+                            ${navItem ==  notification? '<b>Notification</b>' : 'Notification'}
+                    </a>
+                </c:if>
             </ul>
             <span class="navbar-text">
                 <div class="nav-item dropdown">
                     <p class="nav-link dropdown-toggle text-black m-0" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">${activeUser.firstName} &nbsp; ${activeUser.lastName} &nbsp;
+                       aria-expanded="false">${activeUser.firstName}&nbsp${activeUser.lastName} &nbsp;
                     </p>
                     <ul class="dropdown-menu">
-                        <c:if test="${admin==null}">
-                            <li>
-                                <a class="dropdown-item" href="update">Update Profile</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        </c:if>
+                        <li>
+                            <a class="dropdown-item" href="/update-profile">Update Profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/update-password">Update Password</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             <a class="m-0 dropdown-item" href="/logout">Log Out</a>
                         </li>

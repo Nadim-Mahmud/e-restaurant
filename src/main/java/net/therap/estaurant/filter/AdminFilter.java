@@ -23,7 +23,7 @@ public class AdminFilter implements Filter {
 
         //if (Objects.nonNull(login) && login.getType().equals(Type.ADMIN)) {
             request.setAttribute(Constants.USER, login);
-            request.setAttribute(Constants.ADMIN, Constants.ADMIN);
+            request.setAttribute(Constants.ROLE, Constants.ADMIN);
             chain.doFilter(request, response);
 
             //return;

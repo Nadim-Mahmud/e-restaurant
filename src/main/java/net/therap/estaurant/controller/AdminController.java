@@ -154,9 +154,8 @@ public class AdminController {
     }
 
     @GetMapping(HOME_URL)
-    public String adminHome(HttpSession httpSession, ModelMap modelMap) {
-        httpSession.setAttribute(Constants.ACTIVE_USER, userService.findById(1));
-        modelMap.put("role", "Admin");
+    public String adminHome(HttpSession httpSession) {
+        httpSession.setAttribute(Constants.ACTIVE_USER, userService.findById(29));
 
         return HOME_VIEW;
     }

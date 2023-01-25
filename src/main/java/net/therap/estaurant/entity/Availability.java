@@ -12,9 +12,7 @@ public enum Availability {
     private final String label;
 
     Availability(String label) {
-
         this.label = label;
-
     }
 
     public String getLabel() {

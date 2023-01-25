@@ -22,13 +22,23 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="text-center mb-3">Password update form</h5>
-                <form:form action="/admin/password/save" modelAttribute="password" method="post">
+                <form:form action="/update-password/update" modelAttribute="password" method="post">
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password </label>
-                        <form:input type="password" path="password" class="form-control"/>
-                        <form:errors path="password" cssClass="text-danger"/>
+                        <label for="oldPassword" class="form-label">Old Password </label>
+                        <form:input type="password" path="oldPassword" class="form-control"/>
+                        <form:errors path="oldPassword" cssClass="text-danger"/>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password </label>
+                        <form:input type="password" path="newPassword" class="form-control"/>
+                        <form:errors path="newPassword" cssClass="text-danger"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">New Password </label>
+                        <form:input type="password" path="confirmPassword" class="form-control"/>
+                        <form:errors path="confirmPassword" cssClass="text-danger"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
                 </form:form>
             </div>
         </div>
