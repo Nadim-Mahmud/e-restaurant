@@ -153,10 +153,13 @@ public class AdminController {
         webDataBinder.registerCustomEditor(RestaurantTable.class, restaurantTableEditor);
     }
 
-    @GetMapping(HOME_URL)
-    public String adminHome(HttpSession httpSession) {
-        httpSession.setAttribute(Constants.ACTIVE_USER, userService.findById(29));
+    @InitBinder({Constants.WAITER, Constants.CHEF})
+    public void userBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(emailValidator);
+    }
 
+    @GetMapping(HOME_URL)
+    public String adminHome() {
         return HOME_VIEW;
     }
 
@@ -287,8 +290,6 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
-        emailValidator.validate(user, bindingResult);
-
         if (bindingResult.hasErrors()) {
             setupReferenceDataChefForm(modelMap, user);
 
@@ -339,7 +340,6 @@ public class AdminController {
             SessionStatus sessionStatus,
             RedirectAttributes redirectAttributes
     ) throws Exception {
-        emailValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
             setupReferenceDataWaiterForm(modelMap, user);

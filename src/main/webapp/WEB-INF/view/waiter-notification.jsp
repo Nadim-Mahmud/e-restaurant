@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Chef | Notification</title>
+    <title>Waiter | Notification</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -18,11 +18,61 @@
 <div class="container">
     <%@ include file="nvabar.jsp" %>
     <c:set var="br" value="<br>" scope="page"/>
+    <c:set var="prepared" value="PREPARED" scope="page"/>
     <div class="container col-md-10 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Chef Notifications</h5>
+                <h5 class="text-center mb-3">Waiter Notifications</h5>
             </div>
+
+            <table class="table align-middle text-center">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Table</th>
+                    <th scope="col">Items</th>
+                    <th scope="col">Est time</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${orderList}" var="order" varStatus="orderStat">
+                    <tr>
+                        <td>
+                            <c:out value="${orderStat.count}"/>
+                        </td>
+                        <td>
+                            <c:out value="${order.restaurantTable.name}"/>
+                        </td>
+                        <td>
+                            <c:forEach items="${order.orderLineItemList}" var="orderLineItem">
+                                <li><c:out value="${orderLineItem.item.name} x ${orderLineItem.quantity}"/></li>
+                            </c:forEach>
+                            </ul>
+                        </td>
+                        <td>
+                            <c:out value="${order.estTime}"/>
+                        </td>
+                        <td>
+                            <c:out value="${order.status.label}"/>
+                        </td>
+                        <td>
+                            <c:if test="${order.status == prepared}">
+                                <c:url var="preparedUrl" value="/waiter/notification/mark-served">
+                                    <c:param name="orderId" value="${order.id}"/>
+                                </c:url>
+                                <form:form class="text-center my-0 mx-2 p-0" action="${preparedUrl}" method="post">
+                                    <button class="btn btn-outline-primary center btn-sm"
+                                            onclick="return confirm('Is it served?')">Mark as served
+                                    </button>
+                                </form:form>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

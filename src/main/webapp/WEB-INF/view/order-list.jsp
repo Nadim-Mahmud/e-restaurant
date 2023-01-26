@@ -19,6 +19,7 @@
 <body>
 
 <div class="container">
+    <c:set var="served" value="SERVED"/>
     <jsp:include page="nvabar.jsp"/>
     <div class="text-center">
         <c:if test="${success != null}">
@@ -32,7 +33,7 @@
         <tr>
             <th scope="col" class="text-center">ID</th>
             <th scope="col" class="text-center">Table</th>
-            <th scope="col" class="text-center">Placed At</th>
+            <th scope="col" class="text-center">Ordered At</th>
             <th scope="col" class="text-center">Est Time</th>
             <th scope="col" class="text-center">Items</th>
             <th scope="col" class="text-center">Status</th>
@@ -51,10 +52,10 @@
                     <c:out value="${order.restaurantTable.name}"/>
                 </td>
                 <td class="text-center">
-                    <c:out value="${order.placedAt}"/>
+                    <fmt:formatDate value="${order.createdAt}" type="time"/>
                 </td>
                 <td class="text-center">
-                    <c:out value="${order.estServeTime}"/>
+                    <c:out value="${}"/>
                 </td>
                 <td class="text-start">
                     <ul>
@@ -85,7 +86,8 @@
                         </c:url>
                         <form:form class="text-center my-0 mx-2 p-0" action="${cancelUrl}" method="post">
                             <button class="btn btn-outline-danger center btn-sm"
-                                    onclick="return confirm('Are you sure to cancel the order?')">Cancel
+                                    onclick="return confirm('Are you sure to cancel the order?')">
+                                    ${order.status == served ? "Delete" : "Cancel"}
                             </button>
                         </form:form>
                     </div>

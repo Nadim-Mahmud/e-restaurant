@@ -88,11 +88,11 @@
                         </tbody>
                     </table>
                 </c:if>
-                <div class="d-flex justify-content-end">
-                    <form:form class="m-0 p - 0 " action="/waiter/new-order/list/save" method="post">
+                <form:form class="m-0 p - 0 " action="/waiter/new-order/list/save" method="post">
+                    <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-sm btn-primary">Order</button>
-                    </form:form>
-                </div>
+                    </div>
+                </form:form>
             </div>
         </div>
     </div>

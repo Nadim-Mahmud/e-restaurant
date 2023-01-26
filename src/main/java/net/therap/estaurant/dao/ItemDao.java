@@ -13,6 +13,11 @@ import java.util.List;
 @Repository
 public class ItemDao extends AbstractDao<Item> {
 
+
+    public List<Item> findAvailable() {
+        return entityManager.createNamedQuery("Item.findAvailable", Item.class).getResultList();
+    }
+
     @Override
     public List<Item> findAll() {
         return entityManager.createNamedQuery("Item.findAll", Item.class).getResultList();

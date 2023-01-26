@@ -8,6 +8,7 @@ import net.therap.estaurant.propertyEditor.StringToIntEditor;
 import net.therap.estaurant.service.*;
 import net.therap.estaurant.validator.OrderLineItemValidator;
 import net.therap.estaurant.validator.OrderValidator;
+import net.therap.estaurant.validator.QuantityGroup;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -15,6 +16,7 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -56,6 +58,11 @@ public class WaiterController {
     private static final String REDIRECT_ORDER_ITEMS_URL = "waiter/new-order/items";
     private static final String ORDER_LINE_ITEM_ID = "orderLineItemId";
 
+    private static final String REDIRECT_WAITER_NOTIFICATION_URL = "waiter/notification";
+    private static final String WAITER_NOTIFICATION_URL = "waiter/notification";
+    private static final String WAITER_NOTIFICATION_VIEW = "waiter-notification";
+    private static final String WAITER_NOTIFICATION_SERVED = "notification/mark-served";
+
 
     @Autowired
     private UserService userService;
@@ -68,9 +75,6 @@ public class WaiterController {
 
     @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private OrderLineItemService orderLineItemService;
 
     @Autowired
     private ItemEditor itemEditor;
@@ -91,17 +95,20 @@ public class WaiterController {
         webDataBinder.registerCustomEditor(Integer.class, "quantity", new StringToIntEditor());
     }
 
-    @GetMapping(HOME_URL)
-    public String adminHome(HttpSession httpSession, ModelMap modelMap) {
-        httpSession.setAttribute(Constants.ACTIVE_USER, userService.findById(29));
+    @InitBinder(Constants.ORDER)
+    public void orderBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(orderValidator);
+    }
 
+    @GetMapping(HOME_URL)
+    public String adminHome() {
         return HOME_VIEW;
     }
 
     @GetMapping(ORDERS_URL)
     public String showOrders(ModelMap modelMap) {
         modelMap.put(Constants.ORDER_LIST, orderService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.ORDER_LIST);
+        modelMap.put(Constants.NAV_ITEM, Constants.ORDERS);
 
         return ORDER_VIEW;
     }
@@ -125,7 +132,6 @@ public class WaiterController {
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
-        orderValidator.validate(order, bindingResult);
 
         if (bindingResult.hasErrors()) {
             modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
@@ -145,7 +151,7 @@ public class WaiterController {
     ) {
         modelMap.put(Constants.ORDER_LINE_ITEM, new OrderLineItem());
         modelMap.put(Constants.ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+        modelMap.put(Constants.ITEM_LIST, itemService.findAvailable());
         modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
 
         return ORDER_ITEMS_VIEW;
@@ -154,12 +160,12 @@ public class WaiterController {
     @PostMapping(ADD_ORDER_ITEM_URL)
     public String addOrderItem(
             @SessionAttribute(Constants.ORDER) Order order,
-            @Valid @ModelAttribute(Constants.ORDER_LINE_ITEM) OrderLineItem orderLineItem,
+            @Validated(QuantityGroup.class) @ModelAttribute(Constants.ORDER_LINE_ITEM) OrderLineItem orderLineItem,
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
         orderLineItem.setStatus(Status.ORDERED);
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+        modelMap.put(Constants.ITEM_LIST, itemService.findAvailable());
         modelMap.put(Constants.ORDER_LINE_ITEM, orderLineItem);
         modelMap.put(Constants.ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
         modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
@@ -213,6 +219,23 @@ public class WaiterController {
         redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
 
         return Constants.REDIRECT + ORDER_REDIRECT_URL;
+    }
+
+    @GetMapping(WAITER_NOTIFICATION_URL)
+    public String showWaiterNotification(ModelMap modelMap){
+        modelMap.put(Constants.ORDER_LIST, orderService.getOrderListWithStatus());
+        modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
+
+        return WAITER_NOTIFICATION_VIEW;
+    }
+
+    @PostMapping(WAITER_NOTIFICATION_SERVED)
+    public String markServed(@RequestParam(ORDER_ID_PARAM) String orderId) throws Exception {
+        Order order = orderService.findById(Integer.parseInt(orderId));
+        order.setStatus(Status.SERVED);
+        orderService.saveOrUpdate(order);
+
+        return Constants.REDIRECT + REDIRECT_WAITER_NOTIFICATION_URL;
     }
 
 }

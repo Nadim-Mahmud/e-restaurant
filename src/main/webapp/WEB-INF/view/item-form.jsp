@@ -39,7 +39,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="availability" class="form-label">Availability: </label>
-                        <form:radiobuttons path="availability" items="${availabilityList}" itemLabel="label" class="form-check-input me-2 ms-2"/>
+                        <form:radiobuttons path="availability" items="${availabilityList}" itemLabel="label"
+                                           class="form-check-input me-2 ms-2"/>
                         <br>
                         <form:errors path="availability" cssClass="text-danger"/>
                     </div>
@@ -48,7 +49,9 @@
                         <form:textarea path="description" class="form-control"/>
                         <form:errors path="description" cssClass="text-danger"/>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
                 </form:form>
             </div>
         </div>

@@ -21,7 +21,8 @@ import java.util.List;
 @Entity
 @Table(name = "item")
 @NamedQueries({
-        @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i")
+        @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
+        @NamedQuery(name = "Item.findAvailable", query = "SELECT i FROM Item i where i.availability = 'AVAILABLE'")
 })
 public class Item implements Serializable {
 

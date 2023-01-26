@@ -12,15 +12,11 @@ Date: 12/7/22
     <c:set var="category" value="category" scope="page"/>
     <c:set var="item" value="item" scope="page"/>
     <c:set var="resTable" value="resTable" scope="page"/>
-    <c:set var="orderList" value="orderList" scope="page"/>
+    <c:set var="orders" value="orders" scope="page"/>
     <c:set var="orderForm" value="orderForm" scope="page"/>
     <c:set var="notification" value="notification" scope="page"/>
     <div class="container-fluid">
-        <form:form cssClass="m-0" action="/login" method="post">
-            <button class="navbar-brand btn">
-                <b>E-Staurant</b>
-            </button>
-        </form:form>
+        <a href="/" class="navbar-brand">E-Staurant</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -57,7 +53,7 @@ Date: 12/7/22
                 <c:if test="${role == waiter}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/waiter/orders">
-                                ${navItem == orderList ? '<b>Orders</b>' : 'Orders'}
+                                ${navItem == orders ? '<b>Orders</b>' : 'Orders'}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -76,25 +72,27 @@ Date: 12/7/22
                 </c:if>
             </ul>
             <span class="navbar-text">
-                <div class="nav-item dropdown">
-                    <p class="nav-link dropdown-toggle text-black m-0" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">${activeUser.firstName}&nbsp${activeUser.lastName} &nbsp;
-                    </p>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="/update-profile">Update Profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/update-password">Update Password</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="m-0 dropdown-item" href="/logout">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
+                <c:if test="${activeUser != null}">
+                    <div class="nav-item dropdown">
+                        <p class="nav-link dropdown-toggle text-black m-0" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">${activeUser.firstName}&nbsp${activeUser.lastName} &nbsp;
+                        </p>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="update-password">Update Password</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="m-0 dropdown-item" href="/logout">Log Out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </c:if>
+                <c:if test="${activeUser == null && loginPage == null}">
+                    <a href="/login-page" type="button" class="btn btn-secondary btn-sm text-white">Login</a>
+                </c:if>
             </span>
         </div>
     </div>

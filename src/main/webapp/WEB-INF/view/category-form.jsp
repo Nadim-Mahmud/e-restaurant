@@ -26,7 +26,9 @@
                         <form:input path="name" class="form-control"/>
                         <form:errors path="name" cssClass="text-danger"/>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
                 </form:form>
             </div>
         </div>

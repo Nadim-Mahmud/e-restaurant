@@ -69,8 +69,6 @@ CREATE TABLE restaurant.chef_item
 CREATE TABLE restaurant.order_table
 (
     id             INT NOT NULL PRIMARY KEY,
-    placed_at      DATE,
-    est_serve_time INT,
     status         VARCHAR(50),
     restaurant_table_id       INT,
     created_at     DATE,
@@ -86,6 +84,8 @@ CREATE TABLE restaurant.order_line_item
 (
     id         INT NOT NULL PRIMARY KEY,
     quantity   INT,
+    accepted_at      DATE,
+    est_cooking_time INT,
     status     VARCHAR(50),
     item_id    INT,
     order_id   INT,

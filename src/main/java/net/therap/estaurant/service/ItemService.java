@@ -18,6 +18,10 @@ public class ItemService {
     @Autowired
     private ItemDao itemDao;
 
+    public List<Item> findAvailable() {
+        return itemDao.findAvailable();
+    }
+
     public List<Item> findAll() {
         return itemDao.findAll();
     }

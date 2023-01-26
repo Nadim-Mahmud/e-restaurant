@@ -20,6 +20,10 @@ public class OrderDao extends AbstractDao<Order> {
                 .getResultList();
     }
 
+    public List<Order> findActiveOrder() {
+        return entityManager.createNamedQuery("Order.findActiveOnly", Order.class).getResultList();
+    }
+
     @Override
     public List<Order> findAll() {
         return entityManager.createNamedQuery("Order.findAll", Order.class).getResultList();

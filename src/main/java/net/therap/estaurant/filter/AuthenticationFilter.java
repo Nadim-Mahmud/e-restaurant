@@ -15,23 +15,35 @@ import java.util.Objects;
  * @author nadimmahmud
  * @since 1/8/23
  */
-public class AdminFilter implements Filter {
+public class AuthenticationFilter implements Filter {
 
     private static final String HOME = "/";
+    private static final String ADMIN = "/admin/";
+    private static final String CHEF = "/chef/";
+    private static final String WAITER = "/waiter/";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletResponse  httpServletResponse = (HttpServletResponse) response;
         HttpSession httpSession = ((HttpServletRequest) request).getSession();
         User user = (User) httpSession.getAttribute(Constants.ACTIVE_USER);
 
-        if (Objects.nonNull(user) && user.getType().equals(Type.ADMIN)) {
-            request.setAttribute(Constants.USER, user);
-            request.setAttribute(Constants.ROLE, Constants.ADMIN);
-            chain.doFilter(request, response);
+        if (Objects.isNull(user)) {
+            request.getRequestDispatcher(HOME).forward(request, response);
 
             return;
         }
 
-        ((HttpServletResponse) response).sendRedirect(HOME);
+        if (Type.ADMIN.equals(user.getType())) {
+            httpServletResponse.sendRedirect(ADMIN);
+        }
+
+        if (Type.CHEF.equals(user.getType())) {
+            httpServletResponse.sendRedirect(CHEF);
+        }
+
+        if (Type.WAITER.equals(user.getType())) {
+            httpServletResponse.sendRedirect(WAITER);
+        }
     }
 }

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -17,7 +18,8 @@ import java.util.List;
 @Entity
 @Table(name = "order_table")
 @NamedQueries({
-        @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o"),
+        @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o order by o.status"),
+        @NamedQuery(name = "Order.findActiveOnly", query = "SELECT o FROM Order o WHERE o.status != 'SERVED'"),
         @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId")
 })
 public class Order implements Serializable {
@@ -29,13 +31,11 @@ public class Order implements Serializable {
     @SequenceGenerator(name = "orderTableSeq", sequenceName = "order_table_seq", allocationSize = 1)
     private int id;
 
-    @CreationTimestamp
-    private Date placedAt;
-
-    private int estServeTime;
-
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Transient
+    private int estTime;
 
     @OneToOne
     @JoinColumn(name = "restaurantTableId")
@@ -63,28 +63,20 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Date getPlacedAt() {
-        return placedAt;
-    }
-
-    public void setPlacedAt(Date placedAt) {
-        this.placedAt = placedAt;
-    }
-
-    public int getEstServeTime() {
-        return estServeTime;
-    }
-
-    public void setEstServeTime(int estServeTime) {
-        this.estServeTime = estServeTime;
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public int getEstTime() {
+        return estTime;
+    }
+
+    public void setEstTime(int estTime) {
+        this.estTime = estTime;
     }
 
     public RestaurantTable getRestaurantTable() {
@@ -124,11 +116,26 @@ public class Order implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+
+        if (!(o instanceof Order)) return false;
+
+        Order order = (Order) o;
+
+        return getId() == order.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", placedAt=" + placedAt +
-                ", estServeTime=" + estServeTime +
                 ", status=" + status +
                 ", restaurantTable=" + restaurantTable +
                 ", orderLineItemList=" + orderLineItemList +

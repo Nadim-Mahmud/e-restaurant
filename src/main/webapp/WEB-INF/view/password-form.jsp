@@ -38,7 +38,9 @@
                         <form:input type="password" path="confirmPassword" class="form-control"/>
                         <form:errors path="confirmPassword" cssClass="text-danger"/>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </div>
                 </form:form>
             </div>
         </div>

@@ -1,6 +1,7 @@
 package net.therap.estaurant.configuration;
 
 import net.therap.estaurant.filter.AdminFilter;
+import net.therap.estaurant.filter.AuthenticationFilter;
 import net.therap.estaurant.filter.ChefFilter;
 import net.therap.estaurant.filter.WaiterFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -31,6 +32,7 @@ public class FilterConfig {
 
         return registrationBean;
     }
+
     @Bean
     public FilterRegistrationBean<ChefFilter> chefLoginFilter() {
         FilterRegistrationBean<ChefFilter> registrationBean = new FilterRegistrationBean<>();
@@ -40,4 +42,12 @@ public class FilterConfig {
         return registrationBean;
     }
 
+    @Bean
+    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter() {
+        FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new AuthenticationFilter());
+        registrationBean.addUrlPatterns("/");
+
+        return registrationBean;
+    }
 }

@@ -1,11 +1,15 @@
 package net.therap.estaurant.service;
 
+import net.therap.estaurant.command.Credentials;
 import net.therap.estaurant.dao.UserDao;
 import net.therap.estaurant.entity.User;
+import net.therap.estaurant.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 /**
@@ -34,6 +38,10 @@ public class UserService {
         return userDao.findById(id);
     }
 
+    public User findByEmail(String email) throws Exception {
+        return userDao.findByEmail(email).get(0);
+    }
+
     @Transactional
     public void delete(int id) throws Exception {
         userDao.delete(id);
@@ -44,10 +52,14 @@ public class UserService {
         return userDao.saveOrUpdate(user);
     }
 
-    public boolean isValidCredential(User user) {
-        User savedUser = userDao.findByEmail(user.getEmail()).get(0);
+    public boolean isValidCredential(Credentials credentials) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        List<User> userList = userDao.findByEmail(credentials.getEmail());
 
-        return user.equals(savedUser);
+        if (userList.size() == 0) {
+            return false;
+        }
+
+        return userList.get(0).getPassword().equals(Encryption.getPBKDF2(credentials.getPassword()));
     }
 
     public boolean isDuplicateEmail(User user) {

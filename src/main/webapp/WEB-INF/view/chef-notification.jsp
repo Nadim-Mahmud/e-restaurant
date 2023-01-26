@@ -19,6 +19,7 @@
     <%@ include file="nvabar.jsp" %>
     <c:set var="br" value="<br>" scope="page"/>
     <c:set var="ordered" value="ORDERED" scope="page"/>
+    <c:set var="preparing" value="PREPARING" scope="page"/>
     <div class="container col-md-10 mt-2">
         <div class="card">
             <div class="card-body">
@@ -32,7 +33,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Ordered At</th>
+                    <th scope="col">Ordered/Accepted At</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -49,18 +50,28 @@
                             <c:out value="${orderLineItem.quantity}"/>
                         </td>
                         <td>
-                            <c:out value="${orderLineItem.status}"/>
+                            <c:out value="${orderLineItem.status.label}"/>
                         </td>
                         <td>
-                            <fmt:formatDate value="${orderLineItem.order.placedAt}" type="time"/>
+                            <fmt:formatDate value="${orderLineItem.acceptedAt}" type="time"/>
                         </td>
                         <td>
                             <c:if test="${orderLineItem.status == ordered}">
-                                <c:url var="itemAccept" value="/chef/notification/accept">
+                                <c:url var="itemAccept" value="/chef/notification/form">
                                     <c:param name="orderLineItemId" value="${orderLineItem.id}"/>
                                 </c:url>
-                                <form:form class="text-center my-0 mx-2 p-0" action="${itemAccept}" method="post">
+                                <a class="text-center my-0 mx-2 p-0" href="${itemAccept}">
                                     <button class="btn btn-outline-success center btn-sm">Accept</button>
+                                </a>
+                            </c:if>
+                            <c:if test="${orderLineItem.status == preparing}">
+                                <c:url var="preparedUrl" value="/chef/notification/mark-prepared">
+                                    <c:param name="orderLineItemId" value="${orderLineItem.id}"/>
+                                </c:url>
+                                <form:form class="text-center my-0 mx-2 p-0" action="${preparedUrl}" method="post">
+                                    <button class="btn btn-outline-primary center btn-sm"
+                                            onclick="return confirm('Is it prepared?')">Mark prepared
+                                    </button>
                                 </form:form>
                             </c:if>
                         </td>

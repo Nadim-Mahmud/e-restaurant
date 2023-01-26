@@ -35,4 +35,9 @@ public interface Constants {
     String EMPTY_LIST = "emptyList";
     String UPDATE_PAGE = "updatePage";
     String NOTIFICATION = "notification";
+    String ORDERS = "orders";
+    String CREDENTIALS = "credentials";
+    String LOGIN_PAGE = "loginPage";
+    String INVALID_LOGIN = "invalidLogin";
+    String GUEST = "guest";
 }
