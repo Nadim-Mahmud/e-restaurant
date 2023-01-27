@@ -17,10 +17,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
-
+<jsp:include page="nvabar.jsp"/>
 <div class="container">
     <c:set var="served" value="SERVED"/>
-    <jsp:include page="nvabar.jsp"/>
     <div class="text-center">
         <c:if test="${success != null}">
             <p class="text-success">

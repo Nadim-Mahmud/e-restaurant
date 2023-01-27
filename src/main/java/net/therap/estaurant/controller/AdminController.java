@@ -13,6 +13,7 @@ import net.therap.estaurant.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -159,7 +160,9 @@ public class AdminController {
     }
 
     @GetMapping(HOME_URL)
-    public String adminHome() {
+    public String adminHome(ModelMap modelMap) {
+        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+
         return HOME_VIEW;
     }
 

@@ -4,6 +4,7 @@ import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.OrderLineItem;
 import net.therap.estaurant.entity.Status;
 import net.therap.estaurant.entity.User;
+import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.OrderLineItemService;
 import net.therap.estaurant.service.UserService;
 import net.therap.estaurant.validator.CookingTimeGroup;
@@ -43,10 +44,15 @@ public class ChefController {
     private UserService userService;
 
     @Autowired
+    private ItemService itemService;
+
+    @Autowired
     private OrderLineItemService orderLineItemService;
 
     @GetMapping({HOME_URL})
-    public String chefHome() {
+    public String chefHome(ModelMap modelMap) {
+        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+
         return HOME_VIEW;
     }
 

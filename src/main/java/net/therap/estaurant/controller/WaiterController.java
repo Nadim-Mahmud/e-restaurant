@@ -101,7 +101,9 @@ public class WaiterController {
     }
 
     @GetMapping(HOME_URL)
-    public String adminHome() {
+    public String adminHome(ModelMap modelMap) {
+        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+
         return HOME_VIEW;
     }
 

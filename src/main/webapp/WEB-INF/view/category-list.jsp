@@ -18,8 +18,8 @@
 </head>
 <body>
 
+<jsp:include page="nvabar.jsp"/>
 <div class="container">
-    <jsp:include page="nvabar.jsp"/>
     <div class="d-flex justify-content-end mt-3 mb-1">
         <form:form class="m-0" action="${pageContext.request.contextPath}/admin/category/form" method="get">
             <button class="btn btn-success btn-sm">+ Add Category</button>

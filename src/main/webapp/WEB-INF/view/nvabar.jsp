@@ -5,7 +5,7 @@ Date: 12/7/22
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light px-4">
     <c:set var="admin" value="admin" scope="page"/>
     <c:set var="chef" value="chef" scope="page"/>
     <c:set var="waiter" value="waiter" scope="page"/>
@@ -15,7 +15,7 @@ Date: 12/7/22
     <c:set var="orders" value="orders" scope="page"/>
     <c:set var="orderForm" value="orderForm" scope="page"/>
     <c:set var="notification" value="notification" scope="page"/>
-    <div class="container-fluid">
+    <div class="container-fluid m-0">
         <a href="/" class="navbar-brand">E-Staurant</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
+<%@ include file="nvabar.jsp" %>
 <div class="container">
-    <%@ include file="nvabar.jsp" %>
     <c:set var="br" value="<br>" scope="page"/>
     <c:set var="prepared" value="PREPARED" scope="page"/>
     <div class="container col-md-10 mt-2">

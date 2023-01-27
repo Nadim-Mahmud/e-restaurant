@@ -17,9 +17,8 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
-
+<jsp:include page="nvabar.jsp"/>
 <div class="container">
-  <jsp:include page="nvabar.jsp"/>
   <div class="d-flex justify-content-end mt-3 mb-1">
     <form:form class="m-0" action="${pageContext.request.contextPath}/admin/chef/form" method="get">
       <button class="btn btn-success btn-sm">+ Add Chef</button>

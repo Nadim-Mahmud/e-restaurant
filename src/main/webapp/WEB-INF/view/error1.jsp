@@ -13,6 +13,7 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
+<%@ include file="nvabar.jsp" %>
 <div class="container p-3 text-center">
     <img src="${pageContext.request.contextPath}/assets/images/exclamation-triangle-fill.svg" class="img-fluid">
     <h1 class="display-3">Opps! Something went wrong!</h1>

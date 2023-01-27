@@ -16,8 +16,8 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
+<jsp:include page="nvabar.jsp"/>
 <div class="container">
-    <jsp:include page="nvabar.jsp"/>
     <div class="container col-md-8 mt-5">
         <div class="card">
             <div class="card-body">

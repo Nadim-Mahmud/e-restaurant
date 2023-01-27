@@ -4,7 +4,9 @@ import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import net.therap.estaurant.command.Credentials;
 import net.therap.estaurant.command.Password;
 import net.therap.estaurant.constant.Constants;
+import net.therap.estaurant.entity.Item;
 import net.therap.estaurant.entity.User;
+import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.UserService;
 import net.therap.estaurant.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ItemService itemService;
+
     @InitBinder("password")
     public void passwordBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordValidator());
@@ -52,6 +57,7 @@ public class AuthenticationController {
     @GetMapping(HOME)
     public String guestHome(ModelMap modelMap) {
         modelMap.put(Constants.GUEST, Constants.GUEST);
+        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
 
         return HOME_VIEW;
     }
