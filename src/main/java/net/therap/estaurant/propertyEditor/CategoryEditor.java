@@ -28,9 +28,9 @@ public class CategoryEditor extends PropertyEditorSupport {
     }
 
     @Override
-    public void setAsText(String categoryId){
+    public void setAsText(String categoryId) {
 
-        if(Objects.isNull(categoryId) || categoryId.isEmpty()){
+        if (Objects.isNull(categoryId) || categoryId.isEmpty()) {
             setValue(null);
 
             return;

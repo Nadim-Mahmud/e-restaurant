@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -33,7 +34,7 @@ public class AuthenticationController {
     private static final String HOME = "/";
     private static final String HOME_VIEW = "home";
 
-    private static final String UPDATE_PASSWORD_URL = "*/update-password";
+    private static final String UPDATE_PASSWORD_URL = "update-password";
     private static final String UPDATE_PASSWORD_VIEW = "password-form";
     private static final String SAVE_PASSWORD_URL = "/update-password/update";
 
@@ -75,7 +76,8 @@ public class AuthenticationController {
     String savePassword(
             @SessionAttribute(Constants.ACTIVE_USER) User user,
             @Valid @ModelAttribute(Constants.PASSWORD) Password password,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) throws Exception {
 
         if (bindingResult.hasErrors()) {
@@ -117,11 +119,11 @@ public class AuthenticationController {
     }
 
     @GetMapping(LOGOUT_URL)
-    public String logOut(HttpSession httpSession, Model model){
+    public String logOut(HttpSession httpSession, Model model) {
         httpSession.removeAttribute(Constants.ACTIVE_USER);
         httpSession.invalidate();
 
-        if(model.containsAttribute(Constants.ACTIVE_USER)){
+        if (model.containsAttribute(Constants.ACTIVE_USER)) {
             model.asMap().remove(Constants.ACTIVE_USER);
         }
 

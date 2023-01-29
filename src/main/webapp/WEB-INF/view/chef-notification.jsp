@@ -29,7 +29,8 @@
             <table class="table align-middle text-center">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">SL</th>
+                    <th scope="col">Table</th>
                     <th scope="col">Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Status</th>
@@ -42,6 +43,9 @@
                     <tr>
                         <td>
                             <c:out value="${orderLineStat.count}"/>
+                        </td>
+                        <td>
+                            <c:out value="${orderLineItem.order.restaurantTable.name}"/>
                         </td>
                         <td>
                             <c:out value="${orderLineItem.item.name}"/>

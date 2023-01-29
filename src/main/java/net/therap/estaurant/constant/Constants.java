@@ -6,7 +6,7 @@ package net.therap.estaurant.constant;
  */
 public interface Constants {
 
-    String REDIRECT ="redirect:/";
+    String REDIRECT = "redirect:/";
     String DATE_PATTERN = "yyyy-MM-dd";
     String ROLE = "role";
     String ADMIN = "admin";
@@ -40,4 +40,5 @@ public interface Constants {
     String LOGIN_PAGE = "loginPage";
     String INVALID_LOGIN = "invalidLogin";
     String GUEST = "guest";
+    String ERROR_CODE = "errorCode";
 }

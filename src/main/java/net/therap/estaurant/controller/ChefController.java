@@ -60,7 +60,7 @@ public class ChefController {
     public String showChefNotification(
             @SessionAttribute(Constants.ACTIVE_USER) User user,
             ModelMap modelMap
-    ){
+    ) {
         modelMap.put(Constants.ORDER_LINE_ITEM_LIST, orderLineItemService.getOrderedNotificationByUserId(user.getId()));
         modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
 
@@ -68,7 +68,7 @@ public class ChefController {
     }
 
     @GetMapping(CHEF_ACCEPT_FORM_URL)
-    public String showOrderAcceptForm(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) String orderLineItemId, ModelMap modelMap){
+    public String showOrderAcceptForm(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) String orderLineItemId, ModelMap modelMap) {
         modelMap.put(Constants.ORDER_LINE_ITEM, orderLineItemService.findById(Integer.parseInt(orderLineItemId)));
         modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
 
@@ -83,7 +83,7 @@ public class ChefController {
             SessionStatus sessionStatus
     ) throws Exception {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
 
             return CHEF_ACCEPT_FORM_VIEW;

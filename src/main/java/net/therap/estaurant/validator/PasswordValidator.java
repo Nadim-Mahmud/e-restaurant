@@ -23,13 +23,13 @@ public class PasswordValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Password password = (Password) target;
 
-        if(!password.getNewPassword().equals(password.getConfirmPassword())){
+        if (!password.getNewPassword().equals(password.getConfirmPassword())) {
             errors.rejectValue("newPassword", "password.different");
             errors.rejectValue("confirmPassword", "password.different");
         }
 
         try {
-            if(!password.getStoredUserPassword().equals(Encryption.getPBKDF2(password.getOldPassword()))){
+            if (!password.getStoredUserPassword().equals(Encryption.getPBKDF2(password.getOldPassword()))) {
                 errors.rejectValue("oldPassword", "password.incorrectOldPass");
             }
         } catch (Exception e) {

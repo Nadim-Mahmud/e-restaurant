@@ -3,8 +3,6 @@ package net.therap.estaurant.service;
 import net.therap.estaurant.dao.OrderDao;
 import net.therap.estaurant.entity.Order;
 import net.therap.estaurant.entity.Status;
-import net.therap.estaurant.entity.Type;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +24,10 @@ public class OrderService {
         return orderDao.findAll();
     }
 
+    public List<Order> findByWaiterId(int waiterId) {
+        return orderDao.findByWaiterId(waiterId);
+    }
+
     public Order findById(int id) {
         return orderDao.findById(id);
     }
@@ -42,7 +44,7 @@ public class OrderService {
 
     public boolean tableExists(Order order) {
 
-        List<Order> orderList = orderDao.findOrderByTableId(order.getRestaurantTable().getId());
+        List<Order> orderList = orderDao.findByTableId(order.getRestaurantTable().getId());
 
         if (orderList.size() == 0) {
             return false;
@@ -51,8 +53,8 @@ public class OrderService {
         return orderList.get(0).getId() != order.getId();
     }
 
-    public List<Order> getOrderListWithStatus() {
-        List<Order> orderList = orderDao.findActiveOrder();
+    public List<Order> getOrderListWithStatus(int waiterId) {
+        List<Order> orderList = orderDao.findActiveOrderByWaiterId(waiterId);
 
         for (int i = 0; i < orderList.size(); i++) {
 
@@ -70,11 +72,11 @@ public class OrderService {
                     preparing++;
                 }
 
-                if (!orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(Status.ORDERED)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(Status.PREPARING)) {
                     Date acceptedAt = orderList.get(i).getOrderLineItemList().get(j).getAcceptedAt();
                     Long elapsed = new Date().getTime() - acceptedAt.getTime();
                     elapsed = elapsed / 60000;
-                    int time = (int)Math.max(0, orderList.get(i).getOrderLineItemList().get(j).getEstCookingTime() - elapsed);
+                    int time = (int) Math.max(0, orderList.get(i).getOrderLineItemList().get(j).getEstCookingTime() - elapsed);
                     estTime = Math.max(estTime, time);
                 }
 
@@ -84,6 +86,7 @@ public class OrderService {
 
             if (prepared == orderList.get(i).getOrderLineItemList().size()) {
                 orderList.get(i).setStatus(Status.PREPARED);
+                orderList.get(i).setEstTime(0);
             } else if (preparing > 0) {
                 orderList.get(i).setStatus(Status.PREPARING);
             } else {

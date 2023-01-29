@@ -13,8 +13,7 @@ import java.util.List;
 @Repository
 public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
 
-
-    public List<OrderLineItem> findOrderedItemByChef(List<Item> itemList){
+    public List<OrderLineItem> findOrderedItemByChef(List<Item> itemList) {
         return entityManager.createNamedQuery("OrderLineItem.findChefNotificationORDERD", OrderLineItem.class)
                 .setParameter("itemList", itemList)
                 .getResultList();

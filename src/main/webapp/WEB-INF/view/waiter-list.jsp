@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Admin | Chef</title>
+    <title>Admin | Waiter</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -34,7 +34,7 @@
     <table class="table table-hover table-sm align-middle text-center">
         <thead class="table-head bg-primary bg-opacity-50">
         <tr>
-            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">SL</th>
             <th scope="col" class="text-center">First Name</th>
             <th scope="col" class="text-center">Last Name</th>
             <th scope="col" class="text-center">DOB</th>

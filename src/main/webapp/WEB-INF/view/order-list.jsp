@@ -30,12 +30,11 @@
     <table class="table table-hover table-sm align-middle text-center">
         <thead class="table-head bg-primary bg-opacity-50">
         <tr>
-            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">SL</th>
             <th scope="col" class="text-center">Table</th>
             <th scope="col" class="text-center">Ordered At</th>
-            <th scope="col" class="text-center">Est Time</th>
             <th scope="col" class="text-center">Items</th>
-            <th scope="col" class="text-center">Status</th>
+            <th scope="col" class="text-center">Bill</th>
             <th scope="col" class="text-center">Created At</th>
             <th scope="col" class="text-center">Updated At</th>
             <th scope="col" class="text-center">Action</th>
@@ -53,9 +52,6 @@
                 <td class="text-center">
                     <fmt:formatDate value="${order.createdAt}" type="time"/>
                 </td>
-                <td class="text-center">
-                    <c:out value="${}"/>
-                </td>
                 <td class="text-start">
                     <ul>
                         <c:forEach items="${order.orderLineItemList}" var="orderLineItem">
@@ -64,7 +60,7 @@
                     </ul>
                 </td>
                 <td class="text-center">
-                    <c:out value="${order.status}"/>
+                    <c:out value="${order.totalBill()}"/>
                 </td>
                 <td class="text-center">
                     <fmt:formatDate value="${order.createdAt}" type="date"/>
@@ -74,19 +70,21 @@
                 </td>
                 <td>
                     <div class="d-flex justify-content-center my-1">
-                        <c:url var="updateUrl" value="${pageContext.request.contextPath}/waiter/new-order">
-                            <c:param name="orderId" value="${order.id}"/>
-                        </c:url>
-                        <a class="text-center my-0 mx-2 p-0" href="${updateUrl}">
-                            <button class="btn btn-outline-primary center btn-sm">Update</button>
-                        </a>
+                        <c:if test="${order.status != served }">
+                            <c:url var="updateUrl" value="${pageContext.request.contextPath}/waiter/new-order">
+                                <c:param name="orderId" value="${order.id}"/>
+                            </c:url>
+                            <a class="text-center my-0 mx-2 p-0" href="${updateUrl}">
+                                <button class="btn btn-outline-primary center btn-sm">Update</button>
+                            </a>
+                        </c:if>
                         <c:url var="cancelUrl" value="${pageContext.request.contextPath}/waiter/order/cancel">
                             <c:param name="orderId" value="${order.id}"/>
                         </c:url>
                         <form:form class="text-center my-0 mx-2 p-0" action="${cancelUrl}" method="post">
                             <button class="btn btn-outline-danger center btn-sm"
                                     onclick="return confirm('Are you sure to cancel the order?')">
-                                    ${order.status == served ? "Delete" : "Cancel"}
+                                    ${order.status == served ? "Clear Table" : "Cancel"}
                             </button>
                         </form:form>
                     </div>

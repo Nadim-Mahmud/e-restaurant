@@ -5,7 +5,7 @@ Date: 12/7/22
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light px-4">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light px-4 mb-1 shadow-sm">
     <c:set var="admin" value="admin" scope="page"/>
     <c:set var="chef" value="chef" scope="page"/>
     <c:set var="waiter" value="waiter" scope="page"/>
@@ -79,7 +79,7 @@ Date: 12/7/22
                         </p>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="update-password">Update Password</a>
+                                <a class="dropdown-item" href="/update-password">Update Password</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -91,7 +91,7 @@ Date: 12/7/22
                     </div>
                 </c:if>
                 <c:if test="${activeUser == null && loginPage == null}">
-                    <a href="/login-page" type="button" class="btn btn-secondary btn-sm text-white">Login</a>
+                    <a href="/login-page" type="button" class="btn btn-primary btn-sm px-4 text-white">Login</a>
                 </c:if>
             </span>
         </div>

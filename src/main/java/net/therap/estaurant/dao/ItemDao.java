@@ -18,6 +18,12 @@ public class ItemDao extends AbstractDao<Item> {
         return entityManager.createNamedQuery("Item.findAvailable", Item.class).getResultList();
     }
 
+    public List<Item> findByName(String itemName) {
+        return entityManager.createNamedQuery("Item.findByName", Item.class)
+                .setParameter("itemName", itemName)
+                .getResultList();
+    }
+
     @Override
     public List<Item> findAll() {
         return entityManager.createNamedQuery("Item.findAll", Item.class).getResultList();

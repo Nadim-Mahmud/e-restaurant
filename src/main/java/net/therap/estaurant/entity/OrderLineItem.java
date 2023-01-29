@@ -159,16 +159,4 @@ public class OrderLineItem implements Serializable {
     public int hashCode() {
         return Objects.hash(getItem());
     }
-
-    @Override
-    public String toString() {
-        return "OrderLineItem{" +
-                "id=" + id +
-                ", quantity=" + quantity +
-                ", status=" + status +
-                ", item=" + item +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

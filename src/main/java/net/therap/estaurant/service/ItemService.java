@@ -2,6 +2,7 @@ package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.ItemDao;
 import net.therap.estaurant.entity.Item;
+import net.therap.estaurant.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +39,15 @@ public class ItemService {
     @Transactional
     public Item saveOrUpdate(Item item) throws Exception {
         return itemDao.saveOrUpdate(item);
+    }
+
+    public boolean isDuplicateName(Item item) {
+        List<Item> itemList = itemDao.findByName(item.getName());
+
+        if (itemList.size() == 0) {
+            return false;
+        }
+
+        return itemList.get(0).getId() != item.getId();
     }
 }

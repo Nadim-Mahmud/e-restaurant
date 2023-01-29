@@ -19,6 +19,11 @@
 <c:set var="color" value="" scope="page"/>
 <jsp:include page="nvabar.jsp"/>
 <div class="container">
+    <c:if test="${success != null}">
+        <p class="text-success text-center">
+            &check; Password updated !!
+        </p>
+    </c:if>
     <div class="row">
         <c:forEach items="${itemList}" var="item">
             <div class="col-md-3 p-1">

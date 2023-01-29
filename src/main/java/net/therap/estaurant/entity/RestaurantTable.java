@@ -17,7 +17,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "restaurant_table")
 @NamedQueries({
-        @NamedQuery(name = "RestaurantTable.findAll", query = "SELECT r FROM RestaurantTable r")
+        @NamedQuery(name = "RestaurantTable.findAll", query = "SELECT r FROM RestaurantTable r"),
+        @NamedQuery(name = "RestaurantTable.findByWaiterId", query = "SELECT r FROM RestaurantTable r WHERE r.user.id = :waiterId"),
+        @NamedQuery(name = "RestaurantTable.findTableName", query = "SELECT r FROM RestaurantTable r WHERE r.name = :tableName")
 })
 public class RestaurantTable implements Serializable {
 

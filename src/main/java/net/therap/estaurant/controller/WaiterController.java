@@ -32,7 +32,6 @@ import java.util.Objects;
  * @author nadimmahmud
  * @since 1/24/23
  */
-
 @Controller
 @RequestMapping("/waiter/*")
 @SessionAttributes({Constants.ORDER})
@@ -96,7 +95,7 @@ public class WaiterController {
     }
 
     @InitBinder(Constants.ORDER)
-    public void orderBinder(WebDataBinder webDataBinder){
+    public void orderBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(orderValidator);
     }
 
@@ -108,8 +107,11 @@ public class WaiterController {
     }
 
     @GetMapping(ORDERS_URL)
-    public String showOrders(ModelMap modelMap) {
-        modelMap.put(Constants.ORDER_LIST, orderService.findAll());
+    public String showOrders(
+            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            ModelMap modelMap
+    ) {
+        modelMap.put(Constants.ORDER_LIST, orderService.findByWaiterId(user.getId()));
         modelMap.put(Constants.NAV_ITEM, Constants.ORDERS);
 
         return ORDER_VIEW;
@@ -118,11 +120,12 @@ public class WaiterController {
     @GetMapping(ORDER_FORM_URL)
     public String showOrderForm(
             @RequestParam(value = ORDER_ID_PARAM, required = false) String orderId,
+            @SessionAttribute(Constants.ACTIVE_USER) User user,
             ModelMap modelMap
     ) {
         Order order = Objects.nonNull(orderId) ? orderService.findById(Integer.parseInt(orderId)) : new Order();
         modelMap.put(Constants.ORDER, order);
-        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
         modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
 
         return ORDER_FORM_VIEW;
@@ -130,13 +133,14 @@ public class WaiterController {
 
     @PostMapping(NEXT_PAGE)
     public String orderTableValidationPage(
+            @SessionAttribute(Constants.ACTIVE_USER) User user,
             @Valid @ModelAttribute(Constants.ORDER) Order order,
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
 
         if (bindingResult.hasErrors()) {
-            modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+            modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
             modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
 
             return ORDER_FORM_VIEW;
@@ -224,8 +228,11 @@ public class WaiterController {
     }
 
     @GetMapping(WAITER_NOTIFICATION_URL)
-    public String showWaiterNotification(ModelMap modelMap){
-        modelMap.put(Constants.ORDER_LIST, orderService.getOrderListWithStatus());
+    public String showWaiterNotification(
+            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            ModelMap modelMap
+    ) {
+        modelMap.put(Constants.ORDER_LIST, orderService.getOrderListWithStatus(user.getId()));
         modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
 
         return WAITER_NOTIFICATION_VIEW;
@@ -239,5 +246,4 @@ public class WaiterController {
 
         return Constants.REDIRECT + REDIRECT_WAITER_NOTIFICATION_URL;
     }
-
 }

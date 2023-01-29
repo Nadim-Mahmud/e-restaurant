@@ -16,7 +16,17 @@
 <%@ include file="nvabar.jsp" %>
 <div class="container p-3 text-center">
     <img src="${pageContext.request.contextPath}/assets/images/exclamation-triangle-fill.svg" class="img-fluid">
-    <h1 class="display-3">Opps! Something went wrong!</h1>
+    <c:choose>
+        <c:when test="${errorCode == 404}">
+            <h1 class="display-3">404 Not Found!</h1>
+        </c:when>
+        <c:when test="${errorCode == 500}">
+            <h1 class="display-3">500 Internal server error!</h1>
+        </c:when>
+        <c:otherwise>
+            <h1 class="display-3">Opps! Something went wrong!</h1>
+        </c:otherwise>
+    </c:choose>
     <a class="btn btn-outline-primary" href="/">Go Back Home</a>
     <br><br>
 </div>

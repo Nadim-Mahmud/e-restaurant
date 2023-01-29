@@ -1,8 +1,6 @@
 package net.therap.estaurant.dao;
 
-import net.therap.estaurant.entity.Category;
 import net.therap.estaurant.entity.Order;
-import net.therap.estaurant.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,14 +12,22 @@ import java.util.List;
 @Repository
 public class OrderDao extends AbstractDao<Order> {
 
-    public List<Order> findOrderByTableId(int id){
+    public List<Order> findByTableId(int id) {
         return entityManager.createNamedQuery("Order.findOrderByTable", Order.class)
                 .setParameter("tableId", id)
                 .getResultList();
     }
 
-    public List<Order> findActiveOrder() {
-        return entityManager.createNamedQuery("Order.findActiveOnly", Order.class).getResultList();
+    public List<Order> findByWaiterId(int waiterId) {
+        return entityManager.createNamedQuery("Order.findByWaiterId", Order.class)
+                .setParameter("waiterId", waiterId)
+                .getResultList();
+    }
+
+    public List<Order> findActiveOrderByWaiterId(int waiterId) {
+        return entityManager.createNamedQuery("Order.findActiveOnly", Order.class)
+                .setParameter("waiterId", waiterId)
+                .getResultList();
     }
 
     @Override

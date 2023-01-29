@@ -57,7 +57,7 @@
                     <table class="table align-middle text-center">
                         <thead>
                         <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">SL</th>
                             <th scope="col">Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Action</th>
@@ -90,7 +90,7 @@
                 </c:if>
                 <form:form class="m-0 p - 0 " action="/waiter/new-order/list/save" method="post">
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-sm btn-primary">Order</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Place Order</button>
                     </div>
                 </form:form>
             </div>

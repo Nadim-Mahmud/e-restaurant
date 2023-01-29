@@ -19,7 +19,8 @@ import java.util.Objects;
 @Table(name = "order_table")
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o order by o.status"),
-        @NamedQuery(name = "Order.findActiveOnly", query = "SELECT o FROM Order o WHERE o.status != 'SERVED'"),
+        @NamedQuery(name = "Order.findActiveOnly", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId AND o.status != 'SERVED'"),
+        @NamedQuery(name = "Order.findByWaiterId", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId"),
         @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId")
 })
 public class Order implements Serializable {
@@ -41,7 +42,7 @@ public class Order implements Serializable {
     @JoinColumn(name = "restaurantTableId")
     private RestaurantTable restaurantTable;
 
-    @OneToMany( fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "orderId")
     private List<OrderLineItem> orderLineItemList;
 
@@ -111,6 +112,16 @@ public class Order implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public double totalBill() {
+        int bill = 0;
+
+        for (OrderLineItem items : orderLineItemList) {
+            bill += items.getItem().getPrice();
+        }
+
+        return bill;
+    }
+
     public boolean isNew() {
         return id == 0;
     }
@@ -130,17 +141,5 @@ public class Order implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", status=" + status +
-                ", restaurantTable=" + restaurantTable +
-                ", orderLineItemList=" + orderLineItemList +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

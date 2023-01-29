@@ -10,6 +10,8 @@ import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.RestaurantTableService;
 import net.therap.estaurant.service.UserService;
 import net.therap.estaurant.validator.EmailValidator;
+import net.therap.estaurant.validator.ItemValidator;
+import net.therap.estaurant.validator.RestaurantTableValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -78,7 +80,6 @@ public class AdminController {
     private static final String WAITER_ID_PARAM = "waiterId";
     private static final String WAITER_DELETE_URL = "waiter/delete";
 
-
     private static final String RES_TABLE_REDIRECT_URL = "admin/res-table";
     private static final String RES_TABLE_URL = "res-table";
     private static final String RES_TABLE_VIEW = "res-table-list";
@@ -111,6 +112,12 @@ public class AdminController {
 
     @Autowired
     private EmailValidator emailValidator;
+
+    @Autowired
+    private ItemValidator itemValidator;
+
+    @Autowired
+    private RestaurantTableValidator restaurantTableValidator;
 
     private void setupReferenceDataItemForm(ModelMap modelMap) {
         modelMap.put(Constants.CATEGORY_LIST, categoryService.findAll());
@@ -155,8 +162,18 @@ public class AdminController {
     }
 
     @InitBinder({Constants.WAITER, Constants.CHEF})
-    public void userBinder(WebDataBinder webDataBinder){
+    public void userBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(emailValidator);
+    }
+
+    @InitBinder(Constants.RESTAURANT_TABLE)
+    public void tableBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(restaurantTableValidator);
+    }
+
+    @InitBinder(Constants.ITEM)
+    public void itemBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(itemValidator);
     }
 
     @GetMapping(HOME_URL)

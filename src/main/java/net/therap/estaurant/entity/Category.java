@@ -89,15 +89,4 @@ public class Category implements Serializable {
     public boolean isNew() {
         return id == 0;
     }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", itemList=" + itemList +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

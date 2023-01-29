@@ -34,7 +34,7 @@
     <table class="table table-hover table-sm align-middle text-center">
         <thead class="table-head bg-primary bg-opacity-50">
         <tr>
-            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">SL</th>
             <th scope="col" class="text-center">Name</th>
             <th scope="col" class="text-center">Waiter</th>
             <th scope="col" class="text-center">Created At</th>

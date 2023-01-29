@@ -24,8 +24,8 @@ public class RestaurantTableEditor extends PropertyEditorSupport {
     }
 
     @Override
-    public void setAsText(String restaurantTableId){
-        if(Objects.isNull(restaurantTableId) || restaurantTableId.isEmpty()){
+    public void setAsText(String restaurantTableId) {
+        if (Objects.isNull(restaurantTableId) || restaurantTableId.isEmpty()) {
             setValue(null);
 
             return;

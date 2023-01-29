@@ -30,11 +30,11 @@ public class OrderValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Order order = (Order) target;
 
-        if(Objects.isNull(order) || Objects.isNull(order.getRestaurantTable())){
+        if (Objects.isNull(order) || Objects.isNull(order.getRestaurantTable())) {
             errors.rejectValue("restaurantTable", "select.empty");
         }
 
-        if(orderService.tableExists(order)){
+        if (orderService.tableExists(order)) {
             errors.rejectValue("restaurantTable", "table.exist");
         }
     }

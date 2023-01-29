@@ -12,6 +12,18 @@ import java.util.List;
 @Repository
 public class RestaurantTableDao extends AbstractDao<RestaurantTable> {
 
+    public List<RestaurantTable> findByTableName(String tableName) {
+        return entityManager.createNamedQuery("RestaurantTable.findTableName", RestaurantTable.class)
+                .setParameter("tableName", tableName)
+                .getResultList();
+    }
+
+    public List<RestaurantTable> findByWaiterId(int waiterId) {
+        return entityManager.createNamedQuery("RestaurantTable.findByWaiterId", RestaurantTable.class)
+                .setParameter("waiterId", waiterId)
+                .getResultList();
+    }
+
     @Override
     public List<RestaurantTable> findAll() {
         return entityManager.createNamedQuery("RestaurantTable.findAll", RestaurantTable.class).getResultList();

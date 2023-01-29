@@ -28,7 +28,7 @@
             <table class="table align-middle text-center">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">SL</th>
                     <th scope="col">Table</th>
                     <th scope="col">Items</th>
                     <th scope="col">Est time</th>
@@ -45,14 +45,14 @@
                         <td>
                             <c:out value="${order.restaurantTable.name}"/>
                         </td>
-                        <td>
+                        <td class="text-start">
                             <c:forEach items="${order.orderLineItemList}" var="orderLineItem">
                                 <li><c:out value="${orderLineItem.item.name} x ${orderLineItem.quantity}"/></li>
                             </c:forEach>
                             </ul>
                         </td>
                         <td>
-                            <c:out value="${order.estTime}"/>
+                                ${ order.estTime == 0 ? 'x' : order.estTime}
                         </td>
                         <td>
                             <c:out value="${order.status.label}"/>
@@ -67,6 +67,9 @@
                                             onclick="return confirm('Is it served?')">Mark as served
                                     </button>
                                 </form:form>
+                            </c:if>
+                            <c:if test="${order.status != prepared}">
+                                <c:out value="x"/>
                             </c:if>
                         </td>
                     </tr>

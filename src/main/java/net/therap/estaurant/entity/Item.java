@@ -22,6 +22,7 @@ import java.util.List;
 @Table(name = "item")
 @NamedQueries({
         @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
+        @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :itemName"),
         @NamedQuery(name = "Item.findAvailable", query = "SELECT i FROM Item i where i.availability = 'AVAILABLE'")
 })
 public class Item implements Serializable {
@@ -37,8 +38,8 @@ public class Item implements Serializable {
     @Size(min = 1, max = 50, message = "{input.text}")
     private String name;
 
-    @NotNull(message = "{input.text}")
-    @Size(min = 1, max = 3000, message = "{input.text}")
+    @NotNull(message = "{input.paragraph}")
+    @Size(min = 1, max = 3000, message = "{input.paragraph}")
     private String description;
 
     @NotNull(message = "{input.number}")
@@ -53,8 +54,17 @@ public class Item implements Serializable {
     @NotNull(message = "{input.text}")
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "itemList")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "chef_item",
+            joinColumns = {@JoinColumn(name = "itemId")},
+            inverseJoinColumns = {@JoinColumn(name = "userId")}
+    )
     private List<User> userList;
+
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "itemId")
+    private List<OrderLineItem> orderLineItemList;
 
     @CreationTimestamp
     private Date createdAt;
@@ -136,7 +146,7 @@ public class Item implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isNew(){
+    public boolean isNew() {
         return id == 0;
     }
 }

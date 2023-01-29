@@ -91,8 +91,8 @@ CREATE TABLE restaurant.order_line_item
     order_id   INT,
     created_at DATE,
     updated_at DATE,
-    FOREIGN KEY (item_id) REFERENCES item (id),
-    FOREIGN KEY (order_id) REFERENCES order_table (id)
+    FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE  CASCADE,
+    FOREIGN KEY (order_id) REFERENCES order_table (id) ON DELETE  CASCADE
 );
 
 CREATE TABLE restaurant.order_line_seq(

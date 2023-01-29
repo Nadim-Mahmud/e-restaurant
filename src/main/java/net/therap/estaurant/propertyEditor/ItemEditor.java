@@ -29,9 +29,9 @@ public class ItemEditor extends PropertyEditorSupport {
     }
 
     @Override
-    public void setAsText(String itemId){
+    public void setAsText(String itemId) {
 
-        if(Objects.isNull(itemId) || itemId.isEmpty()){
+        if (Objects.isNull(itemId) || itemId.isEmpty()) {
             setValue(null);
             return;
         }

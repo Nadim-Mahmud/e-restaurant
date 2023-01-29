@@ -19,7 +19,7 @@ public class OrderLineItemValidator {
 
     public static void validate(List<OrderLineItem> orderLineItemList, OrderLineItem orderLineItem, Errors errors) {
 
-        if(orderLineItemList.contains(orderLineItem)) {
+        if (orderLineItemList.contains(orderLineItem)) {
             errors.rejectValue("item", "select.duplicate");
         }
     }
