@@ -53,6 +53,9 @@
                     <c:out value="${category.name}"/>
                 </td>
                 <td class="text-center">
+                    <c:if test="${category.itemList.size() == 0}">
+                        x
+                    </c:if>
                     <ul>
                         <c:forEach items="${category.itemList}" var="item">
                             <li><c:out value="${item.name}"/></li>

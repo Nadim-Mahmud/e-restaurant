@@ -1,6 +1,7 @@
 package net.therap.estaurant.service;
 
 import net.therap.estaurant.command.Credentials;
+import net.therap.estaurant.command.Profile;
 import net.therap.estaurant.dao.UserDao;
 import net.therap.estaurant.entity.User;
 import net.therap.estaurant.util.Encryption;
@@ -71,5 +72,19 @@ public class UserService {
         }
 
         return userList.get(0).getId() != user.getId();
+    }
+
+    public Profile getProfileObject(User user){
+        return new Profile(user.getId(), user.getFirstName(), user.getLastName(), user.getDateOfBirth(), user.getEmail());
+    }
+
+    public User updateUserByProfile(User user, Profile profile){
+        user.setId(profile.getId());
+        user.setFirstName(profile.getFirstName());
+        user.setLastName(profile.getLastName());
+        user.setDateOfBirth(profile.getDateOfBirth());
+        user.setEmail(profile.getEmail());
+
+        return user;
     }
 }

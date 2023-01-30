@@ -79,6 +79,9 @@ Date: 12/7/22
                         </p>
                         <ul class="dropdown-menu">
                             <li>
+                                <a class="dropdown-item" href="/update-profile">Update Profile</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" href="/update-password">Update Password</a>
                             </li>
                             <li>

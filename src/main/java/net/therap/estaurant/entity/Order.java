@@ -116,7 +116,7 @@ public class Order implements Serializable {
         int bill = 0;
 
         for (OrderLineItem items : orderLineItemList) {
-            bill += items.getItem().getPrice();
+            bill += items.getItem().getPrice() * items.getQuantity();
         }
 
         return bill;

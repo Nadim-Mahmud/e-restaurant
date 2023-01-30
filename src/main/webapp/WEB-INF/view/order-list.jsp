@@ -60,7 +60,7 @@
                     </ul>
                 </td>
                 <td class="text-center">
-                    <c:out value="${order.totalBill()}"/>
+                    <c:out value="${order.totalBill()} /-"/>
                 </td>
                 <td class="text-center">
                     <fmt:formatDate value="${order.createdAt}" type="date"/>

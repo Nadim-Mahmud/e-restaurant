@@ -68,6 +68,7 @@
                     <fmt:formatDate value="${waiter.joiningDate}" type="date"/>
                 </td>
                 <td class="text-center">
+                    <c:if test="${waiter.restaurantTableList.size() == 0}">x</c:if>
                     <ul>
                         <c:forEach items="${waiter.restaurantTableList}" var="resTable">
                             <li><c:out value="${resTable.name}"/></li>

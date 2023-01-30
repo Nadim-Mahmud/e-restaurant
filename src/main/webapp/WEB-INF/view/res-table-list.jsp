@@ -52,6 +52,7 @@
                     <c:out value="${resTable.name}"/>
                 </td>
                 <td class="text-center">
+                     <c:if test="${resTable.user == null}">x</c:if>
                     <c:out value="${resTable.user.firstName} ${resTable.user.lastName}"/>
                 </td>
                 <td class="text-center">

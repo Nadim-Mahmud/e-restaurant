@@ -15,6 +15,7 @@ public interface Constants {
     String WAITER = "waiter";
     String ORDER = "order";
     String PASSWORD = "password";
+    String PROFILE = "profile";
     String RESTAURANT_TABLE = "resTable";
     String ITEM_LIST = "itemList";
     String ITEM = "item";

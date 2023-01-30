@@ -38,7 +38,7 @@ public class RestaurantTable implements Serializable {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToOne(mappedBy = "restaurantTable")
+    @OneToOne(mappedBy = "restaurantTable", orphanRemoval = true)
     private Order order;
 
     @CreationTimestamp
