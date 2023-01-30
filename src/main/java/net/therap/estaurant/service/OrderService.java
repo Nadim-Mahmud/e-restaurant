@@ -3,12 +3,14 @@ package net.therap.estaurant.service;
 import net.therap.estaurant.dao.OrderDao;
 import net.therap.estaurant.entity.Order;
 import net.therap.estaurant.entity.Status;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -29,7 +31,13 @@ public class OrderService {
     }
 
     public Order findById(int id) {
-        return orderDao.findById(id);
+        Order order = orderDao.findById(id);
+
+        if (Objects.isNull(order)) {
+            throw new RuntimeException();
+        }
+
+        return order;
     }
 
     @Transactional

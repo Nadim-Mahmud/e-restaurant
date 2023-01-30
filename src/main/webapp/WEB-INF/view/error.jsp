@@ -20,9 +20,6 @@
         <c:when test="${errorCode == 404}">
             <h1 class="display-3">404 Not Found!</h1>
         </c:when>
-        <c:when test="${errorCode == 500}">
-            <h1 class="display-3">500 Internal server error!</h1>
-        </c:when>
         <c:otherwise>
             <h1 class="display-3">Opps! Something went wrong!</h1>
         </c:otherwise>

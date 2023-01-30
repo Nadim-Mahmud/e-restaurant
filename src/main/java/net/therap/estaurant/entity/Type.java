@@ -6,7 +6,17 @@ package net.therap.estaurant.entity;
  */
 public enum Type {
 
-    ADMIN,
-    CHEF,
-    WAITER
+    ADMIN("Admin"),
+    CHEF("Chef"),
+    WAITER("Waiter");
+
+    private final String label;
+
+    Type(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

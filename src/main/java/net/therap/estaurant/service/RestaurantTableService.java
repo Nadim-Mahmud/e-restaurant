@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -28,7 +29,13 @@ public class RestaurantTableService {
     }
 
     public RestaurantTable findById(int id) {
-        return restaurantTableDao.findById(id);
+        RestaurantTable restaurantTable = restaurantTableDao.findById(id);
+
+        if(Objects.isNull(restaurantTable)){
+            throw new RuntimeException();
+        }
+
+        return restaurantTable;
     }
 
     @Transactional

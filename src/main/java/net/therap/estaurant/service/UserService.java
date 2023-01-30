@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -36,11 +37,23 @@ public class UserService {
     }
 
     public User findById(int id) {
-        return userDao.findById(id);
+        User user = userDao.findById(id);
+
+        if(Objects.isNull(user)){
+            throw new RuntimeException();
+        }
+
+        return user;
     }
 
     public User findByEmail(String email) throws Exception {
-        return userDao.findByEmail(email).get(0);
+        List<User> userList = userDao.findByEmail(email);
+
+        if(userList.size() == 0){
+            throw new RuntimeException();
+        }
+
+        return userList.get(0);
     }
 
     @Transactional

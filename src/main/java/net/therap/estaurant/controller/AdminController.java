@@ -192,7 +192,7 @@ public class AdminController {
     }
 
     @GetMapping(CATEGORY_FORM_URL)
-    public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId, ModelMap modelMap) {
+    public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId, ModelMap modelMap) throws Exception {
         Category category = Objects.nonNull(categoryId) ? categoryService.findById(Integer.parseInt(categoryId)) : new Category();
         modelMap.put(Constants.CATEGORY, category);
         modelMap.put(Constants.NAV_ITEM, Constants.CATEGORY);

@@ -1,12 +1,15 @@
 package net.therap.estaurant.service;
 
+import net.bytebuddy.implementation.bytecode.Throw;
 import net.therap.estaurant.dao.CategoryDao;
 import net.therap.estaurant.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -23,7 +26,13 @@ public class CategoryService {
     }
 
     public Category findById(int id) {
-        return categoryDao.findById(id);
+        Category category = categoryDao.findById(id);
+
+        if (Objects.isNull(category)) {
+            throw new RuntimeException();
+        }
+
+        return category;
     }
 
     @Transactional

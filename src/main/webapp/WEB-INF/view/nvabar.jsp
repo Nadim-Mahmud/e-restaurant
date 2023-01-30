@@ -6,9 +6,9 @@ Date: 12/7/22
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light px-4 mb-1 shadow-sm">
-    <c:set var="admin" value="admin" scope="page"/>
-    <c:set var="chef" value="chef" scope="page"/>
-    <c:set var="waiter" value="waiter" scope="page"/>
+    <c:set var="admin" value="ADMIN" scope="page"/>
+    <c:set var="chef" value="CHEF" scope="page"/>
+    <c:set var="waiter" value="WAITER" scope="page"/>
     <c:set var="category" value="category" scope="page"/>
     <c:set var="item" value="item" scope="page"/>
     <c:set var="resTable" value="resTable" scope="page"/>
@@ -23,7 +23,7 @@ Date: 12/7/22
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <c:if test="${role == admin}">
+                <c:if test="${activeUser.type == admin}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/admin/chef">
                                 ${navItem == chef ? '<b>Chef</b>' : 'Chef'}
@@ -50,7 +50,7 @@ Date: 12/7/22
                         </a>
                     </li>
                 </c:if>
-                <c:if test="${role == waiter}">
+                <c:if test="${activeUser.type == waiter}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/waiter/orders">
                                 ${navItem == orders ? '<b>Orders</b>' : 'Orders'}
@@ -65,7 +65,7 @@ Date: 12/7/22
                             ${navItem ==  notification? '<b>Notification</b>' : 'Notification'}
                     </a>
                 </c:if>
-                <c:if test="${role == chef}">
+                <c:if test="${activeUser.type == chef}">
                     <a class="nav-link active underline-hover" aria-current="page" href="/chef/notification">
                             ${navItem ==  notification? '<b>Notification</b>' : 'Notification'}
                     </a>
@@ -74,8 +74,8 @@ Date: 12/7/22
             <span class="navbar-text">
                 <c:if test="${activeUser != null}">
                     <div class="nav-item dropdown">
-                        <p class="nav-link dropdown-toggle text-black m-0" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">${activeUser.firstName}&nbsp${activeUser.lastName} &nbsp;
+                        <p class="nav-link dropdown-toggle text-black m-0 underline-hover" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">${activeUser.firstName}&nbsp${activeUser.lastName}&nbsp;(${activeUser.type.label}) &nbsp;
                         </p>
                         <ul class="dropdown-menu">
                             <li>

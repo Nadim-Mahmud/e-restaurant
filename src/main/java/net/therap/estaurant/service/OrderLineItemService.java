@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -21,7 +22,7 @@ public class OrderLineItemService {
     @Autowired
     private UserService userService;
 
-    public List<OrderLineItem> getOrderedNotificationByUserId(int id){
+    public List<OrderLineItem> getOrderedNotificationByUserId(int id) {
         return orderLineDao.findOrderedItemByChef(userService.findById(id).getItemList());
     }
 
@@ -30,7 +31,13 @@ public class OrderLineItemService {
     }
 
     public OrderLineItem findById(int id) {
-        return orderLineDao.findById(id);
+        OrderLineItem orderLineItem = orderLineDao.findById(id);
+
+        if (Objects.isNull(orderLineItem)) {
+            throw new RuntimeException();
+        }
+
+        return orderLineItem;
     }
 
     @Transactional

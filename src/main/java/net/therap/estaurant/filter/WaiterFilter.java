@@ -26,7 +26,6 @@ public class WaiterFilter implements Filter {
 
         if (Objects.nonNull(user) && user.getType().equals(Type.WAITER)) {
             request.setAttribute(Constants.ACTIVE_USER, user);
-            request.setAttribute(Constants.ROLE, Constants.WAITER);
             chain.doFilter(request, response);
 
             return;

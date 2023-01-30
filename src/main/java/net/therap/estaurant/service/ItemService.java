@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -28,7 +29,13 @@ public class ItemService {
     }
 
     public Item findById(int id) {
-        return itemDao.findById(id);
+        Item item = itemDao.findById(id);
+
+        if (Objects.isNull(item)) {
+            throw new RuntimeException();
+        }
+
+        return item;
     }
 
     @Transactional

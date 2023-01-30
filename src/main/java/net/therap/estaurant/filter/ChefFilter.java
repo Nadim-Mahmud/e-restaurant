@@ -26,7 +26,6 @@ public class ChefFilter implements Filter {
 
         if (Objects.nonNull(user) && user.getType().equals(Type.CHEF)) {
             request.setAttribute(Constants.ACTIVE_USER, user);
-            request.setAttribute(Constants.ROLE, Constants.CHEF);
             chain.doFilter(request, response);
 
             return;
