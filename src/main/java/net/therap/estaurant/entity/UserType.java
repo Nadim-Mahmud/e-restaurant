@@ -4,7 +4,7 @@ package net.therap.estaurant.entity;
  * @author nadimmahmud
  * @since 1/17/23
  */
-public enum Type {
+public enum UserType {
 
     ADMIN("Admin"),
     CHEF("Chef"),
@@ -12,7 +12,7 @@ public enum Type {
 
     private final String label;
 
-    Type(String label) {
+    UserType(String label) {
         this.label = label;
     }
 

@@ -41,8 +41,6 @@
             <th scope="col" class="text-center">Email</th>
             <th scope="col" class="text-center">Join Date</th>
             <th scope="col" class="text-center">Item List</th>
-            <th scope="col" class="text-center">Created At</th>
-            <th scope="col" class="text-center">Updated At</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
         </thead>
@@ -73,12 +71,6 @@
                             <li><c:out value="${item.name}"/></li>
                         </c:forEach>
                     </ul>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${chef.createdAt}" type="date"/>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${chef.updatedAt}" type="date"/>
                 </td>
                 <td>
                     <div class="d-flex justify-content-center my-1">

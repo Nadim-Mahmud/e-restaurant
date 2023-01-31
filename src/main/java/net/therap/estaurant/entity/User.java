@@ -1,14 +1,11 @@
 package net.therap.estaurant.entity;
 
 import net.therap.estaurant.util.Encryption;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -28,9 +25,7 @@ import java.util.Objects;
         @NamedQuery(name = "User.findChef", query = "SELECT u FROM User u WHERE u.type = 'CHEF'"),
         @NamedQuery(name = "User.findWaiter", query = "SELECT u FROM User u WHERE u.type = 'WAITER'")
 })
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class User extends Persistent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
@@ -57,7 +52,7 @@ public class User implements Serializable {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private UserType type;
 
     @NotNull(message = "{input.date}")
     private Date joiningDate;
@@ -74,29 +69,9 @@ public class User implements Serializable {
     )
     private List<Item> itemList;
 
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
-
     public User() {
         itemList = new ArrayList<>();
         restaurantTableList = new ArrayList<>();
-    }
-
-    public User(String firstName, String lastName, Date dateOfBirth, String email, String password, Type type, Date joiningDate, List<RestaurantTable> restaurantTableList, List<Item> itemList) {
-        super();
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.password = password;
-        this.type = type;
-        this.joiningDate = joiningDate;
-        this.restaurantTableList = restaurantTableList;
-        this.itemList = itemList;
     }
 
     public int getId() {
@@ -147,11 +122,11 @@ public class User implements Serializable {
         this.password = Encryption.getPBKDF2(password);
     }
 
-    public Type getType() {
+    public UserType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(UserType type) {
         this.type = type;
     }
 
@@ -179,22 +154,6 @@ public class User implements Serializable {
         this.itemList = itemList;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public boolean isNew(){
         return id == 0;
     }
@@ -214,23 +173,5 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getEmail(), getPassword());
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", type=" + type +
-                ", joiningDate=" + joiningDate +
-                ", restaurantTableList=" + restaurantTableList +
-                ", itemList=" + itemList +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

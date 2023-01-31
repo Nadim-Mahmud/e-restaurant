@@ -2,7 +2,7 @@ package net.therap.estaurant;
 
 import net.therap.estaurant.entity.Item;
 import net.therap.estaurant.entity.RestaurantTable;
-import net.therap.estaurant.entity.Type;
+import net.therap.estaurant.entity.UserType;
 import net.therap.estaurant.entity.User;
 import net.therap.estaurant.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,7 @@ class SpringBootFormApplicationTests {
 				date,
 				"nadim@gamil.com",
 				"123",
-				Type.ADMIN,
+				UserType.ADMIN,
 				date,
 				new ArrayList<RestaurantTable>(Arrays.asList(new RestaurantTable())),
 				new ArrayList<Item>(Arrays.asList(new Item()))

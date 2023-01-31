@@ -20,11 +20,9 @@ import java.util.Objects;
 @Table(name = "order_line_item")
 @NamedQueries({
         @NamedQuery(name = "OrderLineItem.findAll", query = "SELECT o FROM OrderLineItem o"),
-        @NamedQuery(name = "OrderLineItem.findChefNotificationORDERD", query = "SELECT o FROM OrderLineItem o WHERE (o.status = 'ORDERED' or o.status = 'PREPARING') and o.item in :itemList order by o.status")
+        @NamedQuery(name = "OrderLineItem.findOrdersOnProcess", query = "SELECT o FROM OrderLineItem o WHERE (o.status = 'ORDERED' or o.status = 'PREPARING') and o.item in :itemList order by o.status")
 })
-public class OrderLineItem implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class OrderLineItem extends Persistent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderLineSeq")
@@ -44,19 +42,13 @@ public class OrderLineItem implements Serializable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "itemId")
     private Item item;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "orderId")
     private Order order;
-
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
 
     public OrderLineItem() {
     }
@@ -127,29 +119,11 @@ public class OrderLineItem implements Serializable {
         this.order = order;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
-
         if (!(o instanceof OrderLineItem)) return false;
-
         OrderLineItem orderLineItem = (OrderLineItem) o;
 
         return getItem().getId() == orderLineItem.getItem().getId();

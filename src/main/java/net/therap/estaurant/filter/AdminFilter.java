@@ -1,7 +1,7 @@
 package net.therap.estaurant.filter;
 
 import net.therap.estaurant.constant.Constants;
-import net.therap.estaurant.entity.Type;
+import net.therap.estaurant.entity.UserType;
 import net.therap.estaurant.entity.User;
 
 import javax.servlet.*;
@@ -24,7 +24,7 @@ public class AdminFilter implements Filter {
         HttpSession httpSession = ((HttpServletRequest) request).getSession();
         User user = (User) httpSession.getAttribute(Constants.ACTIVE_USER);
 
-        if (Objects.nonNull(user) && user.getType().equals(Type.ADMIN)) {
+        if (Objects.nonNull(user) && user.getType().equals(UserType.ADMIN)) {
             request.setAttribute(Constants.USER, user);
             chain.doFilter(request, response);
 

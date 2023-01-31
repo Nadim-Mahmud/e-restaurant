@@ -20,9 +20,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
 })
-public class Category implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Category extends Persistent{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categorySeq")
@@ -35,12 +33,6 @@ public class Category implements Serializable {
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "category")
     private List<Item> itemList;
-
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
 
     public Category() {
         itemList = new ArrayList<>();
@@ -68,22 +60,6 @@ public class Category implements Serializable {
 
     public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public boolean isNew() {

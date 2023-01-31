@@ -35,8 +35,6 @@
             <th scope="col" class="text-center">Ordered At</th>
             <th scope="col" class="text-center">Items</th>
             <th scope="col" class="text-center">Bill</th>
-            <th scope="col" class="text-center">Created At</th>
-            <th scope="col" class="text-center">Updated At</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
         </thead>
@@ -61,12 +59,6 @@
                 </td>
                 <td class="text-center">
                     <c:out value="${order.totalBill()} /-"/>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${order.createdAt}" type="date"/>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${order.updatedAt}" type="date"/>
                 </td>
                 <td>
                     <div class="d-flex justify-content-center my-1">

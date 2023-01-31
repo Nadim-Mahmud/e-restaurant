@@ -23,9 +23,7 @@ import java.util.Objects;
         @NamedQuery(name = "Order.findByWaiterId", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId"),
         @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId")
 })
-public class Order implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Order extends Persistent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderTableSeq")
@@ -45,12 +43,6 @@ public class Order implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "orderId")
     private List<OrderLineItem> orderLineItemList;
-
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
 
     public Order() {
         orderLineItemList = new ArrayList<>();
@@ -94,22 +86,6 @@ public class Order implements Serializable {
 
     public void setOrderLineItemList(List<OrderLineItem> orderLineItemList) {
         this.orderLineItemList = orderLineItemList;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public double totalBill() {

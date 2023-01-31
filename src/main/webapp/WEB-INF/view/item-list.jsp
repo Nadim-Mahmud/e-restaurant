@@ -40,8 +40,6 @@
       <th scope="col" class="text-center">Category</th>
       <th scope="col" class="text-center">Availability</th>
       <th scope="col" class="text-center">Description</th>
-      <th scope="col" class="text-center">Created At</th>
-      <th scope="col" class="text-center">Updated At</th>
       <th scope="col" class="text-center">Action</th>
     </tr>
     </thead>
@@ -65,12 +63,6 @@
         </td>
         <td class="text-center">
           <c:out value="${item.description}"/>
-        </td>
-        <td class="text-center">
-          <fmt:formatDate value="${item.createdAt}" type="date"/>
-        </td>
-        <td class="text-center">
-          <fmt:formatDate value="${item.updatedAt}" type="date"/>
         </td>
         <td>
           <div class="d-flex justify-content-center my-1">

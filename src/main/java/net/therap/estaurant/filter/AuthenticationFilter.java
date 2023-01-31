@@ -1,7 +1,7 @@
 package net.therap.estaurant.filter;
 
 import net.therap.estaurant.constant.Constants;
-import net.therap.estaurant.entity.Type;
+import net.therap.estaurant.entity.UserType;
 import net.therap.estaurant.entity.User;
 
 import javax.servlet.*;
@@ -34,15 +34,15 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        if (Type.ADMIN.equals(user.getType())) {
+        if (UserType.ADMIN.equals(user.getType())) {
             httpServletResponse.sendRedirect(ADMIN);
         }
 
-        if (Type.CHEF.equals(user.getType())) {
+        if (UserType.CHEF.equals(user.getType())) {
             httpServletResponse.sendRedirect(CHEF);
         }
 
-        if (Type.WAITER.equals(user.getType())) {
+        if (UserType.WAITER.equals(user.getType())) {
             httpServletResponse.sendRedirect(WAITER);
         }
     }

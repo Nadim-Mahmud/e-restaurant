@@ -24,10 +24,10 @@
             &check; Password updated !!
         </p>
     </c:if>
-    <div class="row">
+    <div class="row mt-3">
         <c:forEach items="${itemList}" var="item">
             <div class="col-md-3 p-1">
-                <div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                <div class="card shadow-sm p-3 mb-1 bg-body-tertiary rounded">
                     <div class="card-body">
                         <h5 class="card-title text-center">${item.name}</h5>
                         <hr>

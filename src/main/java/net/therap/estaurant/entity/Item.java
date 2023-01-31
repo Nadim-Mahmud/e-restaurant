@@ -25,9 +25,7 @@ import java.util.List;
         @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :itemName"),
         @NamedQuery(name = "Item.findAvailable", query = "SELECT i FROM Item i where i.availability = 'AVAILABLE'")
 })
-public class Item implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Item extends Persistent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemSeq")
@@ -49,12 +47,12 @@ public class Item implements Serializable {
     @Enumerated(EnumType.STRING)
     private Availability availability;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     @JoinColumn(name = "categoryId")
     @NotNull(message = "{input.text}")
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany
     @JoinTable(
             name = "chef_item",
             joinColumns = {@JoinColumn(name = "itemId")},
@@ -66,18 +64,12 @@ public class Item implements Serializable {
     @JoinColumn(name = "itemId")
     private List<OrderLineItem> orderLineItemList;
 
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
-
     public Item() {
         userList = new ArrayList<>();
     }
 
     public Item(int id) {
-        super();
+        this();
 
         this.id = id;
     }
@@ -128,22 +120,6 @@ public class Item implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public boolean isNew() {

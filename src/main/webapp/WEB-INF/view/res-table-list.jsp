@@ -37,8 +37,6 @@
             <th scope="col" class="text-center">SL</th>
             <th scope="col" class="text-center">Name</th>
             <th scope="col" class="text-center">Waiter</th>
-            <th scope="col" class="text-center">Created At</th>
-            <th scope="col" class="text-center">Updated At</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
         </thead>
@@ -54,12 +52,6 @@
                 <td class="text-center">
                     <c:if test="${resTable.user == null}">x</c:if>
                     <c:out value="${resTable.user.firstName} ${resTable.user.lastName}"/>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${resTable.createdAt}" type="date"/>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${resTable.updatedAt}" type="date"/>
                 </td>
                 <td>
                     <div class="d-flex justify-content-center my-1">

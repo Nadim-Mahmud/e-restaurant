@@ -3,10 +3,12 @@ package net.therap.estaurant.validator;
 import net.therap.estaurant.command.Password;
 import net.therap.estaurant.util.Encryption;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 /**
  * @author nadimmahmud
@@ -23,7 +25,7 @@ public class PasswordValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Password password = (Password) target;
 
-        if (!password.getNewPassword().equals(password.getConfirmPassword())) {
+        if (Objects.nonNull(password.getNewPassword()) && !password.getNewPassword().equals(password.getConfirmPassword())) {
             errors.rejectValue("newPassword", "password.different");
             errors.rejectValue("confirmPassword", "password.different");
         }

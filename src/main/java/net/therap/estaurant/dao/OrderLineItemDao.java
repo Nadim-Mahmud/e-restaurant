@@ -14,7 +14,7 @@ import java.util.List;
 public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
 
     public List<OrderLineItem> findOrderedItemByChef(List<Item> itemList) {
-        return entityManager.createNamedQuery("OrderLineItem.findChefNotificationORDERD", OrderLineItem.class)
+        return entityManager.createNamedQuery("OrderLineItem.findOrdersOnProcess", OrderLineItem.class)
                 .setParameter("itemList", itemList)
                 .getResultList();
     }

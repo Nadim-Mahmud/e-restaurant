@@ -21,9 +21,7 @@ import java.util.Objects;
         @NamedQuery(name = "RestaurantTable.findByWaiterId", query = "SELECT r FROM RestaurantTable r WHERE r.user.id = :waiterId"),
         @NamedQuery(name = "RestaurantTable.findTableName", query = "SELECT r FROM RestaurantTable r WHERE r.name = :tableName")
 })
-public class RestaurantTable implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class RestaurantTable extends Persistent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurantTableSeq")
@@ -40,15 +38,6 @@ public class RestaurantTable implements Serializable {
 
     @OneToOne(mappedBy = "restaurantTable", orphanRemoval = true)
     private Order order;
-
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
-
-    public RestaurantTable() {
-    }
 
     public int getId() {
         return id;
@@ -82,22 +71,6 @@ public class RestaurantTable implements Serializable {
         this.order = order;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public boolean isNew() {
         return id == 0;
     }
@@ -106,9 +79,7 @@ public class RestaurantTable implements Serializable {
     public boolean equals(Object o) {
 
         if (this == o) return true;
-
         if (!(o instanceof RestaurantTable)) return false;
-
         RestaurantTable that = (RestaurantTable) o;
 
         return getId() == that.getId();

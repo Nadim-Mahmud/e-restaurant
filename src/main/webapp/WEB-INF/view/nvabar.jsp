@@ -9,6 +9,8 @@ Date: 12/7/22
     <c:set var="admin" value="ADMIN" scope="page"/>
     <c:set var="chef" value="CHEF" scope="page"/>
     <c:set var="waiter" value="WAITER" scope="page"/>
+    <c:set var="navChef" value="chef" scope="page"/>
+    <c:set var="navWaiter" value="waiter" scope="page"/>
     <c:set var="category" value="category" scope="page"/>
     <c:set var="item" value="item" scope="page"/>
     <c:set var="resTable" value="resTable" scope="page"/>
@@ -26,12 +28,12 @@ Date: 12/7/22
                 <c:if test="${activeUser.type == admin}">
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/admin/chef">
-                                ${navItem == chef ? '<b>Chef</b>' : 'Chef'}
+                                ${navItem == navChef ? '<b>Chef</b>' : 'Chef'}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active underline-hover" aria-current="page" href="/admin/waiter">
-                                ${navItem == waiter ? '<b>Waiter</b>' : 'Waiter'}
+                                ${navItem == navWaiter ? '<b>Waiter</b>' : 'Waiter'}
                         </a>
                     </li>
                     <li class="nav-item">
