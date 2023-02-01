@@ -1,13 +1,7 @@
 package net.therap.estaurant.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +25,7 @@ public class Order extends Persistent {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private OrderStatus status;
 
     @Transient
     private int estTime;
@@ -56,11 +50,11 @@ public class Order extends Persistent {
         this.id = id;
     }
 
-    public Status getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

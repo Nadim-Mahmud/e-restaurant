@@ -4,7 +4,7 @@ package net.therap.estaurant.entity;
  * @author nadimmahmud
  * @since 1/17/23
  */
-public enum Status {
+public enum OrderStatus {
 
     ORDERED("Ordered"),
     PREPARING("Preparing"),
@@ -13,7 +13,7 @@ public enum Status {
 
     private final String label;
 
-    Status(String label) {
+    OrderStatus(String label) {
         this.label = label;
     }
 

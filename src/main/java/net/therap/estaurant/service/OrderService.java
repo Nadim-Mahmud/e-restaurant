@@ -2,8 +2,7 @@ package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.OrderDao;
 import net.therap.estaurant.entity.Order;
-import net.therap.estaurant.entity.Status;
-import org.aspectj.weaver.ast.Or;
+import net.therap.estaurant.entity.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,15 +71,15 @@ public class OrderService {
 
             for (int j = 0; j < orderList.get(i).getOrderLineItemList().size(); j++) {
 
-                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(Status.PREPARED)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(OrderStatus.PREPARED)) {
                     prepared++;
                 }
 
-                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(Status.PREPARING)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(OrderStatus.PREPARING)) {
                     preparing++;
                 }
 
-                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(Status.PREPARING)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(OrderStatus.PREPARING)) {
                     Date acceptedAt = orderList.get(i).getOrderLineItemList().get(j).getAcceptedAt();
                     Long elapsed = new Date().getTime() - acceptedAt.getTime();
                     elapsed = elapsed / 60000;
@@ -93,12 +92,12 @@ public class OrderService {
             orderList.get(i).setEstTime(estTime);
 
             if (prepared == orderList.get(i).getOrderLineItemList().size()) {
-                orderList.get(i).setStatus(Status.PREPARED);
+                orderList.get(i).setStatus(OrderStatus.PREPARED);
                 orderList.get(i).setEstTime(0);
             } else if (preparing > 0) {
-                orderList.get(i).setStatus(Status.PREPARING);
+                orderList.get(i).setStatus(OrderStatus.PREPARING);
             } else {
-                orderList.get(i).setStatus(Status.ORDERED);
+                orderList.get(i).setStatus(OrderStatus.ORDERED);
             }
         }
 

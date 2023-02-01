@@ -117,39 +117,7 @@ public class AdminController {
     @Autowired
     private RestaurantTableValidator restaurantTableValidator;
 
-    private void setupReferenceDataItemForm(ModelMap modelMap) {
-        modelMap.put(Constants.CATEGORY_LIST, categoryService.findAll());
-        modelMap.put(Constants.AVAILABILITY_LIST, Availability.values());
-        modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
-    }
-
-    private void setupReferenceDataChefForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        modelMap.put(Constants.ITEM_OPTION_LIST, itemService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.CHEF);
-
-        if (!user.isNew()) {
-            modelMap.put(Constants.UPDATE_PAGE, true);
-        }
-
-        if (user.isNew()) {
-            user.setPassword("");
-        }
-    }
-
-    private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
-
-        if (!user.isNew()) {
-            modelMap.put(Constants.UPDATE_PAGE, true);
-        }
-
-        if (user.isNew()) {
-            user.setPassword("");
-        }
-    }
-
-    @InitBinder()
+    @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -432,5 +400,37 @@ public class AdminController {
         redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
 
         return Constants.REDIRECT + RES_TABLE_REDIRECT_URL;
+    }
+
+    private void setupReferenceDataItemForm(ModelMap modelMap) {
+        modelMap.put(Constants.CATEGORY_LIST, categoryService.findAll());
+        modelMap.put(Constants.AVAILABILITY_LIST, Availability.values());
+        modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
+    }
+
+    private void setupReferenceDataChefForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        modelMap.put(Constants.ITEM_OPTION_LIST, itemService.findAll());
+        modelMap.put(Constants.NAV_ITEM, Constants.CHEF);
+
+        if (!user.isNew()) {
+            modelMap.put(Constants.UPDATE_PAGE, true);
+        }
+
+        if (user.isNew()) {
+            user.setPassword("");
+        }
+    }
+
+    private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+        modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
+
+        if (!user.isNew()) {
+            modelMap.put(Constants.UPDATE_PAGE, true);
+        }
+
+        if (user.isNew()) {
+            user.setPassword("");
+        }
     }
 }

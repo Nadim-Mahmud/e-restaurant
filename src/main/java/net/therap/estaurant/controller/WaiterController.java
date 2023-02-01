@@ -9,7 +9,6 @@ import net.therap.estaurant.service.*;
 import net.therap.estaurant.validator.OrderLineItemValidator;
 import net.therap.estaurant.validator.OrderValidator;
 import net.therap.estaurant.validator.QuantityGroup;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -170,7 +168,7 @@ public class WaiterController {
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
-        orderLineItem.setStatus(Status.ORDERED);
+        orderLineItem.setStatus(OrderStatus.ORDERED);
         modelMap.put(Constants.ITEM_LIST, itemService.findAvailable());
         modelMap.put(Constants.ORDER_LINE_ITEM, orderLineItem);
         modelMap.put(Constants.ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
@@ -208,7 +206,7 @@ public class WaiterController {
             return Constants.REDIRECT + REDIRECT_ORDER_ITEMS_URL;
         }
 
-        order.setStatus(Status.ORDERED);
+        order.setStatus(OrderStatus.ORDERED);
         orderService.saveOrUpdate(order);
         redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
         sessionStatus.setComplete();
@@ -241,7 +239,7 @@ public class WaiterController {
     @PostMapping(WAITER_NOTIFICATION_SERVED)
     public String markServed(@RequestParam(ORDER_ID_PARAM) String orderId) throws Exception {
         Order order = orderService.findById(Integer.parseInt(orderId));
-        order.setStatus(Status.SERVED);
+        order.setStatus(OrderStatus.SERVED);
         orderService.saveOrUpdate(order);
 
         return Constants.REDIRECT + REDIRECT_WAITER_NOTIFICATION_URL;

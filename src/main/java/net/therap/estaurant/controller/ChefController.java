@@ -2,7 +2,7 @@ package net.therap.estaurant.controller;
 
 import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.OrderLineItem;
-import net.therap.estaurant.entity.Status;
+import net.therap.estaurant.entity.OrderStatus;
 import net.therap.estaurant.entity.User;
 import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.OrderLineItemService;
@@ -16,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -90,7 +89,7 @@ public class ChefController {
         }
 
         orderLineItem.setAcceptedAt(new Date());
-        orderLineItem.setStatus(Status.PREPARING);
+        orderLineItem.setStatus(OrderStatus.PREPARING);
         orderLineItemService.saveOrUpdate(orderLineItem);
         sessionStatus.setComplete();
 
@@ -100,7 +99,7 @@ public class ChefController {
     @PostMapping(MARK_PREPARED_URL)
     public String markOrderLineItemPrepared(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) String orderLineItemId, ModelMap modelMap) throws Exception {
         OrderLineItem orderLineItem = orderLineItemService.findById(Integer.parseInt(orderLineItemId));
-        orderLineItem.setStatus(Status.PREPARED);
+        orderLineItem.setStatus(OrderStatus.PREPARED);
         orderLineItemService.saveOrUpdate(orderLineItem);
 
         return Constants.REDIRECT + REDIRECT_CHEF_NOTIFICATION_URL;

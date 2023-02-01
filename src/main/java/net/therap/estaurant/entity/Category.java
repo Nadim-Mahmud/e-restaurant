@@ -17,9 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "category")
-@NamedQueries({
-        @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
-})
+@NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
 public class Category extends Persistent{
 
     @Id

@@ -21,9 +21,9 @@ import java.util.List;
 @Entity
 @Table(name = "item")
 @NamedQueries({
-        @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
+        @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i order by i.name"),
         @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :itemName"),
-        @NamedQuery(name = "Item.findAvailable", query = "SELECT i FROM Item i where i.availability = 'AVAILABLE'")
+        @NamedQuery(name = "Item.findAvailable", query = "SELECT i FROM Item i where i.availability = 'AVAILABLE' order by i.name")
 })
 public class Item extends Persistent {
 

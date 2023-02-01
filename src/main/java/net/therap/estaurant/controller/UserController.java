@@ -59,7 +59,7 @@ public class UserController {
     @Autowired
     private ProfileValidator profileValidator;
 
-    @InitBinder()
+    @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));

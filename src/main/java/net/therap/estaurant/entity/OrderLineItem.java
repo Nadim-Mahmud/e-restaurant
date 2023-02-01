@@ -3,12 +3,10 @@ package net.therap.estaurant.entity;
 import net.therap.estaurant.validator.CookingTimeGroup;
 import net.therap.estaurant.validator.QuantityGroup;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -40,7 +38,7 @@ public class OrderLineItem extends Persistent {
     private int quantity;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private OrderStatus status;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "itemId")
@@ -95,11 +93,11 @@ public class OrderLineItem extends Persistent {
         this.estCookingTime = estCookingTime;
     }
 
-    public Status getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
