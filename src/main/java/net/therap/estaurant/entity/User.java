@@ -1,6 +1,9 @@
 package net.therap.estaurant.entity;
 
 import net.therap.estaurant.util.Encryption;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -19,6 +22,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user")
+@SQLDelete(sql = "UPDATE user SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
+@Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
         @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE email= :email"),

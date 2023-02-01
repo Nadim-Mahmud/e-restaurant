@@ -1,7 +1,9 @@
 package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.OrderDao;
+import net.therap.estaurant.entity.AccessStatus;
 import net.therap.estaurant.entity.Order;
+import net.therap.estaurant.entity.OrderLineItem;
 import net.therap.estaurant.entity.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,15 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private OrderLineItemService orderLineItemService;
+
     public List<Order> findAll() {
         return orderDao.findAll();
     }
 
     public List<Order> findByWaiterId(int waiterId) {
-        return orderDao.findByWaiterId(waiterId);
+        return orderDao.findActiveOrderByWaiterId(waiterId);
     }
 
     public Order findById(int id) {
@@ -41,12 +46,34 @@ public class OrderService {
 
     @Transactional
     public void delete(int id) throws Exception {
-        orderDao.delete(id);
+        Order order = orderDao.findById(id);
+
+        order.setAccessStatus(AccessStatus.DELETED);
+        orderDao.saveOrUpdate(order);
+
+        for(OrderLineItem orderLineItem: order.getOrderLineItemList()){
+            orderLineItemService.delete(orderLineItem.getId());
+        }
     }
 
     @Transactional
     public Order saveOrUpdate(Order order) throws Exception {
         return orderDao.saveOrUpdate(order);
+    }
+
+    @Transactional
+    public Order saveAsServed(Order order) throws Exception {
+        order.setStatus(OrderStatus.SERVED);
+
+        for(OrderLineItem orderLineItem: order.getOrderLineItemList()){
+            orderLineItem.setOrderStatus(OrderStatus.SERVED);
+        }
+
+        return orderDao.saveOrUpdate(order);
+    }
+
+    public boolean isTableInUse(int tableId){
+        return orderDao.findByTableId(tableId).size() > 0;
     }
 
     public boolean tableExists(Order order) {
@@ -71,15 +98,15 @@ public class OrderService {
 
             for (int j = 0; j < orderList.get(i).getOrderLineItemList().size(); j++) {
 
-                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(OrderStatus.PREPARED)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getOrderStatus().equals(OrderStatus.PREPARED)) {
                     prepared++;
                 }
 
-                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(OrderStatus.PREPARING)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getOrderStatus().equals(OrderStatus.PREPARING)) {
                     preparing++;
                 }
 
-                if (orderList.get(i).getOrderLineItemList().get(j).getStatus().equals(OrderStatus.PREPARING)) {
+                if (orderList.get(i).getOrderLineItemList().get(j).getOrderStatus().equals(OrderStatus.PREPARING)) {
                     Date acceptedAt = orderList.get(i).getOrderLineItemList().get(j).getAcceptedAt();
                     Long elapsed = new Date().getTime() - acceptedAt.getTime();
                     elapsed = elapsed / 60000;

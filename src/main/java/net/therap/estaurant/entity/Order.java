@@ -1,5 +1,9 @@
 package net.therap.estaurant.entity;
 
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +15,11 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "order_table")
+@SQLDelete(sql = "UPDATE order_table SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
+@Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o order by o.status"),
         @NamedQuery(name = "Order.findActiveOnly", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId AND o.status != 'SERVED'"),
-        @NamedQuery(name = "Order.findByWaiterId", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId"),
         @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId")
 })
 public class Order extends Persistent {
@@ -30,11 +35,11 @@ public class Order extends Persistent {
     @Transient
     private int estTime;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "restaurantTableId")
     private RestaurantTable restaurantTable;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "orderId")
     private List<OrderLineItem> orderLineItemList;
 

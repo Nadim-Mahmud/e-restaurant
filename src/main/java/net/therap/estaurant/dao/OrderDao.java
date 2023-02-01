@@ -18,12 +18,6 @@ public class OrderDao extends AbstractDao<Order> {
                 .getResultList();
     }
 
-    public List<Order> findByWaiterId(int waiterId) {
-        return entityManager.createNamedQuery("Order.findByWaiterId", Order.class)
-                .setParameter("waiterId", waiterId)
-                .getResultList();
-    }
-
     public List<Order> findActiveOrderByWaiterId(int waiterId) {
         return entityManager.createNamedQuery("Order.findActiveOnly", Order.class)
                 .setParameter("waiterId", waiterId)

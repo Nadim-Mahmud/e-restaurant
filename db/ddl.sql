@@ -8,6 +8,7 @@ CREATE TABLE restaurant.user
     email         VARCHAR(50) UNIQUE NOT NULL,
     password      VARCHAR(50)        NOT NULL,
     type          VARCHAR(50),
+    access_status VARCHAR(50) DEFAULT 'ACTIVE',
     version       INT,
     created_at    DATE,
     updated_at    DATE
@@ -20,12 +21,13 @@ CREATE TABLE restaurant.user_seq
 
 CREATE TABLE restaurant.restaurant_table
 (
-    id         INT NOT NULL PRIMARY KEY,
-    name       VARCHAR(50),
-    user_id    INT,
-    version    INT,
-    created_at DATE,
-    updated_at DATE,
+    id            INT NOT NULL PRIMARY KEY,
+    name          VARCHAR(50),
+    user_id       INT,
+    access_status VARCHAR(50) DEFAULT 'ACTIVE',
+    version       INT,
+    created_at    DATE,
+    updated_at    DATE,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
@@ -36,11 +38,12 @@ CREATE TABLE restaurant.restaurant_table_seq
 
 CREATE TABLE restaurant.category
 (
-    id         INT NOT NULL PRIMARY KEY,
-    name       VARCHAR(50),
-    version    INT,
-    created_at DATE,
-    updated_at DATE
+    id            INT NOT NULL PRIMARY KEY,
+    name          VARCHAR(50),
+    access_status VARCHAR(50) DEFAULT 'ACTIVE',
+    version       INT,
+    created_at    DATE,
+    updated_at    DATE
 );
 
 CREATE TABLE restaurant.category_seq
@@ -50,15 +53,16 @@ CREATE TABLE restaurant.category_seq
 
 CREATE TABLE restaurant.item
 (
-    id           INT NOT NULL PRIMARY KEY,
-    name         VARCHAR(50),
-    description  VARCHAR(3000),
-    price        DOUBLE,
-    availability VARCHAR(50),
-    category_id  INT,
-    version      INT,
-    created_at   DATE,
-    updated_at   DATE,
+    id            INT NOT NULL PRIMARY KEY,
+    name          VARCHAR(50),
+    description   VARCHAR(3000),
+    price         DOUBLE,
+    availability  VARCHAR(50),
+    category_id   INT,
+    access_status VARCHAR(50) DEFAULT 'ACTIVE',
+    version       INT,
+    created_at    DATE,
+    updated_at    DATE,
     FOREIGN KEY (category_id) REFERENCES category (id)
 );
 
@@ -79,6 +83,7 @@ CREATE TABLE restaurant.order_table
     id                  INT NOT NULL PRIMARY KEY,
     status              VARCHAR(50),
     restaurant_table_id INT,
+    access_status       VARCHAR(50) DEFAULT 'ACTIVE',
     version             INT,
     created_at          DATE,
     updated_at          DATE,
@@ -96,9 +101,10 @@ CREATE TABLE restaurant.order_line_item
     quantity         INT,
     accepted_at      DATE,
     est_cooking_time INT,
-    status           VARCHAR(50),
+    order_status           VARCHAR(50),
     item_id          INT,
     order_id         INT,
+    access_status    VARCHAR(50) DEFAULT 'ACTIVE',
     version          INT,
     created_at       DATE,
     updated_at       DATE,

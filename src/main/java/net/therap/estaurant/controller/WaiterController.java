@@ -82,7 +82,7 @@ public class WaiterController {
     @Autowired
     private OrderValidator orderValidator;
 
-    @InitBinder()
+    @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -168,7 +168,7 @@ public class WaiterController {
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
-        orderLineItem.setStatus(OrderStatus.ORDERED);
+        orderLineItem.setOrderStatus(OrderStatus.ORDERED);
         modelMap.put(Constants.ITEM_LIST, itemService.findAvailable());
         modelMap.put(Constants.ORDER_LINE_ITEM, orderLineItem);
         modelMap.put(Constants.ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
@@ -215,7 +215,7 @@ public class WaiterController {
     }
 
     @PostMapping(ORDER_CANCEL_URL)
-    public String deleteResTable(
+    public String deleteOrder(
             @RequestParam(ORDER_ID_PARAM) String orderID,
             RedirectAttributes redirectAttributes
     ) throws Exception {
@@ -239,8 +239,9 @@ public class WaiterController {
     @PostMapping(WAITER_NOTIFICATION_SERVED)
     public String markServed(@RequestParam(ORDER_ID_PARAM) String orderId) throws Exception {
         Order order = orderService.findById(Integer.parseInt(orderId));
-        order.setStatus(OrderStatus.SERVED);
-        orderService.saveOrUpdate(order);
+
+        orderService.saveAsServed(order);
+        orderService.delete(order.getId());
 
         return Constants.REDIRECT + REDIRECT_WAITER_NOTIFICATION_URL;
     }

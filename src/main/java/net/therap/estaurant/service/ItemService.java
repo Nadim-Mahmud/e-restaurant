@@ -2,6 +2,7 @@ package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.ItemDao;
 import net.therap.estaurant.entity.Item;
+import net.therap.estaurant.entity.OrderLineItem;
 import net.therap.estaurant.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class ItemService {
 
     @Autowired
     private ItemDao itemDao;
+
+    @Autowired
+    private OrderLineItemService orderLineItemService;
 
     public List<Item> findAvailable() {
         return itemDao.findAvailable();
@@ -40,6 +44,12 @@ public class ItemService {
 
     @Transactional
     public void delete(int id) throws Exception {
+        Item item = itemDao.findById(id);
+
+        for(OrderLineItem orderLineItem: item.getOrderLineItemList()){
+            orderLineItemService.delete(orderLineItem.getId());
+        }
+
         itemDao.delete(id);
     }
 

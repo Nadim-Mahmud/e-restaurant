@@ -5,10 +5,7 @@ import net.therap.estaurant.propertyEditor.ItemEditor;
 import net.therap.estaurant.propertyEditor.RestaurantTableEditor;
 import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.*;
-import net.therap.estaurant.service.CategoryService;
-import net.therap.estaurant.service.ItemService;
-import net.therap.estaurant.service.RestaurantTableService;
-import net.therap.estaurant.service.UserService;
+import net.therap.estaurant.service.*;
 import net.therap.estaurant.validator.EmailValidator;
 import net.therap.estaurant.validator.ItemValidator;
 import net.therap.estaurant.validator.RestaurantTableValidator;
@@ -98,6 +95,12 @@ public class AdminController {
 
     @Autowired
     private RestaurantTableService restaurantTableService;
+
+    @Autowired
+    private OrderLineItemService orderLineItemService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private RestaurantTableEditor restaurantTableEditor;
@@ -244,8 +247,13 @@ public class AdminController {
             @RequestParam(ITEM_ID_PARAM) String itemId,
             RedirectAttributes redirectAttributes
     ) throws Exception {
-        itemService.delete(Integer.parseInt(itemId));
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+
+        if (orderLineItemService.isItemOnProcess(Integer.parseInt(itemId))) {
+            redirectAttributes.addFlashAttribute(Constants.FAILED, Constants.FAILED);
+        } else {
+            itemService.delete(Integer.parseInt(itemId));
+            redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        }
 
         return Constants.REDIRECT + ITEM_REDIRECT_URL;
     }
@@ -396,8 +404,13 @@ public class AdminController {
             @RequestParam(RES_TABLE_ID_PARAM) String resTableId,
             RedirectAttributes redirectAttributes
     ) throws Exception {
-        restaurantTableService.delete(Integer.parseInt(resTableId));
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+
+        if (orderService.isTableInUse(Integer.parseInt(resTableId))) {
+            redirectAttributes.addFlashAttribute(Constants.FAILED, Constants.FAILED);
+        } else {
+            restaurantTableService.delete(Integer.parseInt(resTableId));
+            redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        }
 
         return Constants.REDIRECT + RES_TABLE_REDIRECT_URL;
     }

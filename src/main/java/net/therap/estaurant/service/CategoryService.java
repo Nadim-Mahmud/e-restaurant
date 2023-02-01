@@ -3,6 +3,7 @@ package net.therap.estaurant.service;
 import net.bytebuddy.implementation.bytecode.Throw;
 import net.therap.estaurant.dao.CategoryDao;
 import net.therap.estaurant.entity.Category;
+import net.therap.estaurant.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class CategoryService {
     @Autowired
     private CategoryDao categoryDao;
 
+    @Autowired
+    private ItemService itemService;
+
     public List<Category> findAll() {
         return categoryDao.findAll();
     }
@@ -37,6 +41,12 @@ public class CategoryService {
 
     @Transactional
     public void delete(int id) throws Exception {
+        Category category = categoryDao.findById(id);
+
+        for(Item item: category.getItemList()){
+            itemService.delete(item.getId());
+        }
+
         categoryDao.delete(id);
     }
 

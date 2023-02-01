@@ -6,7 +6,6 @@ import net.therap.estaurant.entity.OrderStatus;
 import net.therap.estaurant.entity.User;
 import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.OrderLineItemService;
-import net.therap.estaurant.service.UserService;
 import net.therap.estaurant.validator.CookingTimeGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,9 +37,6 @@ public class ChefController {
     private static final String CHEF_ACCEPT_FORM_SAVE_URL = "notification/form/save";
     private static final String ORDER_LINE_ITEM_ID_PARAM = "orderLineItemId";
     private static final String MARK_PREPARED_URL = "notification/mark-prepared";
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ItemService itemService;
@@ -89,7 +85,7 @@ public class ChefController {
         }
 
         orderLineItem.setAcceptedAt(new Date());
-        orderLineItem.setStatus(OrderStatus.PREPARING);
+        orderLineItem.setOrderStatus(OrderStatus.PREPARING);
         orderLineItemService.saveOrUpdate(orderLineItem);
         sessionStatus.setComplete();
 
@@ -99,7 +95,7 @@ public class ChefController {
     @PostMapping(MARK_PREPARED_URL)
     public String markOrderLineItemPrepared(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) String orderLineItemId, ModelMap modelMap) throws Exception {
         OrderLineItem orderLineItem = orderLineItemService.findById(Integer.parseInt(orderLineItemId));
-        orderLineItem.setStatus(OrderStatus.PREPARED);
+        orderLineItem.setOrderStatus(OrderStatus.PREPARED);
         orderLineItemService.saveOrUpdate(orderLineItem);
 
         return Constants.REDIRECT + REDIRECT_CHEF_NOTIFICATION_URL;

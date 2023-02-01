@@ -3,6 +3,7 @@ package net.therap.estaurant.service;
 import net.therap.estaurant.command.Credentials;
 import net.therap.estaurant.command.Profile;
 import net.therap.estaurant.dao.UserDao;
+import net.therap.estaurant.entity.AccessStatus;
 import net.therap.estaurant.entity.User;
 import net.therap.estaurant.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,9 @@ public class UserService {
 
     @Transactional
     public void delete(int id) throws Exception {
-        userDao.delete(id);
+        User user = userDao.findById(id);
+        user.setAccessStatus(AccessStatus.DELETED);
+        userDao.saveOrUpdate(user);
     }
 
     @Transactional

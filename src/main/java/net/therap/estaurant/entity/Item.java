@@ -1,10 +1,14 @@
 package net.therap.estaurant.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -20,6 +24,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "item")
+@SQLDelete(sql = "UPDATE item SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
+@Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i order by i.name"),
         @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :itemName"),
@@ -60,7 +66,7 @@ public class Item extends Persistent {
     )
     private List<User> userList;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private List<OrderLineItem> orderLineItemList;
 
@@ -120,6 +126,10 @@ public class Item extends Persistent {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<OrderLineItem> getOrderLineItemList() {
+        return orderLineItemList;
     }
 
     public boolean isNew() {

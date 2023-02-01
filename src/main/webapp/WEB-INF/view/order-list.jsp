@@ -76,7 +76,7 @@
                         <form:form class="text-center my-0 mx-2 p-0" action="${cancelUrl}" method="post">
                             <button class="btn btn-outline-danger center btn-sm"
                                     onclick="return confirm('Are you sure to cancel the order?')">
-                                    ${order.status == served ? "Clear Table" : "Cancel"}
+                                Cancel
                             </button>
                         </form:form>
                     </div>

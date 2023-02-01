@@ -27,7 +27,12 @@
   <div class="text-center">
     <c:if test="${success != null}">
       <p class="text-success">
-        &check; success !!
+        &check; successfully deleted !!
+      </p>
+    </c:if>
+    <c:if test="${failed != null}">
+      <p class="text-danger">
+        This item is in use. Can not delete !!
       </p>
     </c:if>
   </div>

@@ -31,7 +31,7 @@ public class PasswordValidator implements Validator {
         }
 
         try {
-            if (!password.getStoredUserPassword().equals(Encryption.getPBKDF2(password.getOldPassword()))) {
+            if (Objects.nonNull(password.getOldPassword()) && !password.getStoredUserPassword().equals(Encryption.getPBKDF2(password.getOldPassword()))) {
                 errors.rejectValue("oldPassword", "password.incorrectOldPass");
             }
         } catch (Exception e) {

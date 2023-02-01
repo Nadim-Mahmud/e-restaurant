@@ -22,6 +22,10 @@ public class OrderLineItemService {
     @Autowired
     private UserService userService;
 
+    public boolean isItemOnProcess(int id){
+        return orderLineDao.findByItemId(id).size() > 0;
+    }
+
     public List<OrderLineItem> getOrderedNotificationByUserId(int id) {
         return orderLineDao.findOrderedItemByChef(userService.findById(id).getItemList());
     }

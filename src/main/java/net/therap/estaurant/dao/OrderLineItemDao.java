@@ -13,6 +13,12 @@ import java.util.List;
 @Repository
 public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
 
+    public List<OrderLineItem> findByItemId(int itemId) {
+        return entityManager.createNamedQuery("OrderLineItem.findByItemId", OrderLineItem.class)
+                .setParameter("itemId", itemId)
+                .getResultList();
+    }
+
     public List<OrderLineItem> findOrderedItemByChef(List<Item> itemList) {
         return entityManager.createNamedQuery("OrderLineItem.findOrdersOnProcess", OrderLineItem.class)
                 .setParameter("itemList", itemList)

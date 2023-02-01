@@ -3,6 +3,9 @@ package net.therap.estaurant.entity;
 import net.therap.estaurant.validator.CookingTimeGroup;
 import net.therap.estaurant.validator.QuantityGroup;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -16,9 +19,12 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "order_line_item")
+@SQLDelete(sql = "UPDATE order_line_item SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
+@Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "OrderLineItem.findAll", query = "SELECT o FROM OrderLineItem o"),
-        @NamedQuery(name = "OrderLineItem.findOrdersOnProcess", query = "SELECT o FROM OrderLineItem o WHERE (o.status = 'ORDERED' or o.status = 'PREPARING') and o.item in :itemList order by o.status")
+        @NamedQuery(name = "OrderLineItem.findByItemId", query = "SELECT o FROM OrderLineItem o WHERE o.item.id = :itemId AND o.orderStatus != 'SERVED'"),
+        @NamedQuery(name = "OrderLineItem.findOrdersOnProcess", query = "SELECT o FROM OrderLineItem o WHERE (o.orderStatus = 'ORDERED' or o.orderStatus = 'PREPARING') and o.item in :itemList order by o.orderStatus")
 })
 public class OrderLineItem extends Persistent {
 
@@ -38,7 +44,7 @@ public class OrderLineItem extends Persistent {
     private int quantity;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "itemId")
@@ -93,12 +99,12 @@ public class OrderLineItem extends Persistent {
         this.estCookingTime = estCookingTime;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Item getItem() {

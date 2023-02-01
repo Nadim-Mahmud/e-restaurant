@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${orderList}" var="order" varStatus="orderStat">
-                    <tr>
+                    <tr class="${order.status == prepared ? 'bg-danger' : 'bg-success'}  p-2 text-dark bg-opacity-10">
                         <td>
                             <c:out value="${orderStat.count}"/>
                         </td>

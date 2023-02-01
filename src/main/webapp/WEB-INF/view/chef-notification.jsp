@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${orderLineItemList}" var="orderLineItem" varStatus="orderLineStat">
-                    <tr>
+                    <tr class="${orderLineItem.orderStatus == preparing ? 'bg-success' : 'bg-danger'}  p-2 text-dark bg-opacity-10">
                         <td>
                             <c:out value="${orderLineStat.count}"/>
                         </td>
@@ -54,13 +54,13 @@
                             <c:out value="${orderLineItem.quantity}"/>
                         </td>
                         <td>
-                            <c:out value="${orderLineItem.status.label}"/>
+                            <c:out value="${orderLineItem.orderStatus.label}"/>
                         </td>
                         <td>
                             <fmt:formatDate value="${orderLineItem.acceptedAt}" type="time"/>
                         </td>
                         <td>
-                            <c:if test="${orderLineItem.status == ordered}">
+                            <c:if test="${orderLineItem.orderStatus == ordered}">
                                 <c:url var="itemAccept" value="/chef/notification/form">
                                     <c:param name="orderLineItemId" value="${orderLineItem.id}"/>
                                 </c:url>
@@ -68,7 +68,7 @@
                                     <button class="btn btn-outline-success center btn-sm">Accept</button>
                                 </a>
                             </c:if>
-                            <c:if test="${orderLineItem.status == preparing}">
+                            <c:if test="${orderLineItem.orderStatus == preparing}">
                                 <c:url var="preparedUrl" value="/chef/notification/mark-prepared">
                                     <c:param name="orderLineItemId" value="${orderLineItem.id}"/>
                                 </c:url>

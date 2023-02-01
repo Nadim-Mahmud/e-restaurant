@@ -1,14 +1,14 @@
 package net.therap.estaurant.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +17,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "category")
+@SQLDelete(sql = "UPDATE category SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
+@Where(clause = "access_status <> 'DELETED'")
 @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
 public class Category extends Persistent{
 
@@ -29,7 +31,7 @@ public class Category extends Persistent{
     @Size(min = 1, max = 50, message = "{input.text}")
     private String name;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "category")
+    @OneToMany(mappedBy = "category")
     private List<Item> itemList;
 
     public Category() {

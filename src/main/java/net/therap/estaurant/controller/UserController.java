@@ -123,7 +123,7 @@ public class UserController {
     }
 
     @PostMapping(SAVE_PROFILE_URL)
-    String saveOrupdateProfile(
+    String saveOrUpdateProfile(
             @SessionAttribute(Constants.ACTIVE_USER) User user,
             @Valid @ModelAttribute(Constants.PROFILE) Profile profile,
             BindingResult bindingResult,

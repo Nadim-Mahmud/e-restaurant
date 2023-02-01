@@ -1,13 +1,18 @@
 package net.therap.estaurant.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.aspectj.weaver.ast.Or;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,6 +21,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "restaurant_table")
+@SQLDelete(sql = "UPDATE restaurant_table SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
+@Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "RestaurantTable.findAll", query = "SELECT r FROM RestaurantTable r"),
         @NamedQuery(name = "RestaurantTable.findByWaiterId", query = "SELECT r FROM RestaurantTable r WHERE r.user.id = :waiterId"),
@@ -36,8 +43,9 @@ public class RestaurantTable extends Persistent {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToOne(mappedBy = "restaurantTable", orphanRemoval = true)
-    private Order order;
+    @OneToMany
+    @JoinColumn(name = "restaurantTableId")
+    private List<Order> orderList;
 
     public int getId() {
         return id;
@@ -63,12 +71,12 @@ public class RestaurantTable extends Persistent {
         this.user = user;
     }
 
-    public Order getOrder() {
-        return order;
+    public List<Order> getOrderList() {
+        return orderList;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
     public boolean isNew() {
