@@ -1,6 +1,5 @@
 package net.therap.estaurant.controller;
 
-import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.*;
 import net.therap.estaurant.propertyEditor.ItemEditor;
 import net.therap.estaurant.propertyEditor.RestaurantTableEditor;
@@ -26,13 +25,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+import static net.therap.estaurant.constant.Constants.*;
+
+
 /**
  * @author nadimmahmud
  * @since 1/24/23
  */
 @Controller
 @RequestMapping("/waiter/*")
-@SessionAttributes({Constants.ORDER})
+@SessionAttributes({ORDER})
 public class WaiterController {
 
     private static final String HOME_URL = "/";
@@ -84,7 +86,7 @@ public class WaiterController {
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
         webDataBinder.registerCustomEditor(Item.class, itemEditor);
@@ -92,25 +94,25 @@ public class WaiterController {
         webDataBinder.registerCustomEditor(Integer.class, "quantity", new StringToIntEditor());
     }
 
-    @InitBinder(Constants.ORDER)
+    @InitBinder(ORDER)
     public void orderBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(orderValidator);
     }
 
     @GetMapping(HOME_URL)
     public String adminHome(ModelMap modelMap) {
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+        modelMap.put(ITEM_LIST, itemService.findAll());
 
         return HOME_VIEW;
     }
 
     @GetMapping(ORDERS_URL)
     public String showOrders(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            @SessionAttribute(ACTIVE_USER) User user,
             ModelMap modelMap
     ) {
-        modelMap.put(Constants.ORDER_LIST, orderService.findByWaiterId(user.getId()));
-        modelMap.put(Constants.NAV_ITEM, Constants.ORDERS);
+        modelMap.put(ORDER_LIST, orderService.findByWaiterId(user.getId()));
+        modelMap.put(NAV_ITEM, ORDERS);
 
         return ORDER_VIEW;
     }
@@ -118,61 +120,61 @@ public class WaiterController {
     @GetMapping(ORDER_FORM_URL)
     public String showOrderForm(
             @RequestParam(value = ORDER_ID_PARAM, required = false) String orderId,
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            @SessionAttribute(ACTIVE_USER) User user,
             ModelMap modelMap
     ) {
         Order order = Objects.nonNull(orderId) ? orderService.findById(Integer.parseInt(orderId)) : new Order();
-        modelMap.put(Constants.ORDER, order);
-        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
-        modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
+        modelMap.put(ORDER, order);
+        modelMap.put(RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
+        modelMap.put(NAV_ITEM, ORDER_FORM);
 
         return ORDER_FORM_VIEW;
     }
 
     @PostMapping(NEXT_PAGE)
     public String orderTableValidationPage(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
-            @Valid @ModelAttribute(Constants.ORDER) Order order,
+            @SessionAttribute(ACTIVE_USER) User user,
+            @Valid @ModelAttribute(ORDER) Order order,
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
 
         if (bindingResult.hasErrors()) {
-            modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
-            modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
+            modelMap.put(RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
+            modelMap.put(NAV_ITEM, ORDER_FORM);
 
             return ORDER_FORM_VIEW;
         }
 
-        return Constants.REDIRECT + REDIRECT_ORDER_ITEMS_URL;
+        return REDIRECT + REDIRECT_ORDER_ITEMS_URL;
     }
 
 
     @GetMapping(ORDER_ITEMS_URL)
     public String showOrderItems(
-            @SessionAttribute(Constants.ORDER) Order order,
+            @SessionAttribute(ORDER) Order order,
             ModelMap modelMap
     ) {
-        modelMap.put(Constants.ORDER_LINE_ITEM, new OrderLineItem());
-        modelMap.put(Constants.ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
-        modelMap.put(Constants.ITEM_LIST, itemService.findAvailable());
-        modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
+        modelMap.put(ORDER_LINE_ITEM, new OrderLineItem());
+        modelMap.put(ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
+        modelMap.put(ITEM_LIST, itemService.findAvailable());
+        modelMap.put(NAV_ITEM, ORDER_FORM);
 
         return ORDER_ITEMS_VIEW;
     }
 
     @PostMapping(ADD_ORDER_ITEM_URL)
     public String addOrderItem(
-            @SessionAttribute(Constants.ORDER) Order order,
-            @Validated(QuantityGroup.class) @ModelAttribute(Constants.ORDER_LINE_ITEM) OrderLineItem orderLineItem,
+            @SessionAttribute(ORDER) Order order,
+            @Validated(QuantityGroup.class) @ModelAttribute(ORDER_LINE_ITEM) OrderLineItem orderLineItem,
             BindingResult bindingResult,
             ModelMap modelMap
     ) {
         orderLineItem.setOrderStatus(OrderStatus.ORDERED);
-        modelMap.put(Constants.ITEM_LIST, itemService.findAvailable());
-        modelMap.put(Constants.ORDER_LINE_ITEM, orderLineItem);
-        modelMap.put(Constants.ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
-        modelMap.put(Constants.NAV_ITEM, Constants.ORDER_FORM);
+        modelMap.put(ITEM_LIST, itemService.findAvailable());
+        modelMap.put(ORDER_LINE_ITEM, orderLineItem);
+        modelMap.put(ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
+        modelMap.put(NAV_ITEM, ORDER_FORM);
 
         OrderLineItemValidator.validate(order.getOrderLineItemList(), orderLineItem, bindingResult);
 
@@ -185,64 +187,64 @@ public class WaiterController {
 
     @PostMapping(REMOVE_ORDER_ITEM_URL)
     public String RemoveOrderItem(
-            @SessionAttribute(Constants.ORDER) Order order,
-            @RequestParam(ORDER_LINE_ITEM_ID) String orderLineItemId
+            @SessionAttribute(ORDER) Order order,
+            @RequestParam(ORDER_LINE_ITEM_ID) int orderLineItemId
     ) {
-        order.getOrderLineItemList().remove(new OrderLineItem(Integer.parseInt(orderLineItemId)));
+        order.getOrderLineItemList().remove(new OrderLineItem(orderLineItemId));
 
-        return Constants.REDIRECT + REDIRECT_ORDER_ITEMS_URL;
+        return REDIRECT + REDIRECT_ORDER_ITEMS_URL;
     }
 
     @PostMapping(ORDER_FORM_SAVE_URL)
     public String saveOrUpdateResOrder(
-            @SessionAttribute(Constants.ORDER) Order order,
+            @SessionAttribute(ORDER) Order order,
             SessionStatus sessionStatus,
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
         if (order.getOrderLineItemList().isEmpty()) {
-            redirectAttributes.addFlashAttribute(Constants.EMPTY_LIST, Constants.EMPTY_LIST);
+            redirectAttributes.addFlashAttribute(EMPTY_LIST, EMPTY_LIST);
 
-            return Constants.REDIRECT + REDIRECT_ORDER_ITEMS_URL;
+            return REDIRECT + REDIRECT_ORDER_ITEMS_URL;
         }
 
         order.setStatus(OrderStatus.ORDERED);
         orderService.saveOrUpdate(order);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + ORDER_REDIRECT_URL;
+        return REDIRECT + ORDER_REDIRECT_URL;
     }
 
     @PostMapping(ORDER_CANCEL_URL)
     public String deleteOrder(
-            @RequestParam(ORDER_ID_PARAM) String orderID,
+            @RequestParam(ORDER_ID_PARAM) int orderID,
             RedirectAttributes redirectAttributes
     ) throws Exception {
-        orderService.delete(Integer.parseInt(orderID));
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        orderService.delete(orderID);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
 
-        return Constants.REDIRECT + ORDER_REDIRECT_URL;
+        return REDIRECT + ORDER_REDIRECT_URL;
     }
 
     @GetMapping(WAITER_NOTIFICATION_URL)
     public String showWaiterNotification(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            @SessionAttribute(ACTIVE_USER) User user,
             ModelMap modelMap
     ) {
-        modelMap.put(Constants.ORDER_LIST, orderService.getOrderListWithStatus(user.getId()));
-        modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
+        modelMap.put(ORDER_LIST, orderService.getOrderListWithStatus(user.getId()));
+        modelMap.put(NAV_ITEM, NOTIFICATION);
 
         return WAITER_NOTIFICATION_VIEW;
     }
 
     @PostMapping(WAITER_NOTIFICATION_SERVED)
-    public String markServed(@RequestParam(ORDER_ID_PARAM) String orderId) throws Exception {
-        Order order = orderService.findById(Integer.parseInt(orderId));
+    public String markServed(@RequestParam(ORDER_ID_PARAM) int orderId) throws Exception {
+        Order order = orderService.findById(orderId);
 
         orderService.saveAsServed(order);
         orderService.delete(order.getId());
 
-        return Constants.REDIRECT + REDIRECT_WAITER_NOTIFICATION_URL;
+        return REDIRECT + REDIRECT_WAITER_NOTIFICATION_URL;
     }
 }

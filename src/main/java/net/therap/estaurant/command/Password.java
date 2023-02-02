@@ -4,6 +4,7 @@ import net.therap.estaurant.util.Encryption;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -11,7 +12,9 @@ import java.security.spec.InvalidKeySpecException;
  * @author nadimmahmud
  * @since 1/23/23
  */
-public class Password {
+public class Password implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     private String storedUserPassword;
 

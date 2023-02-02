@@ -1,6 +1,5 @@
 package net.therap.estaurant.controller;
 
-import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.OrderLineItem;
 import net.therap.estaurant.entity.OrderStatus;
 import net.therap.estaurant.entity.User;
@@ -17,13 +16,16 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.Date;
 
+import static net.therap.estaurant.constant.Constants.*;
+
+
 /**
  * @author nadimmahmud
  * @since 1/25/23
  */
 @Controller
 @RequestMapping("/chef/*")
-@SessionAttributes(Constants.ORDER_LINE_ITEM)
+@SessionAttributes(ORDER_LINE_ITEM)
 public class ChefController {
 
     private static final String HOME_URL = "/";
@@ -46,40 +48,40 @@ public class ChefController {
 
     @GetMapping({HOME_URL})
     public String chefHome(ModelMap modelMap) {
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+        modelMap.put(ITEM_LIST, itemService.findAll());
 
         return HOME_VIEW;
     }
 
     @GetMapping(CHEF_NOTIFICATION_URL)
     public String showChefNotification(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            @SessionAttribute(ACTIVE_USER) User user,
             ModelMap modelMap
     ) {
-        modelMap.put(Constants.ORDER_LINE_ITEM_LIST, orderLineItemService.getOrderedNotificationByUserId(user.getId()));
-        modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
+        modelMap.put(ORDER_LINE_ITEM_LIST, orderLineItemService.getOrderedNotificationByUserId(user.getId()));
+        modelMap.put(NAV_ITEM, NOTIFICATION);
 
         return CHEF_NOTIFICATION_VIEW;
     }
 
     @GetMapping(CHEF_ACCEPT_FORM_URL)
     public String showOrderAcceptForm(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) String orderLineItemId, ModelMap modelMap) {
-        modelMap.put(Constants.ORDER_LINE_ITEM, orderLineItemService.findById(Integer.parseInt(orderLineItemId)));
-        modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
+        modelMap.put(ORDER_LINE_ITEM, orderLineItemService.findById(Integer.parseInt(orderLineItemId)));
+        modelMap.put(NAV_ITEM, NOTIFICATION);
 
         return CHEF_ACCEPT_FORM_VIEW;
     }
 
     @PostMapping(CHEF_ACCEPT_FORM_SAVE_URL)
     public String saveAcceptForm(
-            @Validated(CookingTimeGroup.class) @ModelAttribute(Constants.ORDER_LINE_ITEM) OrderLineItem orderLineItem,
+            @Validated(CookingTimeGroup.class) @ModelAttribute(ORDER_LINE_ITEM) OrderLineItem orderLineItem,
             BindingResult bindingResult,
             ModelMap modelMap,
             SessionStatus sessionStatus
     ) throws Exception {
 
         if (bindingResult.hasErrors()) {
-            modelMap.put(Constants.NAV_ITEM, Constants.NOTIFICATION);
+            modelMap.put(NAV_ITEM, NOTIFICATION);
 
             return CHEF_ACCEPT_FORM_VIEW;
         }
@@ -89,15 +91,15 @@ public class ChefController {
         orderLineItemService.saveOrUpdate(orderLineItem);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + REDIRECT_CHEF_NOTIFICATION_URL;
+        return REDIRECT + REDIRECT_CHEF_NOTIFICATION_URL;
     }
 
     @PostMapping(MARK_PREPARED_URL)
-    public String markOrderLineItemPrepared(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) String orderLineItemId, ModelMap modelMap) throws Exception {
-        OrderLineItem orderLineItem = orderLineItemService.findById(Integer.parseInt(orderLineItemId));
+    public String markOrderLineItemPrepared(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) int orderLineItemId, ModelMap modelMap) throws Exception {
+        OrderLineItem orderLineItem = orderLineItemService.findById(orderLineItemId);
         orderLineItem.setOrderStatus(OrderStatus.PREPARED);
         orderLineItemService.saveOrUpdate(orderLineItem);
 
-        return Constants.REDIRECT + REDIRECT_CHEF_NOTIFICATION_URL;
+        return REDIRECT + REDIRECT_CHEF_NOTIFICATION_URL;
     }
 }

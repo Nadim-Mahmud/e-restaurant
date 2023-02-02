@@ -3,13 +3,16 @@ package net.therap.estaurant.command;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author nadimmahmud
  * @since 1/30/23
  */
-public class Profile {
+public class Profile implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     private int id;
 

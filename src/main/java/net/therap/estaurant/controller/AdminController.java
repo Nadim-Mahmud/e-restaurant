@@ -3,7 +3,6 @@ package net.therap.estaurant.controller;
 import net.therap.estaurant.propertyEditor.CategoryEditor;
 import net.therap.estaurant.propertyEditor.ItemEditor;
 import net.therap.estaurant.propertyEditor.RestaurantTableEditor;
-import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.*;
 import net.therap.estaurant.service.*;
 import net.therap.estaurant.validator.EmailValidator;
@@ -27,13 +26,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+import static net.therap.estaurant.constant.Constants.*;
+
+
 /**
  * @author nadimmahmud
  * @since 1/18/23
  */
 @Controller
 @RequestMapping("/admin/*")
-@SessionAttributes({Constants.CATEGORY, Constants.ITEM, Constants.CHEF, Constants.WAITER, Constants.RESTAURANT_TABLE})
+@SessionAttributes({CATEGORY, ITEM, CHEF, WAITER, RESTAURANT_TABLE})
 public class AdminController {
 
     private static final String HOME_URL = "/";
@@ -122,7 +124,7 @@ public class AdminController {
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
         webDataBinder.registerCustomEditor(Category.class, categoryEditor);
@@ -130,32 +132,32 @@ public class AdminController {
         webDataBinder.registerCustomEditor(RestaurantTable.class, restaurantTableEditor);
     }
 
-    @InitBinder({Constants.WAITER, Constants.CHEF})
+    @InitBinder({WAITER, CHEF})
     public void userBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(emailValidator);
     }
 
-    @InitBinder(Constants.RESTAURANT_TABLE)
+    @InitBinder(RESTAURANT_TABLE)
     public void tableBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(restaurantTableValidator);
     }
 
-    @InitBinder(Constants.ITEM)
+    @InitBinder(ITEM)
     public void itemBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(itemValidator);
     }
 
     @GetMapping(HOME_URL)
     public String adminHome(ModelMap modelMap) {
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+        modelMap.put(ITEM_LIST, itemService.findAll());
 
         return HOME_VIEW;
     }
 
     @GetMapping(CATEGORY_URL)
     public String showCategory(ModelMap modelMap) {
-        modelMap.put(Constants.CATEGORY_LIST, categoryService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.CATEGORY);
+        modelMap.put(CATEGORY_LIST, categoryService.findAll());
+        modelMap.put(NAV_ITEM, CATEGORY);
 
         return CATEGORY_VIEW;
     }
@@ -163,15 +165,15 @@ public class AdminController {
     @GetMapping(CATEGORY_FORM_URL)
     public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId, ModelMap modelMap) throws Exception {
         Category category = Objects.nonNull(categoryId) ? categoryService.findById(Integer.parseInt(categoryId)) : new Category();
-        modelMap.put(Constants.CATEGORY, category);
-        modelMap.put(Constants.NAV_ITEM, Constants.CATEGORY);
+        modelMap.put(CATEGORY, category);
+        modelMap.put(NAV_ITEM, CATEGORY);
 
         return CATEGORY_FORM_VIEW;
     }
 
     @PostMapping(CATEGORY_FORM_SAVE_URL)
     public String saveOrUpdateCategory(
-            @Valid @ModelAttribute(Constants.CATEGORY) Category category,
+            @Valid @ModelAttribute(CATEGORY) Category category,
             BindingResult bindingResult,
             ModelMap modelMap,
             SessionStatus sessionStatus,
@@ -179,33 +181,33 @@ public class AdminController {
     ) throws Exception {
 
         if (bindingResult.hasErrors()) {
-            modelMap.put(Constants.NAV_ITEM, Constants.CATEGORY);
+            modelMap.put(NAV_ITEM, CATEGORY);
 
             return CATEGORY_FORM_VIEW;
         }
 
         categoryService.saveOrUpdate(category);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + CATEGORY_REDIRECT_URL;
+        return REDIRECT + CATEGORY_REDIRECT_URL;
     }
 
     @PostMapping(CATEGORY_DELETE_URL)
     public String deleteCourse(
-            @RequestParam(CATEGORY_ID_PARAM) String categoryId,
+            @RequestParam(CATEGORY_ID_PARAM) int categoryId,
             RedirectAttributes redirectAttributes
     ) throws Exception {
-        categoryService.delete(Integer.parseInt(categoryId));
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        categoryService.delete(categoryId);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
 
-        return Constants.REDIRECT + CATEGORY_REDIRECT_URL;
+        return REDIRECT + CATEGORY_REDIRECT_URL;
     }
 
     @GetMapping(ITEM_URL)
     public String showItems(ModelMap modelMap) {
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
+        modelMap.put(ITEM_LIST, itemService.findAll());
+        modelMap.put(NAV_ITEM, ITEM);
 
         return ITEM_VIEW;
     }
@@ -214,7 +216,7 @@ public class AdminController {
     public String showItemForm(@RequestParam(value = ITEM_ID_PARAM, required = false) String itemId, ModelMap modelMap) {
         Item item = Objects.nonNull(itemId) ? itemService.findById(Integer.parseInt(itemId)) : new Item();
 
-        modelMap.put(Constants.ITEM, item);
+        modelMap.put(ITEM, item);
         setupReferenceDataItemForm(modelMap);
 
         return ITEM_FORM_VIEW;
@@ -222,7 +224,7 @@ public class AdminController {
 
     @PostMapping(ITEM_FORM_SAVE_URL)
     public String saveOrUpdateItem(
-            @Valid @ModelAttribute(Constants.ITEM) Item item,
+            @Valid @ModelAttribute(ITEM) Item item,
             BindingResult bindingResult,
             ModelMap modelMap,
             SessionStatus sessionStatus,
@@ -236,32 +238,32 @@ public class AdminController {
         }
 
         itemService.saveOrUpdate(item);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + ITEM_REDIRECT_URL;
+        return REDIRECT + ITEM_REDIRECT_URL;
     }
 
     @PostMapping(ITEM_DELETE_URL)
     public String deleteItem(
-            @RequestParam(ITEM_ID_PARAM) String itemId,
+            @RequestParam(ITEM_ID_PARAM) int itemId,
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
-        if (orderLineItemService.isItemOnProcess(Integer.parseInt(itemId))) {
-            redirectAttributes.addFlashAttribute(Constants.FAILED, Constants.FAILED);
+        if (orderLineItemService.isItemOnProcess(itemId)) {
+            redirectAttributes.addFlashAttribute(FAILED, FAILED);
         } else {
-            itemService.delete(Integer.parseInt(itemId));
-            redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+            itemService.delete(itemId);
+            redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         }
 
-        return Constants.REDIRECT + ITEM_REDIRECT_URL;
+        return REDIRECT + ITEM_REDIRECT_URL;
     }
 
     @GetMapping(CHEF_URL)
     public String showChef(ModelMap modelMap) {
-        modelMap.put(Constants.CHEF_LIST, userService.findChef());
-        modelMap.put(Constants.NAV_ITEM, Constants.CHEF);
+        modelMap.put(CHEF_LIST, userService.findChef());
+        modelMap.put(NAV_ITEM, CHEF);
 
         return CHEF_VIEW;
     }
@@ -269,7 +271,7 @@ public class AdminController {
     @GetMapping(CHEF_FORM_URL)
     public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User chef = Objects.nonNull(chefId) ? userService.findById(Integer.parseInt(chefId)) : new User();
-        modelMap.put(Constants.CHEF, chef);
+        modelMap.put(CHEF, chef);
         setupReferenceDataChefForm(modelMap, chef);
 
         return CHEF_FORM_VIEW;
@@ -277,7 +279,7 @@ public class AdminController {
 
     @PostMapping(CHEF_FORM_SAVE_URL)
     public String saveOrUpdateChef(
-            @Valid @ModelAttribute(Constants.CHEF) User user,
+            @Valid @ModelAttribute(CHEF) User user,
             BindingResult bindingResult,
             ModelMap modelMap,
             SessionStatus sessionStatus,
@@ -292,27 +294,27 @@ public class AdminController {
 
         user.setType(UserType.CHEF);
         userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + CHEF_REDIRECT_URL;
+        return REDIRECT + CHEF_REDIRECT_URL;
     }
 
     @PostMapping(CHEF_DELETE_URL)
     public String deleteChef(
-            @RequestParam(CHEF_ID_PARAM) String chefId,
+            @RequestParam(CHEF_ID_PARAM) int chefId,
             RedirectAttributes redirectAttributes
     ) throws Exception {
-        userService.delete(Integer.parseInt(chefId));
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        userService.delete(chefId);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
 
-        return Constants.REDIRECT + CHEF_REDIRECT_URL;
+        return REDIRECT + CHEF_REDIRECT_URL;
     }
 
     @GetMapping(WAITER_URL)
     public String showWaiter(ModelMap modelMap) {
-        modelMap.put(Constants.WAITER_LIST, userService.findWaiter());
-        modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
+        modelMap.put(WAITER_LIST, userService.findWaiter());
+        modelMap.put(NAV_ITEM, WAITER);
 
         return WAITER_VIEW;
     }
@@ -320,7 +322,7 @@ public class AdminController {
     @GetMapping(WAITER_FORM_URL)
     public String showWaiterForm(@RequestParam(value = WAITER_ID_PARAM, required = false) String waiterId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User waiter = Objects.nonNull(waiterId) ? userService.findById(Integer.parseInt(waiterId)) : new User();
-        modelMap.put(Constants.WAITER, waiter);
+        modelMap.put(WAITER, waiter);
         setupReferenceDataWaiterForm(modelMap, waiter);
 
         return WAITER_FORM_VIEW;
@@ -328,7 +330,7 @@ public class AdminController {
 
     @PostMapping(WAITER_FORM_SAVE_URL)
     public String saveOrUpdateWaiter(
-            @Valid @ModelAttribute(Constants.WAITER) User user,
+            @Valid @ModelAttribute(WAITER) User user,
             BindingResult bindingResult,
             ModelMap modelMap,
             SessionStatus sessionStatus,
@@ -343,10 +345,10 @@ public class AdminController {
 
         user.setType(UserType.WAITER);
         userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + WAITER_REDIRECT_URL;
+        return REDIRECT + WAITER_REDIRECT_URL;
     }
 
     @PostMapping(WAITER_DELETE_URL)
@@ -355,15 +357,15 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
         userService.delete(Integer.parseInt(waiterId));
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
 
-        return Constants.REDIRECT + WAITER_REDIRECT_URL;
+        return REDIRECT + WAITER_REDIRECT_URL;
     }
 
     @GetMapping(RES_TABLE_URL)
     public String showRestaurantTable(ModelMap modelMap) {
-        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.RESTAURANT_TABLE);
+        modelMap.put(RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+        modelMap.put(NAV_ITEM, RESTAURANT_TABLE);
 
         return RES_TABLE_VIEW;
     }
@@ -371,15 +373,15 @@ public class AdminController {
     @GetMapping(RES_TABLE_FORM_URL)
     public String showTableForm(@RequestParam(value = RES_TABLE_ID_PARAM, required = false) String resTableId, ModelMap modelMap) {
         RestaurantTable resTable = Objects.nonNull(resTableId) ? restaurantTableService.findById(Integer.parseInt(resTableId)) : new RestaurantTable();
-        modelMap.put(Constants.RESTAURANT_TABLE, resTable);
-        modelMap.put(Constants.NAV_ITEM, Constants.RESTAURANT_TABLE);
+        modelMap.put(RESTAURANT_TABLE, resTable);
+        modelMap.put(NAV_ITEM, RESTAURANT_TABLE);
 
         return RES_TABLE_FORM_VIEW;
     }
 
     @PostMapping(RES_TABLE_FORM_SAVE_URL)
     public String saveOrUpdateResTable(
-            @Valid @ModelAttribute(Constants.RESTAURANT_TABLE) RestaurantTable restaurantTable,
+            @Valid @ModelAttribute(RESTAURANT_TABLE) RestaurantTable restaurantTable,
             BindingResult bindingResult,
             ModelMap modelMap,
             SessionStatus sessionStatus,
@@ -387,16 +389,16 @@ public class AdminController {
     ) throws Exception {
 
         if (bindingResult.hasErrors()) {
-            modelMap.put(Constants.NAV_ITEM, Constants.RESTAURANT_TABLE);
+            modelMap.put(NAV_ITEM, RESTAURANT_TABLE);
 
             return RES_TABLE_FORM_VIEW;
         }
 
         restaurantTableService.saveOrUpdate(restaurantTable);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
-        return Constants.REDIRECT + RES_TABLE_REDIRECT_URL;
+        return REDIRECT + RES_TABLE_REDIRECT_URL;
     }
 
     @PostMapping(RES_TABLE_DELETE_URL)
@@ -406,27 +408,27 @@ public class AdminController {
     ) throws Exception {
 
         if (orderService.isTableInUse(Integer.parseInt(resTableId))) {
-            redirectAttributes.addFlashAttribute(Constants.FAILED, Constants.FAILED);
+            redirectAttributes.addFlashAttribute(FAILED, FAILED);
         } else {
             restaurantTableService.delete(Integer.parseInt(resTableId));
-            redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+            redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         }
 
-        return Constants.REDIRECT + RES_TABLE_REDIRECT_URL;
+        return REDIRECT + RES_TABLE_REDIRECT_URL;
     }
 
     private void setupReferenceDataItemForm(ModelMap modelMap) {
-        modelMap.put(Constants.CATEGORY_LIST, categoryService.findAll());
-        modelMap.put(Constants.AVAILABILITY_LIST, Availability.values());
-        modelMap.put(Constants.NAV_ITEM, Constants.ITEM);
+        modelMap.put(CATEGORY_LIST, categoryService.findAll());
+        modelMap.put(AVAILABILITY_LIST, Availability.values());
+        modelMap.put(NAV_ITEM, ITEM);
     }
 
     private void setupReferenceDataChefForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        modelMap.put(Constants.ITEM_OPTION_LIST, itemService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.CHEF);
+        modelMap.put(ITEM_OPTION_LIST, itemService.findAll());
+        modelMap.put(NAV_ITEM, CHEF);
 
         if (!user.isNew()) {
-            modelMap.put(Constants.UPDATE_PAGE, true);
+            modelMap.put(UPDATE_PAGE, true);
         }
 
         if (user.isNew()) {
@@ -435,11 +437,11 @@ public class AdminController {
     }
 
     private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        modelMap.put(Constants.RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
-        modelMap.put(Constants.NAV_ITEM, Constants.WAITER);
+        modelMap.put(RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+        modelMap.put(NAV_ITEM, WAITER);
 
         if (!user.isNew()) {
-            modelMap.put(Constants.UPDATE_PAGE, true);
+            modelMap.put(UPDATE_PAGE, true);
         }
 
         if (user.isNew()) {

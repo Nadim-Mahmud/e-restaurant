@@ -3,12 +3,15 @@ package net.therap.estaurant.command;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * @author nadimmahmud
  * @since 1/26/23
  */
-public class Credentials {
+public class Credentials implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     @NotNull(message = "{input.text}")
     @Size(min = 1, max = 50, message = "{input.text}")

@@ -27,12 +27,12 @@
     <div class="text-center">
         <c:if test="${success != null}">
             <p class="text-success">
-                &check; successfully deleted !!
+                &check; success !!
             </p>
         </c:if>
         <c:if test="${failed != null}">
             <p class="text-danger">
-                This table is in use. Can not delete !!
+                This table is in use. Can not delete!
             </p>
         </c:if>
     </div>

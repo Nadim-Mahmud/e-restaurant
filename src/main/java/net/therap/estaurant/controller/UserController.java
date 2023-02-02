@@ -3,7 +3,6 @@ package net.therap.estaurant.controller;
 import net.therap.estaurant.command.Credentials;
 import net.therap.estaurant.command.Password;
 import net.therap.estaurant.command.Profile;
-import net.therap.estaurant.constant.Constants;
 import net.therap.estaurant.entity.User;
 import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.UserService;
@@ -25,12 +24,15 @@ import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static net.therap.estaurant.constant.Constants.*;
+
+
 /**
  * @author nadimmahmud
  * @since 1/25/23
  */
 @Controller
-@SessionAttributes({Constants.PASSWORD, Constants.PROFILE})
+@SessionAttributes({PASSWORD, PROFILE})
 public class UserController {
 
     private static final String HOME = "/";
@@ -61,42 +63,42 @@ public class UserController {
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
-    @InitBinder(Constants.PASSWORD)
+    @InitBinder(PASSWORD)
     public void passwordBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordValidator());
     }
 
-    @InitBinder(Constants.PROFILE)
+    @InitBinder(PROFILE)
     public void profileBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(profileValidator);
     }
 
     @GetMapping(HOME)
     public String guestHome(ModelMap modelMap) {
-        modelMap.put(Constants.GUEST, Constants.GUEST);
-        modelMap.put(Constants.ITEM_LIST, itemService.findAll());
+        modelMap.put(GUEST, GUEST);
+        modelMap.put(ITEM_LIST, itemService.findAll());
 
         return HOME_VIEW;
     }
 
     @GetMapping(UPDATE_PASSWORD_URL)
-    String showPasswordUpdatePage(ModelMap modelMap, @SessionAttribute(Constants.ACTIVE_USER) User user) {
+    String showPasswordUpdatePage(ModelMap modelMap, @SessionAttribute(ACTIVE_USER) User user) {
         Password password = new Password();
         password.setStoredUserPassword(user.getPassword());
-        modelMap.put(Constants.PASSWORD, password);
+        modelMap.put(PASSWORD, password);
 
         return UPDATE_PASSWORD_VIEW;
     }
 
     @PostMapping(SAVE_PASSWORD_URL)
     String savePassword(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
-            @Valid @ModelAttribute(Constants.PASSWORD) Password password,
+            @SessionAttribute(ACTIVE_USER) User user,
+            @Valid @ModelAttribute(PASSWORD) Password password,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) throws Exception {
@@ -109,29 +111,29 @@ public class UserController {
         user.setPassword(password.getNewPassword());
         userService.saveOrUpdate(user);
 
-        return Constants.REDIRECT;
+        return REDIRECT;
     }
 
     @GetMapping(UPDATE_PROFILE_URL)
     String updateProfile(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
+            @SessionAttribute(ACTIVE_USER) User user,
             ModelMap modelMap
     ) {
-        modelMap.put(Constants.PROFILE, userService.getProfileObject(user));
+        modelMap.put(PROFILE, userService.getProfileObject(user));
 
         return UPDATE_PROFILE_VIEW;
     }
 
     @PostMapping(SAVE_PROFILE_URL)
     String saveOrUpdateProfile(
-            @SessionAttribute(Constants.ACTIVE_USER) User user,
-            @Valid @ModelAttribute(Constants.PROFILE) Profile profile,
+            @SessionAttribute(ACTIVE_USER) User user,
+            @Valid @ModelAttribute(PROFILE) Profile profile,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) throws Exception {
 
         if (user.getId() != profile.getId()) {
-            return Constants.REDIRECT;
+            return REDIRECT;
         }
 
         if (bindingResult.hasErrors()) {
@@ -140,47 +142,47 @@ public class UserController {
 
         user = userService.updateUserByProfile(user, profile);
         userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, Constants.SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
 
-        return Constants.REDIRECT;
+        return REDIRECT;
     }
 
     @GetMapping(LOGIN_URL)
     public String showLoginPage(ModelMap modelMap) {
-        modelMap.put(Constants.CREDENTIALS, new Credentials());
-        modelMap.put(Constants.LOGIN_PAGE, Constants.LOGIN_PAGE);
+        modelMap.put(CREDENTIALS, new Credentials());
+        modelMap.put(LOGIN_PAGE, LOGIN_PAGE);
 
         return LOGIN_VIEW;
     }
 
     @PostMapping(LOGIN)
     public String login(
-            @Valid @ModelAttribute(Constants.CREDENTIALS) Credentials credentials,
+            @Valid @ModelAttribute(CREDENTIALS) Credentials credentials,
             ModelMap modelMap,
             HttpSession httpSession
     ) throws Exception {
 
         if (userService.isValidCredential(credentials)) {
-            httpSession.setAttribute(Constants.ACTIVE_USER, userService.findByEmail(credentials.getEmail()));
+            httpSession.setAttribute(ACTIVE_USER, userService.findByEmail(credentials.getEmail()));
 
-            return Constants.REDIRECT;
+            return REDIRECT;
         }
 
-        modelMap.put(Constants.LOGIN_PAGE, Constants.LOGIN_PAGE);
-        modelMap.put(Constants.INVALID_LOGIN, Constants.INVALID_LOGIN);
+        modelMap.put(LOGIN_PAGE, LOGIN_PAGE);
+        modelMap.put(INVALID_LOGIN, INVALID_LOGIN);
 
         return LOGIN_VIEW;
     }
 
     @GetMapping(LOGOUT_URL)
     public String logOut(HttpSession httpSession, Model model) {
-        httpSession.removeAttribute(Constants.ACTIVE_USER);
+        httpSession.removeAttribute(ACTIVE_USER);
         httpSession.invalidate();
 
-        if (model.containsAttribute(Constants.ACTIVE_USER)) {
-            model.asMap().remove(Constants.ACTIVE_USER);
+        if (model.containsAttribute(ACTIVE_USER)) {
+            model.asMap().remove(ACTIVE_USER);
         }
 
-        return Constants.REDIRECT;
+        return REDIRECT;
     }
 }
