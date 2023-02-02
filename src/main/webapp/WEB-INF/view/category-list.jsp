@@ -28,7 +28,7 @@
     <div class="text-center">
         <c:if test="${success != null}">
             <p class="text-success">
-                &check; success !!
+                &check; ${success}!
             </p>
         </c:if>
     </div>

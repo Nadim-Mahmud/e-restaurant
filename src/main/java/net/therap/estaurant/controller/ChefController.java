@@ -46,7 +46,7 @@ public class ChefController {
     @Autowired
     private OrderLineItemService orderLineItemService;
 
-    @GetMapping({HOME_URL})
+    @GetMapping(HOME_URL)
     public String chefHome(ModelMap modelMap) {
         modelMap.put(ITEM_LIST, itemService.findAll());
 

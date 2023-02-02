@@ -5,6 +5,7 @@ import net.therap.estaurant.entity.AccessStatus;
 import net.therap.estaurant.entity.Order;
 import net.therap.estaurant.entity.OrderLineItem;
 import net.therap.estaurant.entity.OrderStatus;
+import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author nadimmahmud
@@ -35,13 +37,7 @@ public class OrderService {
     }
 
     public Order findById(int id) {
-        Order order = orderDao.findById(id);
-
-        if (Objects.isNull(order)) {
-            throw new RuntimeException();
-        }
-
-        return order;
+        return Optional.ofNullable(orderDao.findById(id)).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Transactional

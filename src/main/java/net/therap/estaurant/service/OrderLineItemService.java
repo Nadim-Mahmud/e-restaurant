@@ -2,12 +2,14 @@ package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.OrderLineItemDao;
 import net.therap.estaurant.entity.OrderLineItem;
+import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author nadimmahmud
@@ -35,13 +37,7 @@ public class OrderLineItemService {
     }
 
     public OrderLineItem findById(int id) {
-        OrderLineItem orderLineItem = orderLineDao.findById(id);
-
-        if (Objects.isNull(orderLineItem)) {
-            throw new RuntimeException();
-        }
-
-        return orderLineItem;
+        return Optional.ofNullable(orderLineDao.findById(id)).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Transactional

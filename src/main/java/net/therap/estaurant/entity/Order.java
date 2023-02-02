@@ -105,9 +105,7 @@ public class Order extends Persistent {
     public boolean equals(Object o) {
 
         if (this == o) return true;
-
         if (!(o instanceof Order)) return false;
-
         Order order = (Order) o;
 
         return getId() == order.getId();

@@ -62,11 +62,11 @@ public class User extends Persistent {
     @NotNull(message = "{input.date}")
     private Date joiningDate;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name ="userId")
     private List<RestaurantTable> restaurantTableList;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "chef_item",
             joinColumns = {@JoinColumn(name = "userId")},

@@ -11,6 +11,7 @@ import net.therap.estaurant.validator.QuantityGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import static net.therap.estaurant.constant.Constants.*;
@@ -34,7 +36,7 @@ import static net.therap.estaurant.constant.Constants.*;
  */
 @Controller
 @RequestMapping("/waiter/*")
-@SessionAttributes({ORDER})
+@SessionAttributes(ORDER)
 public class WaiterController {
 
     private static final String HOME_URL = "/";
@@ -62,9 +64,8 @@ public class WaiterController {
     private static final String WAITER_NOTIFICATION_VIEW = "waiter-notification";
     private static final String WAITER_NOTIFICATION_SERVED = "notification/mark-served";
 
-
     @Autowired
-    private UserService userService;
+    private MessageSource messageSource;
 
     @Autowired
     private OrderService orderService;
@@ -124,6 +125,7 @@ public class WaiterController {
             ModelMap modelMap
     ) {
         Order order = Objects.nonNull(orderId) ? orderService.findById(Integer.parseInt(orderId)) : new Order();
+
         modelMap.put(ORDER, order);
         modelMap.put(RESTAURANT_TABLE_LIST, restaurantTableService.findByWaiterId(user.getId()));
         modelMap.put(NAV_ITEM, ORDER_FORM);
@@ -210,7 +212,7 @@ public class WaiterController {
 
         order.setStatus(OrderStatus.ORDERED);
         orderService.saveOrUpdate(order);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.update",  null, Locale.getDefault()));
         sessionStatus.setComplete();
 
         return REDIRECT + ORDER_REDIRECT_URL;

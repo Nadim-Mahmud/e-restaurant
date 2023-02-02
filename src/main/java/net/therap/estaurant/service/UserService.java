@@ -4,7 +4,9 @@ import net.therap.estaurant.command.Credentials;
 import net.therap.estaurant.command.Profile;
 import net.therap.estaurant.dao.UserDao;
 import net.therap.estaurant.entity.AccessStatus;
+import net.therap.estaurant.entity.RestaurantTable;
 import net.therap.estaurant.entity.User;
+import net.therap.estaurant.exception.ResourceNotFoundException;
 import net.therap.estaurant.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author nadimmahmud
@@ -38,13 +41,7 @@ public class UserService {
     }
 
     public User findById(int id) {
-        User user = userDao.findById(id);
-
-        if(Objects.isNull(user)){
-            throw new RuntimeException();
-        }
-
-        return user;
+        return Optional.ofNullable(userDao.findById(id)).orElseThrow(ResourceNotFoundException::new);
     }
 
     public User findByEmail(String email) throws Exception {
@@ -61,6 +58,11 @@ public class UserService {
     public void delete(int id) throws Exception {
         User user = userDao.findById(id);
         user.setAccessStatus(AccessStatus.DELETED);
+
+        for(RestaurantTable restaurantTable: user.getRestaurantTableList()){
+            restaurantTable.setUser(null);
+        }
+
         userDao.saveOrUpdate(user);
     }
 

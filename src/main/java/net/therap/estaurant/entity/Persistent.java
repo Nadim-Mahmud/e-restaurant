@@ -30,7 +30,7 @@ public class Persistent implements Serializable {
     @UpdateTimestamp
     protected Date updatedAt;
 
-    public Persistent(){
+    public Persistent() {
         this.accessStatus = AccessStatus.ACTIVE;
     }
 
@@ -51,7 +51,7 @@ public class Persistent implements Serializable {
     }
 
     @PreRemove
-    private void preRemove(){
+    private void preRemove() {
         this.accessStatus = AccessStatus.DELETED;
     }
 }

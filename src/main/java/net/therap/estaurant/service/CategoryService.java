@@ -4,6 +4,7 @@ import net.bytebuddy.implementation.bytecode.Throw;
 import net.therap.estaurant.dao.CategoryDao;
 import net.therap.estaurant.entity.Category;
 import net.therap.estaurant.entity.Item;
+import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author nadimmahmud
@@ -30,13 +32,7 @@ public class CategoryService {
     }
 
     public Category findById(int id) {
-        Category category = categoryDao.findById(id);
-
-        if (Objects.isNull(category)) {
-            throw new RuntimeException();
-        }
-
-        return category;
+        return Optional.ofNullable(categoryDao.findById(id)).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Transactional

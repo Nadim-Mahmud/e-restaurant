@@ -11,6 +11,7 @@ import net.therap.estaurant.validator.RestaurantTableValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import static net.therap.estaurant.constant.Constants.*;
@@ -122,6 +124,9 @@ public class AdminController {
     @Autowired
     private RestaurantTableValidator restaurantTableValidator;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
@@ -165,6 +170,7 @@ public class AdminController {
     @GetMapping(CATEGORY_FORM_URL)
     public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId, ModelMap modelMap) throws Exception {
         Category category = Objects.nonNull(categoryId) ? categoryService.findById(Integer.parseInt(categoryId)) : new Category();
+
         modelMap.put(CATEGORY, category);
         modelMap.put(NAV_ITEM, CATEGORY);
 
@@ -186,8 +192,9 @@ public class AdminController {
             return CATEGORY_FORM_VIEW;
         }
 
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (category.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
         categoryService.saveOrUpdate(category);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
         return REDIRECT + CATEGORY_REDIRECT_URL;
@@ -199,7 +206,7 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
         categoryService.delete(categoryId);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
 
         return REDIRECT + CATEGORY_REDIRECT_URL;
     }
@@ -237,8 +244,9 @@ public class AdminController {
             return ITEM_FORM_VIEW;
         }
 
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (item.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
         itemService.saveOrUpdate(item);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
         return REDIRECT + ITEM_REDIRECT_URL;
@@ -251,10 +259,10 @@ public class AdminController {
     ) throws Exception {
 
         if (orderLineItemService.isItemOnProcess(itemId)) {
-            redirectAttributes.addFlashAttribute(FAILED, FAILED);
+            redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.inUse", null, Locale.getDefault()));
         } else {
             itemService.delete(itemId);
-            redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+            redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
         }
 
         return REDIRECT + ITEM_REDIRECT_URL;
@@ -292,9 +300,10 @@ public class AdminController {
             return CHEF_FORM_VIEW;
         }
 
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (user.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
         user.setType(UserType.CHEF);
         userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
         return REDIRECT + CHEF_REDIRECT_URL;
@@ -306,7 +315,7 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
         userService.delete(chefId);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
 
         return REDIRECT + CHEF_REDIRECT_URL;
     }
@@ -343,9 +352,10 @@ public class AdminController {
             return WAITER_FORM_VIEW;
         }
 
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (user.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
         user.setType(UserType.WAITER);
         userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
         return REDIRECT + WAITER_REDIRECT_URL;
@@ -357,7 +367,7 @@ public class AdminController {
             RedirectAttributes redirectAttributes
     ) throws Exception {
         userService.delete(Integer.parseInt(waiterId));
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
 
         return REDIRECT + WAITER_REDIRECT_URL;
     }
@@ -373,6 +383,7 @@ public class AdminController {
     @GetMapping(RES_TABLE_FORM_URL)
     public String showTableForm(@RequestParam(value = RES_TABLE_ID_PARAM, required = false) String resTableId, ModelMap modelMap) {
         RestaurantTable resTable = Objects.nonNull(resTableId) ? restaurantTableService.findById(Integer.parseInt(resTableId)) : new RestaurantTable();
+
         modelMap.put(RESTAURANT_TABLE, resTable);
         modelMap.put(NAV_ITEM, RESTAURANT_TABLE);
 
@@ -394,8 +405,9 @@ public class AdminController {
             return RES_TABLE_FORM_VIEW;
         }
 
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (restaurantTable.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
         restaurantTableService.saveOrUpdate(restaurantTable);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
         sessionStatus.setComplete();
 
         return REDIRECT + RES_TABLE_REDIRECT_URL;
@@ -408,10 +420,10 @@ public class AdminController {
     ) throws Exception {
 
         if (orderService.isTableInUse(Integer.parseInt(resTableId))) {
-            redirectAttributes.addFlashAttribute(FAILED, FAILED);
+            redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.inUse", null, Locale.getDefault()));
         } else {
             restaurantTableService.delete(Integer.parseInt(resTableId));
-            redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+            redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
         }
 
         return REDIRECT + RES_TABLE_REDIRECT_URL;

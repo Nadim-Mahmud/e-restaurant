@@ -24,7 +24,6 @@
             <div class="card-body">
                 <h5 class="text-center mb-3">Waiter Notifications</h5>
             </div>
-
             <table class="table align-middle text-center">
                 <thead>
                 <tr>
@@ -38,7 +37,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${orderList}" var="order" varStatus="orderStat">
-                    <tr class="${order.status == prepared ? 'bg-danger' : 'bg-success'}  p-2 text-dark bg-opacity-10">
+                    <tr>
                         <td>
                             <c:out value="${orderStat.count}"/>
                         </td>
@@ -54,7 +53,7 @@
                         <td>
                                 ${ order.estTime == 0 ? 'x' : order.estTime}
                         </td>
-                        <td>
+                        <td class="${order.status == prepared ? 'bg-danger' : 'bg-success'}  p-2 text-dark bg-opacity-10">
                             <c:out value="${order.status.label}"/>
                         </td>
                         <td>

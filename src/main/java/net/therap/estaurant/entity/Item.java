@@ -53,25 +53,16 @@ public class Item extends Persistent {
     @Enumerated(EnumType.STRING)
     private Availability availability;
 
-    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "categoryId")
     @NotNull(message = "{input.text}")
     private Category category;
-
-    @ManyToMany
-    @JoinTable(
-            name = "chef_item",
-            joinColumns = {@JoinColumn(name = "itemId")},
-            inverseJoinColumns = {@JoinColumn(name = "userId")}
-    )
-    private List<User> userList;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private List<OrderLineItem> orderLineItemList;
 
     public Item() {
-        userList = new ArrayList<>();
     }
 
     public Item(int id) {
