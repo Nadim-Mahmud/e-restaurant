@@ -1,10 +1,7 @@
 package net.therap.estaurant.controller;
 
-import com.sun.jdi.VMOutOfMemoryException;
 import net.therap.estaurant.constant.Constants;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

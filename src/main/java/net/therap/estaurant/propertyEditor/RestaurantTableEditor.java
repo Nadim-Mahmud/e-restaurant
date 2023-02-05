@@ -1,8 +1,6 @@
 package net.therap.estaurant.propertyEditor;
 
-import net.therap.estaurant.entity.Category;
 import net.therap.estaurant.entity.RestaurantTable;
-import net.therap.estaurant.service.CategoryService;
 import net.therap.estaurant.service.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

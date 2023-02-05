@@ -2,13 +2,11 @@ package net.therap.estaurant.validator;
 
 import net.therap.estaurant.entity.Order;
 import net.therap.estaurant.service.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.List;
 import java.util.Objects;
 
 /**

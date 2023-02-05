@@ -1,8 +1,8 @@
 package net.therap.estaurant.filter;
 
 import net.therap.estaurant.constant.Constants;
-import net.therap.estaurant.entity.UserType;
 import net.therap.estaurant.entity.User;
+import net.therap.estaurant.entity.UserType;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

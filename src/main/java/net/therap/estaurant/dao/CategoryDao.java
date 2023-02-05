@@ -1,8 +1,6 @@
 package net.therap.estaurant.dao;
 
 import net.therap.estaurant.entity.Category;
-import net.therap.estaurant.entity.Item;
-import net.therap.estaurant.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -47,7 +46,7 @@ public class OrderService {
         order.setAccessStatus(AccessStatus.DELETED);
         orderDao.saveOrUpdate(order);
 
-        for(OrderLineItem orderLineItem: order.getOrderLineItemList()){
+        for (OrderLineItem orderLineItem : order.getOrderLineItemList()) {
             orderLineItemService.delete(orderLineItem.getId());
         }
     }
@@ -61,14 +60,14 @@ public class OrderService {
     public Order saveAsServed(Order order) throws Exception {
         order.setStatus(OrderStatus.SERVED);
 
-        for(OrderLineItem orderLineItem: order.getOrderLineItemList()){
+        for (OrderLineItem orderLineItem : order.getOrderLineItemList()) {
             orderLineItem.setOrderStatus(OrderStatus.SERVED);
         }
 
         return orderDao.saveOrUpdate(order);
     }
 
-    public boolean isTableInUse(int tableId){
+    public boolean isTableInUse(int tableId) {
         return orderDao.findByTableId(tableId).size() > 0;
     }
 

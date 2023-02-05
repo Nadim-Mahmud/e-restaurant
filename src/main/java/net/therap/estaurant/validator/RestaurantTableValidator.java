@@ -1,13 +1,10 @@
 package net.therap.estaurant.validator;
 
 import net.therap.estaurant.entity.RestaurantTable;
-import net.therap.estaurant.entity.User;
 import net.therap.estaurant.service.RestaurantTableService;
-import net.therap.estaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 /**

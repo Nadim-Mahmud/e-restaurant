@@ -1,7 +1,5 @@
 package net.therap.estaurant.command;
 
-import net.therap.estaurant.util.Encryption;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;

@@ -3,11 +3,8 @@ package net.therap.estaurant.validator;
 import net.therap.estaurant.command.Password;
 import net.therap.estaurant.util.Encryption;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 
 /**

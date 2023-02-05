@@ -1,7 +1,6 @@
 package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.RestaurantTableDao;
-import net.therap.estaurant.entity.Item;
 import net.therap.estaurant.entity.RestaurantTable;
 import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**

@@ -1,6 +1,5 @@
 package net.therap.estaurant;
 
-import net.therap.estaurant.SpringBootRestaurantApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

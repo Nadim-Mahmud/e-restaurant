@@ -1,17 +1,12 @@
 package net.therap.estaurant.entity;
 
-import org.aspectj.weaver.ast.Or;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 

@@ -1,11 +1,7 @@
 package net.therap.estaurant.propertyEditor;
 
-import net.therap.estaurant.entity.RestaurantTable;
-import net.therap.estaurant.service.RestaurantTableService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.beans.PropertyEditorSupport;
 import java.util.Objects;
 
