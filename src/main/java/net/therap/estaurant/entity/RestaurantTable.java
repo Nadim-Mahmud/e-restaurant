@@ -25,6 +25,8 @@ import java.util.Objects;
 })
 public class RestaurantTable extends Persistent {
 
+    protected static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurantTableSeq")
     @SequenceGenerator(name = "restaurantTableSeq", sequenceName = "restaurant_table_seq", allocationSize = 1)

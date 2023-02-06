@@ -24,6 +24,8 @@ import java.util.List;
 })
 public class Item extends Persistent {
 
+    protected static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemSeq")
     @SequenceGenerator(name = "itemSeq", sequenceName = "item_seq", allocationSize = 1)
@@ -48,10 +50,6 @@ public class Item extends Persistent {
     @JoinColumn(name = "categoryId")
     @NotNull(message = "{input.text}")
     private Category category;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId")
-    private List<OrderLineItem> orderLineItemList;
 
     public Item() {
     }
@@ -108,10 +106,6 @@ public class Item extends Persistent {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public List<OrderLineItem> getOrderLineItemList() {
-        return orderLineItemList;
     }
 
     public boolean isNew() {

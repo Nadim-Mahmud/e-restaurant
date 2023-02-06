@@ -28,6 +28,11 @@ public class ItemDao extends AbstractDao<Item> {
         }
     }
 
+    public void delete(int id) throws Exception {
+        entityManager.remove(entityManager.find(Item.class, id));
+    }
+
+
     @Override
     public List<Item> findAll() {
         return entityManager.createNamedQuery("Item.findAll", Item.class).getResultList();
@@ -36,11 +41,6 @@ public class ItemDao extends AbstractDao<Item> {
     @Override
     public Item findById(int id) {
         return entityManager.find(Item.class, id);
-    }
-
-    @Override
-    public void delete(int id) throws Exception {
-        entityManager.remove(entityManager.find(Item.class, id));
     }
 
     @Override

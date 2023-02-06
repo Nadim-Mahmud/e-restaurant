@@ -19,7 +19,7 @@ public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
                 .getResultList();
     }
 
-    public List<OrderLineItem> findNotServedByItemId(int itemId) {
+    public List<OrderLineItem> isItemInUse(int itemId) {
         return entityManager.createNamedQuery("OrderLineItem.findNotServedByItemId", OrderLineItem.class)
                 .setParameter("itemId", itemId)
                 .getResultList();
@@ -31,6 +31,10 @@ public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
                 .getResultList();
     }
 
+    public void delete(int id) throws Exception {
+        entityManager.remove(entityManager.find(OrderLineItem.class, id));
+    }
+
     @Override
     public List<OrderLineItem> findAll() {
         return entityManager.createNamedQuery("OrderLineItem.findAll", OrderLineItem.class).getResultList();
@@ -39,11 +43,6 @@ public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
     @Override
     public OrderLineItem findById(int id) {
         return entityManager.find(OrderLineItem.class, id);
-    }
-
-    @Override
-    public void delete(int id) throws Exception {
-        entityManager.remove(entityManager.find(OrderLineItem.class, id));
     }
 
     @Override

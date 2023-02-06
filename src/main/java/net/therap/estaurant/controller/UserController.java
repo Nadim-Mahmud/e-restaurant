@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping(UPDATE_PASSWORD_URL)
-    String showPasswordUpdatePage(ModelMap modelMap, @SessionAttribute(ACTIVE_USER) User user) {
+    public String showPasswordUpdatePage(ModelMap modelMap, @SessionAttribute(ACTIVE_USER) User user) {
         Password password = new Password();
         password.setStoredUserPassword(user.getPassword());
         modelMap.put(PASSWORD, password);

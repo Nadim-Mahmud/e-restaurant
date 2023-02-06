@@ -32,6 +32,8 @@ import java.util.Objects;
 })
 public class User extends Persistent {
 
+    protected static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
     @SequenceGenerator(name = "userSeq", sequenceName = "user_seq", allocationSize = 1)
@@ -62,7 +64,7 @@ public class User extends Persistent {
     @NotNull(message = "{input.date}")
     private Date joiningDate;
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany
     @JoinColumn(name ="userId")
     private List<RestaurantTable> restaurantTableList;
 

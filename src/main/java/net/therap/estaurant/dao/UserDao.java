@@ -42,11 +42,6 @@ public class UserDao extends AbstractDao<User> {
     }
 
     @Override
-    public void delete(int id) throws Exception {
-        entityManager.remove(entityManager.find(User.class, id));
-    }
-
-    @Override
     public User saveOrUpdate(User user) throws Exception {
 
         if (user.isNew()) {

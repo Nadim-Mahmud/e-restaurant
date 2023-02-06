@@ -34,7 +34,6 @@ public class CategoryDao extends AbstractDao<Category> {
         return entityManager.find(Category.class, id);
     }
 
-    @Override
     public void delete(int id) throws Exception {
         entityManager.remove(entityManager.find(Category.class, id));
     }

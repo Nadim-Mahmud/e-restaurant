@@ -116,8 +116,8 @@ public class WaiterController {
     @GetMapping(ORDERS_URL)
     public String showOrders(
             @SessionAttribute(ACTIVE_USER) User user,
-            ModelMap modelMap
-    ) {
+            ModelMap modelMap) {
+
         modelMap.put(ORDER_LIST, orderService.findActiveOrderByWaiterId(user.getId()));
         modelMap.put(NAV_ITEM, ORDERS);
 
@@ -170,6 +170,7 @@ public class WaiterController {
                                BindingResult bindingResult,
                                ModelMap modelMap) {
         orderLineItem.setOrderStatus(OrderStatus.ORDERED);
+
         modelMap.put(ITEM_LIST, itemService.findAvailable());
         modelMap.put(ORDER_LINE_ITEM, orderLineItem);
         modelMap.put(ORDER_LINE_ITEM_LIST, order.getOrderLineItemList());
@@ -214,10 +215,9 @@ public class WaiterController {
     @PostMapping(ORDER_CANCEL_URL)
     public String cancelOrder(@RequestParam(ORDER_ID_PARAM) int orderId, RedirectAttributes redirectAttributes) throws Exception {
 
-        if(orderLineItemService.isOrderOnProcess(orderId)){
+        if (orderLineItemService.isOrderOnProcess(orderId)) {
             redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.cancel.inUse", null, Locale.getDefault()));
-        }
-        else {
+        } else {
             orderService.cancel(orderId);
             redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.cancel", null, Locale.getDefault()));
         }

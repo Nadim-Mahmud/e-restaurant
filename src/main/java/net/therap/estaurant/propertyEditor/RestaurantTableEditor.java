@@ -12,7 +12,7 @@ import java.util.Objects;
 public class RestaurantTableEditor extends PropertyEditorSupport {
 
     @Autowired
-    RestaurantTableService restaurantTableService;
+    private RestaurantTableService restaurantTableService;
 
     @Override
     public String getAsText() {

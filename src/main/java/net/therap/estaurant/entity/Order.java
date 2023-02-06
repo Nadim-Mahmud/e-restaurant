@@ -24,6 +24,8 @@ import java.util.Objects;
 })
 public class Order extends Persistent {
 
+    protected static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderTableSeq")
     @SequenceGenerator(name = "orderTableSeq", sequenceName = "order_table_seq", allocationSize = 1)
@@ -32,9 +34,6 @@ public class Order extends Persistent {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Transient
-    private int estTime;
-
     @ManyToOne
     @JoinColumn(name = "restaurantTableId")
     private RestaurantTable restaurantTable;
@@ -42,6 +41,9 @@ public class Order extends Persistent {
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "orderId")
     private List<OrderLineItem> orderLineItemList;
+
+    @Transient
+    private int estTime;
 
     public Order() {
         orderLineItemList = new ArrayList<>();

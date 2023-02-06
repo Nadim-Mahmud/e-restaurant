@@ -20,7 +20,5 @@ public abstract class AbstractDao<T> {
 
     public abstract T findById(int id);
 
-    public abstract void delete(int id) throws Exception;
-
     public abstract T saveOrUpdate(T entry) throws Exception;
 }

@@ -40,11 +40,6 @@ public class OrderDao extends AbstractDao<Order> {
     }
 
     @Override
-    public void delete(int id) throws Exception {
-        entityManager.remove(entityManager.find(Order.class, id));
-    }
-
-    @Override
     public Order saveOrUpdate(Order order) throws Exception {
 
         if (order.isNew()) {

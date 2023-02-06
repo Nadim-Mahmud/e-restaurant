@@ -29,6 +29,8 @@ import java.util.Objects;
 })
 public class OrderLineItem extends Persistent {
 
+    protected static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderLineSeq")
     @SequenceGenerator(name = "orderLineSeq", sequenceName = "order_line_seq", allocationSize = 1)

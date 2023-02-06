@@ -29,6 +29,10 @@ public class RestaurantTableDao extends AbstractDao<RestaurantTable> {
                 .getResultList();
     }
 
+    public void delete(int id) throws Exception {
+        entityManager.remove(entityManager.find(RestaurantTable.class, id));
+    }
+
     @Override
     public List<RestaurantTable> findAll() {
         return entityManager.createNamedQuery("RestaurantTable.findAll", RestaurantTable.class).getResultList();
@@ -37,11 +41,6 @@ public class RestaurantTableDao extends AbstractDao<RestaurantTable> {
     @Override
     public RestaurantTable findById(int id) {
         return entityManager.find(RestaurantTable.class, id);
-    }
-
-    @Override
-    public void delete(int id) throws Exception {
-        entityManager.remove(entityManager.find(RestaurantTable.class, id));
     }
 
     @Override

@@ -90,7 +90,7 @@ public class ChefController {
     }
 
     @PostMapping(MARK_PREPARED_URL)
-    public String markOrderLineItemPrepared(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) int orderLineItemId, ModelMap modelMap) throws Exception {
+    public String markOrderLineItemPrepared(@RequestParam(ORDER_LINE_ITEM_ID_PARAM) int orderLineItemId) throws Exception {
         OrderLineItem orderLineItem = orderLineItemService.findById(orderLineItemId);
         orderLineItem.setOrderStatus(OrderStatus.PREPARED);
         orderLineItemService.saveOrUpdate(orderLineItem);

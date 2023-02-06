@@ -14,8 +14,6 @@ import java.util.Date;
 @MappedSuperclass
 public class Persistent implements Serializable {
 
-    protected static final long serialVersionUID = 1L;
-
     @Enumerated(EnumType.STRING)
     private AccessStatus accessStatus;
 

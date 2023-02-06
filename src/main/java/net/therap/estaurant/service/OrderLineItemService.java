@@ -28,8 +28,8 @@ public class OrderLineItemService {
         return orderLineDao.findActiveOrderByOrderId(orderId).size() > 0;
     }
 
-    public boolean findNotServedByItemId(int itemId) {
-        return orderLineDao.findNotServedByItemId(itemId).size() > 0;
+    public boolean isItemInUse(int itemId) {
+        return orderLineDao.isItemInUse(itemId).size() > 0;
     }
 
     public List<OrderLineItem> getOrderedNotificationByUserId(int chefId) {

@@ -2,7 +2,6 @@ package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.ItemDao;
 import net.therap.estaurant.entity.Item;
-import net.therap.estaurant.entity.OrderLineItem;
 import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,7 @@ public class ItemService {
         return itemDao.saveOrUpdate(item);
     }
 
-    public boolean isDuplicateName(Item item) {
+    public boolean existingItem(Item item) {
         Item item1 = itemDao.findByName(item.getName());
 
         return Objects.nonNull(item1) && item1.getId() != item.getId();

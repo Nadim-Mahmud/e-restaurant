@@ -177,7 +177,8 @@ public class AdminController {
     }
 
     @GetMapping(CATEGORY_FORM_URL)
-    public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId, ModelMap modelMap) throws Exception {
+    public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId,
+                                   ModelMap modelMap) {
         Category category = nonNull(categoryId) ? categoryService.findById(Integer.parseInt(categoryId)) : new Category();
 
         modelMap.put(CATEGORY, category);
@@ -227,7 +228,8 @@ public class AdminController {
     }
 
     @GetMapping(ITEM_FORM_URL)
-    public String showItemForm(@RequestParam(value = ITEM_ID_PARAM, required = false) String itemId, ModelMap modelMap) {
+    public String showItemForm(@RequestParam(value = ITEM_ID_PARAM, required = false) String itemId,
+                               ModelMap modelMap) {
         Item item = nonNull(itemId) ? itemService.findById(Integer.parseInt(itemId)) : new Item();
 
         modelMap.put(ITEM, item);
@@ -261,7 +263,7 @@ public class AdminController {
     public String deleteItem(@RequestParam(ITEM_ID_PARAM) int itemId,
                              RedirectAttributes redirectAttributes) throws Exception {
 
-        if (orderLineItemService.findNotServedByItemId(itemId)) {
+        if (orderLineItemService.isItemInUse(itemId)) {
             redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.inUse", null, Locale.getDefault()));
         } else {
             itemService.delete(itemId);
@@ -280,7 +282,9 @@ public class AdminController {
     }
 
     @GetMapping(CHEF_FORM_URL)
-    public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId,
+                               ModelMap modelMap
+    ) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User chef = nonNull(chefId) ? userService.findById(Integer.parseInt(chefId)) : new User();
         modelMap.put(CHEF, chef);
         setupReferenceDataChefForm(modelMap, chef);
@@ -328,7 +332,9 @@ public class AdminController {
     }
 
     @GetMapping(WAITER_FORM_URL)
-    public String showWaiterForm(@RequestParam(value = WAITER_ID_PARAM, required = false) String waiterId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String showWaiterForm(@RequestParam(value = WAITER_ID_PARAM, required = false) String waiterId,
+                                 ModelMap modelMap
+    ) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User waiter = nonNull(waiterId) ? userService.findById(Integer.parseInt(waiterId)) : new User();
         modelMap.put(WAITER, waiter);
         setupReferenceDataWaiterForm(modelMap, waiter);
@@ -380,7 +386,8 @@ public class AdminController {
     }
 
     @GetMapping(RES_TABLE_FORM_URL)
-    public String showTableForm(@RequestParam(value = RES_TABLE_ID_PARAM, required = false) String resTableId, ModelMap modelMap) {
+    public String showTableForm(@RequestParam(value = RES_TABLE_ID_PARAM, required = false) String resTableId,
+                                ModelMap modelMap) {
         RestaurantTable resTable = nonNull(resTableId) ? restaurantTableService.findById(Integer.parseInt(resTableId)) : new RestaurantTable();
 
         modelMap.put(RESTAURANT_TABLE, resTable);

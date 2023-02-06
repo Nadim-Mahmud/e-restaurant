@@ -1,9 +1,7 @@
 package net.therap.estaurant.validator;
 
 import net.therap.estaurant.entity.Category;
-import net.therap.estaurant.entity.Item;
 import net.therap.estaurant.service.CategoryService;
-import net.therap.estaurant.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -27,7 +25,7 @@ public class CategoryValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-        if (categoryService.isDuplicateName((Category) target)) {
+        if (categoryService.existingCategory((Category) target)) {
             errors.rejectValue("name", "input.categoryName.duplicate");
         }
     }

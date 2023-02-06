@@ -49,7 +49,7 @@ public class CategoryService {
         return categoryDao.saveOrUpdate(category);
     }
 
-    public boolean isDuplicateName(Category category){
+    public boolean existingCategory(Category category){
         Category category1 = categoryDao.findByName(category.getName());
 
         return Objects.nonNull(category1) && category1.getId() != category.getId();

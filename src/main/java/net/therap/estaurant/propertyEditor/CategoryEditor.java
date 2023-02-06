@@ -16,7 +16,7 @@ import java.util.Objects;
 public class CategoryEditor extends PropertyEditorSupport {
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @Override
     public String getAsText() {

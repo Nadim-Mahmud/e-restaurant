@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ItemEditor extends PropertyEditorSupport {
 
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     @Override
     public String getAsText() {

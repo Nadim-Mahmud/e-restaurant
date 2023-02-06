@@ -24,6 +24,8 @@ import java.util.List;
 })
 public class Category extends Persistent {
 
+    protected static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categorySeq")
     @SequenceGenerator(name = "categorySeq", sequenceName = "category_seq", allocationSize = 1)
