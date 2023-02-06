@@ -16,7 +16,7 @@ public class StringToIntEditor extends PropertyEditorSupport {
     public String getAsText() {
         Integer number = (Integer) getValue();
 
-        return number == 0 ? "1" : number.toString();
+        return number.toString();
     }
 
     @Override

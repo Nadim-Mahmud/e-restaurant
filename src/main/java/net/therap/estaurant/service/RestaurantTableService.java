@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -43,12 +44,8 @@ public class RestaurantTableService {
     }
 
     public boolean isDuplicateTableName(RestaurantTable restaurantTable) {
-        List<RestaurantTable> restaurantTableList = restaurantTableDao.findByTableName(restaurantTable.getName());
+        RestaurantTable restaurantTable1 = restaurantTableDao.findByTableName(restaurantTable.getName());
 
-        if (restaurantTableList.size() == 0) {
-            return false;
-        }
-
-        return restaurantTableList.get(0).getId() != restaurantTable.getId();
+        return Objects.nonNull(restaurantTable1) && restaurantTable1.getId() != restaurantTable.getId();
     }
 }

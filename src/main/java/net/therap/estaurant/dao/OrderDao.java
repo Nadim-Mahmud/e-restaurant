@@ -12,10 +12,15 @@ import java.util.List;
 @Repository
 public class OrderDao extends AbstractDao<Order> {
 
-    public List<Order> findByTableId(int id) {
-        return entityManager.createNamedQuery("Order.findOrderByTable", Order.class)
-                .setParameter("tableId", id)
-                .getResultList();
+    public Order findByTableId(int id) {
+
+        try {
+            return entityManager.createNamedQuery("Order.findOrderByTable", Order.class)
+                    .setParameter("tableId", id)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public List<Order> findActiveOrderByWaiterId(int waiterId) {

@@ -55,16 +55,13 @@ public class OrderLineItem extends Persistent {
     private Order order;
 
     public OrderLineItem() {
+        this.quantity = 1;
     }
 
     public OrderLineItem(int id) {
         super();
 
         this.item = new Item(id);
-    }
-
-    public boolean isNew() {
-        return id == 0;
     }
 
     public int getId() {
@@ -121,6 +118,10 @@ public class OrderLineItem extends Persistent {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 
     @Override

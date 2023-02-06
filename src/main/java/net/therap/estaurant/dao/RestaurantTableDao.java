@@ -12,10 +12,15 @@ import java.util.List;
 @Repository
 public class RestaurantTableDao extends AbstractDao<RestaurantTable> {
 
-    public List<RestaurantTable> findByTableName(String tableName) {
-        return entityManager.createNamedQuery("RestaurantTable.findTableName", RestaurantTable.class)
-                .setParameter("tableName", tableName)
-                .getResultList();
+    public RestaurantTable findByTableName(String tableName) {
+
+        try {
+            return entityManager.createNamedQuery("RestaurantTable.findTableName", RestaurantTable.class)
+                    .setParameter("tableName", tableName)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public List<RestaurantTable> findByWaiterId(int waiterId) {

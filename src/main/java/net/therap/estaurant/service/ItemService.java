@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -53,12 +54,8 @@ public class ItemService {
     }
 
     public boolean isDuplicateName(Item item) {
-        List<Item> itemList = itemDao.findByName(item.getName());
+        Item item1 = itemDao.findByName(item.getName());
 
-        if (itemList.size() == 0) {
-            return false;
-        }
-
-        return itemList.get(0).getId() != item.getId();
+        return Objects.nonNull(item1) && item1.getId() != item.getId();
     }
 }

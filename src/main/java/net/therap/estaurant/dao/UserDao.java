@@ -12,10 +12,15 @@ import java.util.List;
 @Repository
 public class UserDao extends AbstractDao<User> {
 
-    public List<User> findByEmail(String email) {
-        return entityManager.createNamedQuery("User.findByEmail", User.class)
-                .setParameter("email", email)
-                .getResultList();
+    public User findByEmail(String email) {
+
+        try {
+            return entityManager.createNamedQuery("User.findByEmail", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public List<User> findChef() {

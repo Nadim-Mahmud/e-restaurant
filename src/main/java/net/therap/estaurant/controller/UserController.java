@@ -11,6 +11,7 @@ import net.therap.estaurant.validator.ProfileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static net.therap.estaurant.constant.Constants.*;
 
@@ -51,6 +53,9 @@ public class UserController {
     private static final String LOGIN_VIEW = "login-page";
 
     private static final String LOGOUT_URL = "logout";
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Autowired
     private UserService userService;
@@ -142,7 +147,7 @@ public class UserController {
 
         user = userService.updateUserByProfile(user, profile);
         userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(SUCCESS, SUCCESS);
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.profile.updated", null, Locale.getDefault()));
 
         return REDIRECT;
     }

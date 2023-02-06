@@ -18,6 +18,11 @@
 <%@ include file="nvabar.jsp" %>
 <div class="container">
     <c:set var="br" value="<br>" scope="page"/>
+    <c:if test="${success != null}">
+        <p class="text-success text-center">
+            &check; ${success}
+        </p>
+    </c:if>
     <div class="container col-md-5 mt-2">
         <div class="card">
             <div class="card-body">

@@ -1,17 +1,16 @@
 package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.OrderDao;
-import net.therap.estaurant.entity.AccessStatus;
-import net.therap.estaurant.entity.Order;
-import net.therap.estaurant.entity.OrderLineItem;
-import net.therap.estaurant.entity.OrderStatus;
+import net.therap.estaurant.entity.*;
 import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -68,18 +67,13 @@ public class OrderService {
     }
 
     public boolean isTableInUse(int tableId) {
-        return orderDao.findByTableId(tableId).size() > 0;
+        return Objects.nonNull(orderDao.findByTableId(tableId));
     }
 
     public boolean tableExists(Order order) {
+        Order order1 = orderDao.findByTableId(order.getRestaurantTable().getId());
 
-        List<Order> orderList = orderDao.findByTableId(order.getRestaurantTable().getId());
-
-        if (orderList.size() == 0) {
-            return false;
-        }
-
-        return orderList.get(0).getId() != order.getId();
+        return Objects.nonNull(order1) && order1.getId() != order.getId();
     }
 
     public List<Order> getOrderListWithStatus(int waiterId) {
