@@ -101,12 +101,9 @@ public class UserController {
     }
 
     @PostMapping(SAVE_PASSWORD_URL)
-    String savePassword(
-            @SessionAttribute(ACTIVE_USER) User user,
-            @Valid @ModelAttribute(PASSWORD) Password password,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    String savePassword(@SessionAttribute(ACTIVE_USER) User user,
+                        @Valid @ModelAttribute(PASSWORD) Password password,
+                        BindingResult bindingResult) throws Exception {
 
         if (bindingResult.hasErrors()) {
 
@@ -120,22 +117,17 @@ public class UserController {
     }
 
     @GetMapping(UPDATE_PROFILE_URL)
-    String updateProfile(
-            @SessionAttribute(ACTIVE_USER) User user,
-            ModelMap modelMap
-    ) {
+    String updateProfile(@SessionAttribute(ACTIVE_USER) User user, ModelMap modelMap) {
         modelMap.put(PROFILE, userService.getProfileObject(user));
 
         return UPDATE_PROFILE_VIEW;
     }
 
     @PostMapping(SAVE_PROFILE_URL)
-    String saveOrUpdateProfile(
-            @SessionAttribute(ACTIVE_USER) User user,
-            @Valid @ModelAttribute(PROFILE) Profile profile,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    String saveOrUpdateProfile(@SessionAttribute(ACTIVE_USER) User user,
+                               @Valid @ModelAttribute(PROFILE) Profile profile,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) throws Exception {
 
         if (user.getId() != profile.getId()) {
             return REDIRECT;
@@ -161,11 +153,9 @@ public class UserController {
     }
 
     @PostMapping(LOGIN)
-    public String login(
-            @Valid @ModelAttribute(CREDENTIALS) Credentials credentials,
-            ModelMap modelMap,
-            HttpSession httpSession
-    ) throws Exception {
+    public String login(@Valid @ModelAttribute(CREDENTIALS) Credentials credentials,
+                        ModelMap modelMap,
+                        HttpSession httpSession) throws Exception {
 
         if (userService.isValidCredential(credentials)) {
             httpSession.setAttribute(ACTIVE_USER, userService.findByEmail(credentials.getEmail()));

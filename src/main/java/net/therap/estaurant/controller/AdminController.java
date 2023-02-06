@@ -5,6 +5,7 @@ import net.therap.estaurant.propertyEditor.CategoryEditor;
 import net.therap.estaurant.propertyEditor.ItemEditor;
 import net.therap.estaurant.propertyEditor.RestaurantTableEditor;
 import net.therap.estaurant.service.*;
+import net.therap.estaurant.validator.CategoryValidator;
 import net.therap.estaurant.validator.EmailValidator;
 import net.therap.estaurant.validator.ItemValidator;
 import net.therap.estaurant.validator.RestaurantTableValidator;
@@ -26,8 +27,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
+import static java.util.Objects.nonNull;
 import static net.therap.estaurant.constant.Constants.*;
 
 
@@ -37,7 +38,7 @@ import static net.therap.estaurant.constant.Constants.*;
  */
 @Controller
 @RequestMapping("/admin/*")
-@SessionAttributes({CATEGORY, ITEM, CHEF, WAITER, RESTAURANT_TABLE})
+@SessionAttributes({CATEGORY, ITEM, CHEF, WAITER, RESTAURANT_TABLE, CATEGORY})
 public class AdminController {
 
     private static final String HOME_URL = "/";
@@ -125,6 +126,9 @@ public class AdminController {
     private RestaurantTableValidator restaurantTableValidator;
 
     @Autowired
+    private CategoryValidator categoryValidator;
+
+    @Autowired
     private MessageSource messageSource;
 
     @InitBinder
@@ -152,6 +156,11 @@ public class AdminController {
         webDataBinder.addValidators(itemValidator);
     }
 
+    @InitBinder(CATEGORY)
+    public void categoryBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(categoryValidator);
+    }
+
     @GetMapping(HOME_URL)
     public String adminHome(ModelMap modelMap) {
         modelMap.put(ITEM_LIST, itemService.findAll());
@@ -169,7 +178,7 @@ public class AdminController {
 
     @GetMapping(CATEGORY_FORM_URL)
     public String showCategoryForm(@RequestParam(value = CATEGORY_ID_PARAM, required = false) String categoryId, ModelMap modelMap) throws Exception {
-        Category category = Objects.nonNull(categoryId) ? categoryService.findById(Integer.parseInt(categoryId)) : new Category();
+        Category category = nonNull(categoryId) ? categoryService.findById(Integer.parseInt(categoryId)) : new Category();
 
         modelMap.put(CATEGORY, category);
         modelMap.put(NAV_ITEM, CATEGORY);
@@ -201,10 +210,8 @@ public class AdminController {
     }
 
     @PostMapping(CATEGORY_DELETE_URL)
-    public String deleteCourse(
-            @RequestParam(CATEGORY_ID_PARAM) int categoryId,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String deleteCourse(@RequestParam(CATEGORY_ID_PARAM) int categoryId,
+                               RedirectAttributes redirectAttributes) throws Exception {
         categoryService.delete(categoryId);
         redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
 
@@ -221,7 +228,7 @@ public class AdminController {
 
     @GetMapping(ITEM_FORM_URL)
     public String showItemForm(@RequestParam(value = ITEM_ID_PARAM, required = false) String itemId, ModelMap modelMap) {
-        Item item = Objects.nonNull(itemId) ? itemService.findById(Integer.parseInt(itemId)) : new Item();
+        Item item = nonNull(itemId) ? itemService.findById(Integer.parseInt(itemId)) : new Item();
 
         modelMap.put(ITEM, item);
         setupReferenceDataItemForm(modelMap);
@@ -230,13 +237,11 @@ public class AdminController {
     }
 
     @PostMapping(ITEM_FORM_SAVE_URL)
-    public String saveOrUpdateItem(
-            @Valid @ModelAttribute(ITEM) Item item,
-            BindingResult bindingResult,
-            ModelMap modelMap,
-            SessionStatus sessionStatus,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String saveOrUpdateItem(@Valid @ModelAttribute(ITEM) Item item,
+                                   BindingResult bindingResult,
+                                   ModelMap modelMap,
+                                   SessionStatus sessionStatus,
+                                   RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
             setupReferenceDataItemForm(modelMap);
@@ -253,12 +258,10 @@ public class AdminController {
     }
 
     @PostMapping(ITEM_DELETE_URL)
-    public String deleteItem(
-            @RequestParam(ITEM_ID_PARAM) int itemId,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String deleteItem(@RequestParam(ITEM_ID_PARAM) int itemId,
+                             RedirectAttributes redirectAttributes) throws Exception {
 
-        if (orderLineItemService.isItemOnProcess(itemId)) {
+        if (orderLineItemService.findNotServedByItemId(itemId)) {
             redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.inUse", null, Locale.getDefault()));
         } else {
             itemService.delete(itemId);
@@ -278,7 +281,7 @@ public class AdminController {
 
     @GetMapping(CHEF_FORM_URL)
     public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        User chef = Objects.nonNull(chefId) ? userService.findById(Integer.parseInt(chefId)) : new User();
+        User chef = nonNull(chefId) ? userService.findById(Integer.parseInt(chefId)) : new User();
         modelMap.put(CHEF, chef);
         setupReferenceDataChefForm(modelMap, chef);
 
@@ -286,13 +289,11 @@ public class AdminController {
     }
 
     @PostMapping(CHEF_FORM_SAVE_URL)
-    public String saveOrUpdateChef(
-            @Valid @ModelAttribute(CHEF) User user,
-            BindingResult bindingResult,
-            ModelMap modelMap,
-            SessionStatus sessionStatus,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String saveOrUpdateChef(@Valid @ModelAttribute(CHEF) User user,
+                                   BindingResult bindingResult,
+                                   ModelMap modelMap,
+                                   SessionStatus sessionStatus,
+                                   RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
             setupReferenceDataChefForm(modelMap, user);
@@ -310,10 +311,8 @@ public class AdminController {
     }
 
     @PostMapping(CHEF_DELETE_URL)
-    public String deleteChef(
-            @RequestParam(CHEF_ID_PARAM) int chefId,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String deleteChef(@RequestParam(CHEF_ID_PARAM) int chefId,
+                             RedirectAttributes redirectAttributes) throws Exception {
         userService.delete(chefId);
         redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
 
@@ -330,7 +329,7 @@ public class AdminController {
 
     @GetMapping(WAITER_FORM_URL)
     public String showWaiterForm(@RequestParam(value = WAITER_ID_PARAM, required = false) String waiterId, ModelMap modelMap) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        User waiter = Objects.nonNull(waiterId) ? userService.findById(Integer.parseInt(waiterId)) : new User();
+        User waiter = nonNull(waiterId) ? userService.findById(Integer.parseInt(waiterId)) : new User();
         modelMap.put(WAITER, waiter);
         setupReferenceDataWaiterForm(modelMap, waiter);
 
@@ -338,13 +337,11 @@ public class AdminController {
     }
 
     @PostMapping(WAITER_FORM_SAVE_URL)
-    public String saveOrUpdateWaiter(
-            @Valid @ModelAttribute(WAITER) User user,
-            BindingResult bindingResult,
-            ModelMap modelMap,
-            SessionStatus sessionStatus,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String saveOrUpdateWaiter(@Valid @ModelAttribute(WAITER) User user,
+                                     BindingResult bindingResult,
+                                     ModelMap modelMap,
+                                     SessionStatus sessionStatus,
+                                     RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
             setupReferenceDataWaiterForm(modelMap, user);
@@ -362,13 +359,15 @@ public class AdminController {
     }
 
     @PostMapping(WAITER_DELETE_URL)
-    public String deleteWaiter(
-            @RequestParam(WAITER_ID_PARAM) String waiterId,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
-        userService.delete(Integer.parseInt(waiterId));
-        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
+    public String deleteWaiter(@RequestParam(WAITER_ID_PARAM) int waiterId,
+                               RedirectAttributes redirectAttributes) throws Exception {
 
+        if (orderService.findActiveOrderByWaiterId(waiterId).size() > 0) {
+            redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.waiter", null, Locale.getDefault()));
+        } else {
+            userService.delete(waiterId);
+            redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
+        }
         return REDIRECT + WAITER_REDIRECT_URL;
     }
 
@@ -382,7 +381,7 @@ public class AdminController {
 
     @GetMapping(RES_TABLE_FORM_URL)
     public String showTableForm(@RequestParam(value = RES_TABLE_ID_PARAM, required = false) String resTableId, ModelMap modelMap) {
-        RestaurantTable resTable = Objects.nonNull(resTableId) ? restaurantTableService.findById(Integer.parseInt(resTableId)) : new RestaurantTable();
+        RestaurantTable resTable = nonNull(resTableId) ? restaurantTableService.findById(Integer.parseInt(resTableId)) : new RestaurantTable();
 
         modelMap.put(RESTAURANT_TABLE, resTable);
         modelMap.put(NAV_ITEM, RESTAURANT_TABLE);
@@ -391,13 +390,11 @@ public class AdminController {
     }
 
     @PostMapping(RES_TABLE_FORM_SAVE_URL)
-    public String saveOrUpdateResTable(
-            @Valid @ModelAttribute(RESTAURANT_TABLE) RestaurantTable restaurantTable,
-            BindingResult bindingResult,
-            ModelMap modelMap,
-            SessionStatus sessionStatus,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String saveOrUpdateResTable(@Valid @ModelAttribute(RESTAURANT_TABLE) RestaurantTable restaurantTable,
+                                       BindingResult bindingResult,
+                                       ModelMap modelMap,
+                                       SessionStatus sessionStatus,
+                                       RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
             modelMap.put(NAV_ITEM, RESTAURANT_TABLE);
@@ -414,10 +411,8 @@ public class AdminController {
     }
 
     @PostMapping(RES_TABLE_DELETE_URL)
-    public String deleteResTable(
-            @RequestParam(RES_TABLE_ID_PARAM) String resTableId,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+    public String deleteResTable(@RequestParam(RES_TABLE_ID_PARAM) String resTableId,
+                                 RedirectAttributes redirectAttributes) throws Exception {
 
         if (orderService.isTableInUse(Integer.parseInt(resTableId))) {
             redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.inUse", null, Locale.getDefault()));

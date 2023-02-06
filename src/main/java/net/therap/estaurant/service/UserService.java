@@ -6,6 +6,7 @@ import net.therap.estaurant.dao.UserDao;
 import net.therap.estaurant.entity.AccessStatus;
 import net.therap.estaurant.entity.RestaurantTable;
 import net.therap.estaurant.entity.User;
+import net.therap.estaurant.entity.UserType;
 import net.therap.estaurant.exception.ResourceNotFoundException;
 import net.therap.estaurant.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,11 @@ public class UserService {
         User user = userDao.findById(id);
         user.setAccessStatus(AccessStatus.DELETED);
 
-        for (RestaurantTable restaurantTable : user.getRestaurantTableList()) {
-            restaurantTable.setUser(null);
+        if (user.getType().equals(UserType.WAITER)) {
+
+            for (RestaurantTable restaurantTable : user.getRestaurantTableList()) {
+                restaurantTable.setUser(null);
+            }
         }
 
         userDao.saveOrUpdate(user);

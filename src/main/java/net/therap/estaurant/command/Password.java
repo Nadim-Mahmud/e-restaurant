@@ -3,8 +3,6 @@ package net.therap.estaurant.command;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 /**
  * @author nadimmahmud
@@ -40,7 +38,7 @@ public class Password implements Serializable {
         return oldPassword;
     }
 
-    public void setOldPassword(String oldPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
     }
 
@@ -48,7 +46,7 @@ public class Password implements Serializable {
         return newPassword;
     }
 
-    public void setNewPassword(String newPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
 
@@ -56,7 +54,7 @@ public class Password implements Serializable {
         return confirmPassword;
     }
 
-    public void setConfirmPassword(String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
 }

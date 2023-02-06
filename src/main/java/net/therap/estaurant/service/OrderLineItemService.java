@@ -2,6 +2,7 @@ package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.OrderLineItemDao;
 import net.therap.estaurant.entity.OrderLineItem;
+import net.therap.estaurant.entity.OrderStatus;
 import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,16 @@ public class OrderLineItemService {
     @Autowired
     private UserService userService;
 
-    public boolean isItemOnProcess(int id){
-        return orderLineDao.findByItemId(id).size() > 0;
+    public boolean isOrderOnProcess(int orderId) {
+        return orderLineDao.findActiveOrderByOrderId(orderId).size() > 0;
     }
 
-    public List<OrderLineItem> getOrderedNotificationByUserId(int id) {
-        return orderLineDao.findOrderedItemByChef(userService.findById(id).getItemList());
+    public boolean findNotServedByItemId(int itemId) {
+        return orderLineDao.findNotServedByItemId(itemId).size() > 0;
+    }
+
+    public List<OrderLineItem> getOrderedNotificationByUserId(int chefId) {
+        return orderLineDao.findOrderedItemByChef(userService.findById(chefId).getItemList());
     }
 
     public List<OrderLineItem> findAll() {
@@ -47,5 +52,13 @@ public class OrderLineItemService {
     @Transactional
     public OrderLineItem saveOrUpdate(OrderLineItem orderLineitem) throws Exception {
         return orderLineDao.saveOrUpdate(orderLineitem);
+    }
+
+    @Transactional
+    public OrderLineItem cancel(int orderLineItemId) throws Exception {
+        OrderLineItem orderLineItem = orderLineDao.findById(orderLineItemId);
+        orderLineItem.setOrderStatus(OrderStatus.CANCELED);
+
+        return orderLineDao.saveOrUpdate(orderLineItem);
     }
 }

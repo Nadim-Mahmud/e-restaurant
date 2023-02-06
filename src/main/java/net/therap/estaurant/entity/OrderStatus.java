@@ -9,7 +9,8 @@ public enum OrderStatus {
     ORDERED("Ordered"),
     PREPARING("Preparing"),
     PREPARED("prepared"),
-    SERVED("served");
+    SERVED("served"),
+    CANCELED("Canceled");
 
     private final String label;
 

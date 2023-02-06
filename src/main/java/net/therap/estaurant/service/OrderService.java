@@ -1,13 +1,14 @@
 package net.therap.estaurant.service;
 
 import net.therap.estaurant.dao.OrderDao;
-import net.therap.estaurant.entity.*;
+import net.therap.estaurant.entity.Order;
+import net.therap.estaurant.entity.OrderLineItem;
+import net.therap.estaurant.entity.OrderStatus;
 import net.therap.estaurant.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class OrderService {
         return orderDao.findAll();
     }
 
-    public List<Order> findByWaiterId(int waiterId) {
+    public List<Order> findActiveOrderByWaiterId(int waiterId) {
         return orderDao.findActiveOrderByWaiterId(waiterId);
     }
 
@@ -39,14 +40,14 @@ public class OrderService {
     }
 
     @Transactional
-    public void delete(int id) throws Exception {
+    public void cancel(int id) throws Exception {
         Order order = orderDao.findById(id);
 
-        order.setAccessStatus(AccessStatus.DELETED);
+        order.setStatus(OrderStatus.CANCELED);
         orderDao.saveOrUpdate(order);
 
         for (OrderLineItem orderLineItem : order.getOrderLineItemList()) {
-            orderLineItemService.delete(orderLineItem.getId());
+            orderLineItemService.cancel(orderLineItem.getId());
         }
     }
 

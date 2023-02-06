@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "order_table")
 @SQLDelete(sql = "UPDATE order_table SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
-@Where(clause = "access_status <> 'DELETED'")
+@Where(clause = "access_status <> 'DELETED' AND status <> 'SERVED' AND status <> 'CANCELED'")
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o order by o.status"),
         @NamedQuery(name = "Order.findActiveOnly", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId AND o.status != 'SERVED'"),

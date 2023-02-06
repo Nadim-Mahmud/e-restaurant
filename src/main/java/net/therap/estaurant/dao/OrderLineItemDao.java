@@ -13,8 +13,14 @@ import java.util.List;
 @Repository
 public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
 
-    public List<OrderLineItem> findByItemId(int itemId) {
-        return entityManager.createNamedQuery("OrderLineItem.findByItemId", OrderLineItem.class)
+    public List<OrderLineItem> findActiveOrderByOrderId(int orderId) {
+        return entityManager.createNamedQuery("OrderLineItem.findActiveOrderByOrderId", OrderLineItem.class)
+                .setParameter("orderId", orderId)
+                .getResultList();
+    }
+
+    public List<OrderLineItem> findNotServedByItemId(int itemId) {
+        return entityManager.createNamedQuery("OrderLineItem.findNotServedByItemId", OrderLineItem.class)
                 .setParameter("itemId", itemId)
                 .getResultList();
     }

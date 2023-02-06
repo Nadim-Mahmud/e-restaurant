@@ -18,8 +18,11 @@ import java.util.List;
 @Table(name = "category")
 @SQLDelete(sql = "UPDATE category SET access_status = 'DELETED' WHERE id = ? AND version = ?", check = ResultCheckStyle.COUNT)
 @Where(clause = "access_status <> 'DELETED'")
-@NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
-public class Category extends Persistent{
+@NamedQueries({
+        @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
+        @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :categoryName")
+})
+public class Category extends Persistent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categorySeq")

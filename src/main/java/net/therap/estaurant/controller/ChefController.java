@@ -54,10 +54,7 @@ public class ChefController {
     }
 
     @GetMapping(CHEF_NOTIFICATION_URL)
-    public String showChefNotification(
-            @SessionAttribute(ACTIVE_USER) User user,
-            ModelMap modelMap
-    ) {
+    public String showChefNotification(@SessionAttribute(ACTIVE_USER) User user, ModelMap modelMap) {
         modelMap.put(ORDER_LINE_ITEM_LIST, orderLineItemService.getOrderedNotificationByUserId(user.getId()));
         modelMap.put(NAV_ITEM, NOTIFICATION);
 
@@ -73,12 +70,10 @@ public class ChefController {
     }
 
     @PostMapping(CHEF_ACCEPT_FORM_SAVE_URL)
-    public String saveAcceptForm(
-            @Validated(CookingTimeGroup.class) @ModelAttribute(ORDER_LINE_ITEM) OrderLineItem orderLineItem,
-            BindingResult bindingResult,
-            ModelMap modelMap,
-            SessionStatus sessionStatus
-    ) throws Exception {
+    public String saveAcceptForm(@Validated(CookingTimeGroup.class) @ModelAttribute(ORDER_LINE_ITEM) OrderLineItem orderLineItem,
+                                 BindingResult bindingResult,
+                                 ModelMap modelMap,
+                                 SessionStatus sessionStatus) throws Exception {
 
         if (bindingResult.hasErrors()) {
             modelMap.put(NAV_ITEM, NOTIFICATION);

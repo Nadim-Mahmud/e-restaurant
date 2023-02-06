@@ -31,7 +31,12 @@ public class Profile implements Serializable {
     @Email(message = "{input.email}")
     private String email;
 
+    public Profile() {
+    }
+
     public Profile(int id, String firstName, String lastName, Date dateOfBirth, String email) {
+        this();
+
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

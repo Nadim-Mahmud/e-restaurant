@@ -12,6 +12,18 @@ import java.util.List;
 @Repository
 public class CategoryDao extends AbstractDao<Category> {
 
+    public Category findByName(String categoryName) {
+
+        try {
+            return entityManager.createNamedQuery("Category.findByName", Category.class)
+                    .setParameter("categoryName", categoryName)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+
     @Override
     public List<Category> findAll() {
         return entityManager.createNamedQuery("Category.findAll", Category.class).getResultList();

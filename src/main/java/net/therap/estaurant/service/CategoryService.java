@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -36,7 +37,7 @@ public class CategoryService {
     public void delete(int id) throws Exception {
         Category category = categoryDao.findById(id);
 
-        for(Item item: category.getItemList()){
+        for (Item item : category.getItemList()) {
             itemService.delete(item.getId());
         }
 
@@ -46,5 +47,11 @@ public class CategoryService {
     @Transactional
     public Category saveOrUpdate(Category category) throws Exception {
         return categoryDao.saveOrUpdate(category);
+    }
+
+    public boolean isDuplicateName(Category category){
+        Category category1 = categoryDao.findByName(category.getName());
+
+        return Objects.nonNull(category1) && category1.getId() != category.getId();
     }
 }

@@ -39,12 +39,6 @@ public class ItemService {
 
     @Transactional
     public void delete(int id) throws Exception {
-        Item item = itemDao.findById(id);
-
-        for (OrderLineItem orderLineItem : item.getOrderLineItemList()) {
-            orderLineItemService.delete(orderLineItem.getId());
-        }
-
         itemDao.delete(id);
     }
 
