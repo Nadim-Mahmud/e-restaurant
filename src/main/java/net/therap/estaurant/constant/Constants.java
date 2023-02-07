@@ -5,10 +5,8 @@ package net.therap.estaurant.constant;
  * @since 1/18/23
  */
 public interface Constants {
-
     String REDIRECT = "redirect:/";
     String DATE_PATTERN = "yyyy-MM-dd";
-    String ROLE = "role";
     String ADMIN = "admin";
     String USER = "user";
     String CHEF = "chef";

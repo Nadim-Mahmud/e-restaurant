@@ -24,7 +24,6 @@ public class RestaurantTableValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-
         if (restaurantTableService.isDuplicateTable((RestaurantTable) target)) {
             errors.rejectValue("name", "input.tableName.duplicate");
         }

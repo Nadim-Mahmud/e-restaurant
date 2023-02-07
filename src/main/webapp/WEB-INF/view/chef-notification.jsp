@@ -4,10 +4,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Chef | Notification</title>
+    <title>
+        <fmt:message key="chef.notification.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -23,19 +27,35 @@
     <div class="container col-md-10 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Chef Notifications</h5>
+                <h5 class="text-center mb-3">
+                    <fmt:message key="chef.notification.title"/>
+                </h5>
             </div>
 
             <table class="table align-middle text-center">
                 <thead>
                 <tr>
-                    <th scope="col">SL</th>
-                    <th scope="col">Table</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Ordered/Accepted At</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">
+                        <fmt:message key="label.serial"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.table"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.name"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.quantity"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.status"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.accepted.at"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.action"/>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,7 +85,9 @@
                                     <c:param name="orderLineItemId" value="${orderLineItem.id}"/>
                                 </c:url>
                                 <a class="text-center my-0 mx-2 p-0" href="${itemAccept}">
-                                    <button class="btn btn-outline-success center btn-sm">Accept</button>
+                                    <button class="btn btn-outline-success center btn-sm">
+                                        <fmt:message key="button.accept"/>
+                                    </button>
                                 </a>
                             </c:if>
                             <c:if test="${orderLineItem.orderStatus == preparing}">
@@ -74,7 +96,8 @@
                                 </c:url>
                                 <form:form class="text-center my-0 mx-2 p-0" action="${preparedUrl}" method="post">
                                     <button class="btn btn-outline-primary center btn-sm"
-                                            onclick="return confirm('Is it prepared?')">Mark prepared
+                                            onclick="return confirm('Is it prepared?')">
+                                        <fmt:message key="button.mark.prepared"/>
                                     </button>
                                 </form:form>
                             </c:if>
@@ -86,7 +109,6 @@
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous">

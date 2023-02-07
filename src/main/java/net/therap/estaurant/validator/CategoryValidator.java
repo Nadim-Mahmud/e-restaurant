@@ -24,7 +24,6 @@ public class CategoryValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-
         if (categoryService.isExistingCategory((Category) target)) {
             errors.rejectValue("name", "input.categoryName.duplicate");
         }

@@ -1,13 +1,18 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   User: nadimmahmud
   Since: 1/17/23
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Home</title>
+    <title>
+        <fmt:message key="home.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -26,9 +31,18 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">${item.name}</h5>
                         <hr>
-                        <p class="m-0">Category: ${item.category.name}</p>
-                        <p class="m-0">Price: ${item.price} Taka</p>
-                        <p class="m-0 mb-2 ${item.availability != available ? 'text-danger' : ''}">Availability: ${item.availability.label}</p>
+                        <p class="m-0">
+                            <fmt:message key="label.category.colon"/>
+                                ${item.category.name}
+                        </p>
+                        <p class="m-0">
+                            <fmt:message key="label.price.colon"/>
+                                ${item.price}
+                            <fmt:message key="label.taka"/>
+                        </p>
+                        <p class="m-0 mb-2 ${item.availability != available ? 'text-danger' : ''}">
+                            <fmt:message key="label.availability.colon"/> ${item.availability.label}
+                        </p>
                         <hr>
                         <p class="card-text">${item.description}</p>
                     </div>

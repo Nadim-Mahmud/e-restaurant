@@ -7,7 +7,9 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Waiter | Notification</title>
+    <title>
+        <fmt:message key="waiter.notification.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -22,17 +24,31 @@
     <div class="container col-md-10 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Waiter Notifications</h5>
+                <h5 class="text-center mb-3">
+                    <fmt:message key="waiter.notification.title"/>
+                </h5>
             </div>
             <table class="table align-middle text-center">
                 <thead>
                 <tr>
-                    <th scope="col">SL</th>
-                    <th scope="col">Table</th>
-                    <th scope="col">Items</th>
-                    <th scope="col">Est time</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">
+                        <fmt:message key="label.serial"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.table"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.itemList"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.est.timeToCook"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.status"/>
+                    </th>
+                    <th scope="col">
+                        <fmt:message key="label.action"/>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,12 +79,13 @@
                                 </c:url>
                                 <form:form class="text-center my-0 mx-2 p-0" action="${preparedUrl}" method="post">
                                     <button class="btn btn-outline-primary center btn-sm"
-                                            onclick="return confirm('Is it served?')">Mark as served
+                                            onclick="return confirm('Is it served?')">
+                                        <fmt:message key="button.mark.served"/>
                                     </button>
                                 </form:form>
                             </c:if>
                             <c:if test="${order.status != prepared}">
-                                <c:out value="x"/>
+                                <fmt:message key="label.empty"/>
                             </c:if>
                         </td>
                     </tr>
@@ -78,7 +95,6 @@
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous">

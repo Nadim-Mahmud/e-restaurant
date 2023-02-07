@@ -4,7 +4,9 @@ Date: 12/7/22
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-light px-4 mb-1 shadow-sm">
     <c:set var="admin" value="ADMIN" scope="page"/>
     <c:set var="chef" value="CHEF" scope="page"/>
@@ -18,7 +20,9 @@ Date: 12/7/22
     <c:set var="orderForm" value="orderForm" scope="page"/>
     <c:set var="notification" value="notification" scope="page"/>
     <div class="container-fluid m-0">
-        <a href="/" class="navbar-brand">E-Staurant</a>
+        <a href="/" class="navbar-brand">
+            <fmt:message key="app.title"/>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -81,22 +85,30 @@ Date: 12/7/22
                         </p>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="/update-profile">Update Profile</a>
+                                <a class="dropdown-item" href="/update-profile">
+                                    <fmt:message key="button.update.profile"/>
+                                </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/update-password">Update Password</a>
+                                <a class="dropdown-item" href="/update-password">
+                                    <fmt:message key="button.update.password"/>
+                                </a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="m-0 dropdown-item" href="/logout">Log Out</a>
+                                <a class="m-0 dropdown-item" href="/logout">
+                                    <fmt:message key="button.logout"/>
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </c:if>
                 <c:if test="${activeUser == null && loginPage == null}">
-                    <a href="/login-page" type="button" class="btn btn-primary btn-sm px-4 text-white">Login</a>
+                    <a href="/login-page" type="button" class="btn btn-primary btn-sm px-4 text-white">
+                        <fmt:message key="button.login"/>
+                    </a>
                 </c:if>
             </span>
         </div>

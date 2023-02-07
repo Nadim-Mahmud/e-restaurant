@@ -6,10 +6,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Admin | Waiter</title>
+    <title>
+        <fmt:message key="waiter.list.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,7 +25,9 @@
 <div class="container">
     <div class="d-flex justify-content-end mt-3 mb-1">
         <form:form class="m-0" action="${pageContext.request.contextPath}/admin/waiter/form" method="get">
-            <button class="btn btn-success btn-sm">+ Add Waiter</button>
+            <button class="btn btn-success btn-sm">
+                <fmt:message key="button.add.waiter"/>
+            </button>
         </form:form>
     </div>
     <div class="text-center">
@@ -39,16 +45,30 @@
     <table class="table table-hover table-sm align-middle text-center">
         <thead class="table-head bg-primary bg-opacity-50">
         <tr>
-            <th scope="col" class="text-center">SL</th>
-            <th scope="col" class="text-center">First Name</th>
-            <th scope="col" class="text-center">Last Name</th>
-            <th scope="col" class="text-center">DOB</th>
-            <th scope="col" class="text-center">Email</th>
-            <th scope="col" class="text-center">Join Date</th>
-            <th scope="col" class="text-center">Table</th>
-            <th scope="col" class="text-center">Created At</th>
-            <th scope="col" class="text-center">Updated At</th>
-            <th scope="col" class="text-center">Action</th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.serial"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.firstName"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.lastName"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.dob.short"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.email"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.joiningDate"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.table"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.action"/>
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -80,26 +100,23 @@
                         </c:forEach>
                     </ul>
                 </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${waiter.createdAt}" type="date"/>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${waiter.updatedAt}" type="date"/>
-                </td>
                 <td>
                     <div class="d-flex justify-content-center my-1">
                         <c:url var="updateUrl" value="${pageContext.request.contextPath}/admin/waiter/form">
                             <c:param name="waiterId" value="${waiter.id}"/>
                         </c:url>
                         <a class="text-center my-0 mx-2 p-0" href="${updateUrl}">
-                            <button class="btn btn-outline-primary center btn-sm">Update</button>
+                            <button class="btn btn-outline-primary center btn-sm">
+                                <fmt:message key="button.update"/>
+                            </button>
                         </a>
                         <c:url var="deleteUrl" value="${pageContext.request.contextPath}/admin/waiter/delete">
                             <c:param name="waiterId" value="${waiter.id}"/>
                         </c:url>
                         <form:form class="text-center my-0 mx-2 p-0" action="${deleteUrl}" method="post">
                             <button class="btn btn-outline-danger center btn-sm"
-                                    onclick="return confirm('Are you sure to delete?')">Delete
+                                    onclick="return confirm('Are you sure to delete?')">
+                                <fmt:message key="button.delete"/>
                             </button>
                         </form:form>
                     </div>
@@ -108,7 +125,6 @@
         </c:forEach>
         </tbody>
     </table>
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

@@ -6,10 +6,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Waiter | Order</title>
+    <title>
+        <fmt:message key="order.list.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -35,12 +39,24 @@
     <table class="table table-hover table-sm align-middle text-center">
         <thead class="table-head bg-primary bg-opacity-50">
         <tr>
-            <th scope="col" class="text-center">SL</th>
-            <th scope="col" class="text-center">Table</th>
-            <th scope="col" class="text-center">Ordered At</th>
-            <th scope="col" class="text-center">Items</th>
-            <th scope="col" class="text-center">Bill</th>
-            <th scope="col" class="text-center">Action</th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.serial"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.table"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.ordered.at"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.itemList"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.bill"/>
+            </th>
+            <th scope="col" class="text-center">
+                <fmt:message key="label.action"/>
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -72,7 +88,9 @@
                                 <c:param name="orderId" value="${order.id}"/>
                             </c:url>
                             <a class="text-center my-0 mx-2 p-0" href="${updateUrl}">
-                                <button class="btn btn-outline-primary center btn-sm">Update</button>
+                                <button class="btn btn-outline-primary center btn-sm">
+                                    <fmt:message key="button.update"/>
+                                </button>
                             </a>
                         </c:if>
                         <c:url var="cancelUrl" value="${pageContext.request.contextPath}/waiter/order/cancel">
@@ -81,7 +99,7 @@
                         <form:form class="text-center my-0 mx-2 p-0" action="${cancelUrl}" method="post">
                             <button class="btn btn-outline-danger center btn-sm"
                                     onclick="return confirm('Are you sure to cancel the order?')">
-                                Cancel
+                                <fmt:message key="button.cancel"/>
                             </button>
                         </form:form>
                     </div>
@@ -90,7 +108,6 @@
         </c:forEach>
         </tbody>
     </table>
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

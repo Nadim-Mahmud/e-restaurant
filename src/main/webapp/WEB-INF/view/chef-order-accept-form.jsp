@@ -3,10 +3,15 @@
   Since: 1/19/23
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Chef | Accept Form</title>
+    <title>
+        <fmt:message key="chef.order.accept.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -19,15 +24,21 @@
     <div class="container col-md-5 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Acceptation form</h5>
+                <h5 class="text-center mb-3">
+                    <fmt:message key="chef.order.accept.form.title"/>
+                </h5>
                 <form:form action="/chef/notification/form/save" modelAttribute="orderLineItem" method="post">
                     <div class="mb-3">
-                        <label for="estCookingTime" class="form-label">Est cooking time (minutes)</label>
+                        <label for="estCookingTime" class="form-label">
+                            <fmt:message key="label.est.timeToCook"/>
+                        </label>
                         <form:input path="estCookingTime" class="form-control"/>
                         <form:errors path="estCookingTime" cssClass="text-danger"/>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <fmt:message key="button.accept"/>
+                        </button>
                     </div>
                 </form:form>
             </

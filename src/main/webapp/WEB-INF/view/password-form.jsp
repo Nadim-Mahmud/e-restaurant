@@ -4,10 +4,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="net.therap.estaurant" var="lang"/>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Password Update</title>
+    <title>
+        <fmt:message key="password.update.page.title"/>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,25 +25,35 @@
     <div class="container col-md-5 mt-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center mb-3">Password update form</h5>
+                <h5 class="text-center mb-3">
+                    <fmt:message key="password.update.form.title"/>
+                </h5>
                 <form:form action="/update-password/update" modelAttribute="password" method="post">
                     <div class="mb-3">
-                        <label for="oldPassword" class="form-label">Old Password </label>
+                        <label for="oldPassword" class="form-label">
+                            <fmt:message key="label.password.old"/>
+                        </label>
                         <form:input type="password" path="oldPassword" class="form-control"/>
                         <form:errors path="oldPassword" cssClass="text-danger"/>
                     </div>
                     <div class="mb-3">
-                        <label for="newPassword" class="form-label">New Password </label>
+                        <label for="newPassword" class="form-label">
+                            <fmt:message key="label.password.new"/>
+                        </label>
                         <form:input type="password" path="newPassword" class="form-control"/>
                         <form:errors path="newPassword" cssClass="text-danger"/>
                     </div>
                     <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">New Password </label>
+                        <label for="confirmPassword" class="form-label">
+                            <fmt:message key="label.password.confirm"/>
+                        </label>
                         <form:input type="password" path="confirmPassword" class="form-control"/>
                         <form:errors path="confirmPassword" cssClass="text-danger"/>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <fmt:message key="button.update"/>
+                        </button>
                     </div>
                 </form:form>
             </div>
