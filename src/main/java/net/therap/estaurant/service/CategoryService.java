@@ -49,9 +49,7 @@ public class CategoryService {
         return categoryDao.saveOrUpdate(category);
     }
 
-    public boolean existingCategory(Category category){
-        Category category1 = categoryDao.findByName(category.getName());
-
-        return Objects.nonNull(category1) && category1.getId() != category.getId();
+    public boolean isExistingCategory(Category category){
+        return Objects.nonNull(categoryDao.isExistingCategory(category));
     }
 }

@@ -20,7 +20,8 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o order by o.status"),
         @NamedQuery(name = "Order.findActiveOnly", query = "SELECT o FROM Order o WHERE o.restaurantTable.user.id = :waiterId AND o.status != 'SERVED'"),
-        @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId")
+        @NamedQuery(name = "Order.findOrderByTable", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId"),
+        @NamedQuery(name = "Order.isTableBooked", query = "SELECT o FROM Order o WHERE o.restaurantTable.id = :tableId AND o.id != :orderId")
 })
 public class Order extends Persistent {
 

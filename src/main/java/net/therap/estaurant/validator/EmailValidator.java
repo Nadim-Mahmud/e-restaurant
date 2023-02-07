@@ -25,7 +25,6 @@ public class EmailValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-
         ValidationUtils.rejectIfEmpty(errors, "email", "input.email");
 
         if (userService.isDuplicateEmail((User) target)) {

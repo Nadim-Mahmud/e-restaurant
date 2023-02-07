@@ -23,6 +23,18 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
+    public User isDuplicateEmail(User user) {
+
+        try {
+            return entityManager.createNamedQuery("User.isDuplicateEmail", User.class)
+                    .setParameter("email", user.getEmail())
+                    .setParameter("id", user.getId())
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<User> findChef() {
         return entityManager.createNamedQuery("User.findChef", User.class).getResultList();
     }

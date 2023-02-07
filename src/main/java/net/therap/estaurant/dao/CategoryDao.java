@@ -12,11 +12,12 @@ import java.util.List;
 @Repository
 public class CategoryDao extends AbstractDao<Category> {
 
-    public Category findByName(String categoryName) {
+    public Category isExistingCategory(Category category) {
 
         try {
-            return entityManager.createNamedQuery("Category.findByName", Category.class)
-                    .setParameter("categoryName", categoryName)
+            return entityManager.createNamedQuery("Category.isExistingCategory", Category.class)
+                    .setParameter("id", category.getId())
+                    .setParameter("name", category.getName())
                     .getSingleResult();
         } catch (Exception ex) {
             return null;

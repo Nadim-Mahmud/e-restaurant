@@ -43,9 +43,7 @@ public class RestaurantTableService {
         return restaurantTableDao.saveOrUpdate(restaurantTable);
     }
 
-    public boolean isDuplicateTableName(RestaurantTable restaurantTable) {
-        RestaurantTable restaurantTable1 = restaurantTableDao.findByTableName(restaurantTable.getName());
-
-        return Objects.nonNull(restaurantTable1) && restaurantTable1.getId() != restaurantTable.getId();
+    public boolean isDuplicateTable(RestaurantTable restaurantTable) {
+        return Objects.nonNull(restaurantTableDao.isDuplicateTable(restaurantTable));
     }
 }

@@ -27,6 +27,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
         @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE email= :email"),
+        @NamedQuery(name = "User.isDuplicateEmail", query = "SELECT u FROM User u WHERE email = :email AND id != :id"),
         @NamedQuery(name = "User.findChef", query = "SELECT u FROM User u WHERE u.type = 'CHEF'"),
         @NamedQuery(name = "User.findWaiter", query = "SELECT u FROM User u WHERE u.type = 'WAITER'")
 })

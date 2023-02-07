@@ -46,9 +46,7 @@ public class ItemService {
         return itemDao.saveOrUpdate(item);
     }
 
-    public boolean existingItem(Item item) {
-        Item item1 = itemDao.findByName(item.getName());
-
-        return Objects.nonNull(item1) && item1.getId() != item.getId();
+    public boolean isExistingItem(Item item) {
+        return Objects.nonNull(itemDao.isExistingItem(item));
     }
 }

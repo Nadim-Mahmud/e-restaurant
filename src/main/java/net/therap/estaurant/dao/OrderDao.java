@@ -23,6 +23,18 @@ public class OrderDao extends AbstractDao<Order> {
         }
     }
 
+    public Order isTableBooked(Order order) {
+
+        try {
+            return entityManager.createNamedQuery("Order.isTableBooked", Order.class)
+                    .setParameter("tableId", order.getRestaurantTable().getId())
+                    .setParameter("orderId", order.getId())
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Order> findActiveOrderByWaiterId(int waiterId) {
         return entityManager.createNamedQuery("Order.findActiveOnly", Order.class)
                 .setParameter("waiterId", waiterId)

@@ -25,7 +25,7 @@ public class ItemValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-        if (itemService.existingItem((Item) target)) {
+        if (itemService.isExistingItem((Item) target)) {
             errors.rejectValue("name", "input.itemName.duplicate");
         }
     }

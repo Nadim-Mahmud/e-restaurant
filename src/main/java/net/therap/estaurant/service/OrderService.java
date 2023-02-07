@@ -71,10 +71,8 @@ public class OrderService {
         return Objects.nonNull(orderDao.findByTableId(tableId));
     }
 
-    public boolean tableExists(Order order) {
-        Order order1 = orderDao.findByTableId(order.getRestaurantTable().getId());
-
-        return Objects.nonNull(order1) && order1.getId() != order.getId();
+    public boolean isTableBooked(Order order) {
+        return Objects.nonNull(orderDao.isTableBooked(order));
     }
 
     public List<Order> getOrderListWithStatus(int waiterId) {

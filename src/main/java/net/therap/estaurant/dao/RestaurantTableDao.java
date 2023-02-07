@@ -12,11 +12,12 @@ import java.util.List;
 @Repository
 public class RestaurantTableDao extends AbstractDao<RestaurantTable> {
 
-    public RestaurantTable findByTableName(String tableName) {
+    public RestaurantTable isDuplicateTable(RestaurantTable restaurantTable) {
 
         try {
-            return entityManager.createNamedQuery("RestaurantTable.findTableName", RestaurantTable.class)
-                    .setParameter("tableName", tableName)
+            return entityManager.createNamedQuery("RestaurantTable.isDuplicateTable", RestaurantTable.class)
+                    .setParameter("name", restaurantTable.getName())
+                    .setParameter("id", restaurantTable.getId())
                     .getSingleResult();
         } catch (Exception ex) {
             return null;

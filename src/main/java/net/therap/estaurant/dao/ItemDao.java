@@ -17,11 +17,12 @@ public class ItemDao extends AbstractDao<Item> {
         return entityManager.createNamedQuery("Item.findAvailable", Item.class).getResultList();
     }
 
-    public Item findByName(String itemName) {
+    public Item isExistingItem(Item item) {
 
         try {
-            return entityManager.createNamedQuery("Item.findByName", Item.class)
-                    .setParameter("itemName", itemName)
+            return entityManager.createNamedQuery("Item.isExistingItem", Item.class)
+                    .setParameter("id", item.getId())
+                    .setParameter("name", item.getName())
                     .getSingleResult();
         } catch (Exception ex) {
             return null;

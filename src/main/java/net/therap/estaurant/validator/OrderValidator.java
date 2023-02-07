@@ -32,8 +32,8 @@ public class OrderValidator implements Validator {
             errors.rejectValue("restaurantTable", "select.empty");
         }
 
-        if (orderService.tableExists(order)) {
-            errors.rejectValue("restaurantTable", "table.exist");
+        if (orderService.isTableBooked(order)) {
+            errors.rejectValue("restaurantTable", "table.booked");
         }
     }
 }

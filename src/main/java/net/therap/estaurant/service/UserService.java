@@ -82,9 +82,7 @@ public class UserService {
     }
 
     public boolean isDuplicateEmail(User user) {
-        User user1 = userDao.findByEmail(user.getEmail());
-
-        return Objects.nonNull(user1) && user1.getId() != user.getId();
+        return Objects.nonNull(userDao.isDuplicateEmail(user));
     }
 
     public Profile getProfileObject(User user) {

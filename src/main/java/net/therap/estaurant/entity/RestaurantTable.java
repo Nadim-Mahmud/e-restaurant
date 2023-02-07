@@ -21,7 +21,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "RestaurantTable.findAll", query = "SELECT r FROM RestaurantTable r"),
         @NamedQuery(name = "RestaurantTable.findByWaiterId", query = "SELECT r FROM RestaurantTable r WHERE r.user.id = :waiterId"),
-        @NamedQuery(name = "RestaurantTable.findTableName", query = "SELECT r FROM RestaurantTable r WHERE r.name = :tableName")
+        @NamedQuery(name = "RestaurantTable.isDuplicateTable", query = "SELECT r FROM RestaurantTable r WHERE r.name = :name AND r.id != :id")
 })
 public class RestaurantTable extends Persistent {
 
