@@ -66,7 +66,7 @@ public class User extends Persistent {
     private Date joiningDate;
 
     @OneToMany
-    @JoinColumn(name ="userId")
+    @JoinColumn(name = "userId")
     private List<RestaurantTable> restaurantTableList;
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -162,7 +162,7 @@ public class User extends Persistent {
         this.itemList = itemList;
     }
 
-    public boolean isNew(){
+    public boolean isNew() {
         return id == 0;
     }
 

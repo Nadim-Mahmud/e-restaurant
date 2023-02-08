@@ -118,7 +118,7 @@ public class WaiterController {
             @SessionAttribute(ACTIVE_USER) User user,
             ModelMap modelMap) {
 
-        modelMap.put(ORDER_LIST, orderService.findActiveOrderByWaiterId(user.getId()));
+        modelMap.put(ORDER_LIST, orderService.findActiveOrderListByWaiterId(user.getId()));
         modelMap.put(NAV_ITEM, ORDERS);
 
         return ORDER_VIEW;

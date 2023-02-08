@@ -29,11 +29,11 @@ public class OrderLineItemService {
     }
 
     public boolean isItemInUse(int itemId) {
-        return orderLineDao.isItemInUse(itemId).size() > 0;
+        return orderLineDao.findNotServedOrderLineItemsByItemId(itemId).size() > 0;
     }
 
-    public List<OrderLineItem> getOrderedNotificationByUserId(int chefId) {
-        return orderLineDao.findOrderedItemByChef(userService.findById(chefId).getItemList());
+    public List<OrderLineItem> getOrderedNotificationsByUserId(int chefId) {
+        return orderLineDao.findOrderedItemsByChef(userService.findById(chefId).getItemList());
     }
 
     public List<OrderLineItem> findAll() {

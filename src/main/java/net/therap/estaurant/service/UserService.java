@@ -49,7 +49,7 @@ public class UserService {
         User user = userDao.findByEmail(email);
 
         if (Objects.isNull(user)) {
-            throw new RuntimeException();
+            return new User();
         }
 
         return user;
@@ -82,7 +82,7 @@ public class UserService {
     }
 
     public boolean isDuplicateEmail(User user) {
-        return Objects.nonNull(userDao.isDuplicateEmail(user));
+        return userDao.isDuplicateEmail(user);
     }
 
     public Profile getProfileObject(User user) {

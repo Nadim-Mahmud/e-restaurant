@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -44,6 +43,6 @@ public class RestaurantTableService {
     }
 
     public boolean isDuplicateTable(RestaurantTable restaurantTable) {
-        return Objects.nonNull(restaurantTableDao.isDuplicateTable(restaurantTable));
+        return restaurantTableDao.isDuplicateTable(restaurantTable);
     }
 }

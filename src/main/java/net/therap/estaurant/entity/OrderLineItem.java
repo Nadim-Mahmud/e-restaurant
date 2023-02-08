@@ -23,7 +23,7 @@ import java.util.Objects;
 @Where(clause = "access_status <> 'DELETED' AND order_status <> 'SERVED' AND order_status <> 'CANCELED'")
 @NamedQueries({
         @NamedQuery(name = "OrderLineItem.findAll", query = "SELECT o FROM OrderLineItem o"),
-        @NamedQuery(name = "OrderLineItem.findActiveOrderByOrderId", query = "SELECT o FROM OrderLineItem o WHERE o.order.id = :orderId AND orderStatus = 'PREPARED' OR orderStatus = 'PREPARING'"),
+        @NamedQuery(name = "OrderLineItem.findActiveOrderByOrderId", query = "SELECT o FROM OrderLineItem o WHERE o.order.id = :orderId AND (orderStatus = 'PREPARED' OR orderStatus = 'PREPARING')"),
         @NamedQuery(name = "OrderLineItem.findNotServedByItemId", query = "SELECT o FROM OrderLineItem o WHERE o.item.id = :itemId AND o.orderStatus != 'SERVED'"),
         @NamedQuery(name = "OrderLineItem.findOrdersOnProcess", query = "SELECT o FROM OrderLineItem o WHERE (o.orderStatus = 'ORDERED' or o.orderStatus = 'PREPARING') and o.item in :itemList order by o.orderStatus")
 })

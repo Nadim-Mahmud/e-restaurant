@@ -17,22 +17,17 @@ public class ItemDao extends AbstractDao<Item> {
         return entityManager.createNamedQuery("Item.findAvailable", Item.class).getResultList();
     }
 
-    public Item isExistingItem(Item item) {
-
-        try {
-            return entityManager.createNamedQuery("Item.isExistingItem", Item.class)
-                    .setParameter("id", item.getId())
-                    .setParameter("name", item.getName())
-                    .getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
+    public boolean isExistingItem(Item item) {
+        return !entityManager.createNamedQuery("Item.findItemByName", Item.class)
+                .setParameter("id", item.getId())
+                .setParameter("name", item.getName())
+                .getResultList()
+                .isEmpty();
     }
 
     public void delete(int id) throws Exception {
         entityManager.remove(entityManager.find(Item.class, id));
     }
-
 
     @Override
     public List<Item> findAll() {

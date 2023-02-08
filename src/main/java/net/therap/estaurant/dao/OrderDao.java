@@ -12,30 +12,22 @@ import java.util.List;
 @Repository
 public class OrderDao extends AbstractDao<Order> {
 
-    public Order findByTableId(int id) {
-
-        try {
-            return entityManager.createNamedQuery("Order.findOrderByTable", Order.class)
-                    .setParameter("tableId", id)
-                    .getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
+    public boolean isTableInUse(int tableId) {
+        return !entityManager.createNamedQuery("Order.findOrderByTable", Order.class)
+                .setParameter("tableId", tableId)
+                .getResultList()
+                .isEmpty();
     }
 
-    public Order isTableBooked(Order order) {
-
-        try {
-            return entityManager.createNamedQuery("Order.isTableBooked", Order.class)
-                    .setParameter("tableId", order.getRestaurantTable().getId())
-                    .setParameter("orderId", order.getId())
-                    .getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
+    public boolean isTableBooked(Order order) {
+        return !entityManager.createNamedQuery("Order.findOrderOnTable", Order.class)
+                .setParameter("tableId", order.getRestaurantTable().getId())
+                .setParameter("orderId", order.getId())
+                .getResultList()
+                .isEmpty();
     }
 
-    public List<Order> findActiveOrderByWaiterId(int waiterId) {
+    public List<Order> findActiveOrderListByWaiterId(int waiterId) {
         return entityManager.createNamedQuery("Order.findActiveOnly", Order.class)
                 .setParameter("waiterId", waiterId)
                 .getResultList();

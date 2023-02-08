@@ -20,7 +20,7 @@ import java.util.List;
 @Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
-        @NamedQuery(name = "Category.isExistingCategory", query = "SELECT c FROM Category c WHERE c.id != :id AND c.name = :name")
+        @NamedQuery(name = "Category.findCategoryByName", query = "SELECT c FROM Category c WHERE c.id != :id AND c.name = :name")
 })
 public class Category extends Persistent {
 

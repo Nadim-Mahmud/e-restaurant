@@ -13,7 +13,7 @@ public class SiteExceptionHandler {
     private static String ERROR_VIEW = "error";
 
     @ExceptionHandler(value = Exception.class)
-    public String handleError(){
+    public String handleError() {
         return ERROR_VIEW;
     }
 }

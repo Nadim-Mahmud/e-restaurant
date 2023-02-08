@@ -19,13 +19,13 @@ public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
                 .getResultList();
     }
 
-    public List<OrderLineItem> isItemInUse(int itemId) {
+    public List<OrderLineItem> findNotServedOrderLineItemsByItemId(int itemId) {
         return entityManager.createNamedQuery("OrderLineItem.findNotServedByItemId", OrderLineItem.class)
                 .setParameter("itemId", itemId)
                 .getResultList();
     }
 
-    public List<OrderLineItem> findOrderedItemByChef(List<Item> itemList) {
+    public List<OrderLineItem> findOrderedItemsByChef(List<Item> itemList) {
         return entityManager.createNamedQuery("OrderLineItem.findOrdersOnProcess", OrderLineItem.class)
                 .setParameter("itemList", itemList)
                 .getResultList();

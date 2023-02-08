@@ -7,7 +7,6 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 /**
  * @author nadimmahmud
@@ -19,7 +18,7 @@ import java.util.List;
 @Where(clause = "access_status <> 'DELETED'")
 @NamedQueries({
         @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i order by i.name"),
-        @NamedQuery(name = "Item.isExistingItem", query = "SELECT i FROM Item i WHERE i.id != :id AND i.name = :name"),
+        @NamedQuery(name = "Item.findItemByName", query = "SELECT i FROM Item i WHERE i.id != :id AND i.name = :name"),
         @NamedQuery(name = "Item.findAvailable", query = "SELECT i FROM Item i where i.availability = 'AVAILABLE' order by i.name")
 })
 public class Item extends Persistent {

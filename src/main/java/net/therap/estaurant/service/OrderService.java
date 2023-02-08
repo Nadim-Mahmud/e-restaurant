@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -31,8 +30,8 @@ public class OrderService {
         return orderDao.findAll();
     }
 
-    public List<Order> findActiveOrderByWaiterId(int waiterId) {
-        return orderDao.findActiveOrderByWaiterId(waiterId);
+    public List<Order> findActiveOrderListByWaiterId(int waiterId) {
+        return orderDao.findActiveOrderListByWaiterId(waiterId);
     }
 
     public Order findById(int id) {
@@ -68,15 +67,15 @@ public class OrderService {
     }
 
     public boolean isTableInUse(int tableId) {
-        return Objects.nonNull(orderDao.findByTableId(tableId));
+        return orderDao.isTableInUse(tableId);
     }
 
     public boolean isTableBooked(Order order) {
-        return Objects.nonNull(orderDao.isTableBooked(order));
+        return orderDao.isTableBooked(order);
     }
 
     public List<Order> getOrderListWithStatus(int waiterId) {
-        List<Order> orderList = orderDao.findActiveOrderByWaiterId(waiterId);
+        List<Order> orderList = orderDao.findActiveOrderListByWaiterId(waiterId);
 
         for (int i = 0; i < orderList.size(); i++) {
 

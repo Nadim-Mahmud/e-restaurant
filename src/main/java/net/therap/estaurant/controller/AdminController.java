@@ -368,7 +368,7 @@ public class AdminController {
     public String deleteWaiter(@RequestParam(WAITER_ID_PARAM) int waiterId,
                                RedirectAttributes redirectAttributes) throws Exception {
 
-        if (orderService.findActiveOrderByWaiterId(waiterId).size() > 0) {
+        if (orderService.findActiveOrderListByWaiterId(waiterId).size() > 0) {
             redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.waiter", null, Locale.getDefault()));
         } else {
             userService.delete(waiterId);

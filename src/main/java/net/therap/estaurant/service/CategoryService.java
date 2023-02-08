@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -49,7 +48,7 @@ public class CategoryService {
         return categoryDao.saveOrUpdate(category);
     }
 
-    public boolean isExistingCategory(Category category){
-        return Objects.nonNull(categoryDao.isExistingCategory(category));
+    public boolean isExistingCategory(Category category) {
+        return categoryDao.isExistingCategory(category);
     }
 }
