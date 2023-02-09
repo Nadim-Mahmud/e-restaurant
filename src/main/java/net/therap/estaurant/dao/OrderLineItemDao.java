@@ -50,7 +50,6 @@ public class OrderLineItemDao extends AbstractDao<OrderLineItem> {
 
         if (orderLineItem.isNew()) {
             entityManager.persist(orderLineItem);
-            entityManager.flush();
         } else {
             orderLineItem = entityManager.merge(orderLineItem);
         }

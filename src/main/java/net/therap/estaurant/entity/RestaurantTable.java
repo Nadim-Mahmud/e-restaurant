@@ -25,7 +25,7 @@ import java.util.Objects;
 })
 public class RestaurantTable extends Persistent {
 
-    protected static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurantTableSeq")
@@ -40,8 +40,7 @@ public class RestaurantTable extends Persistent {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "restaurantTableId")
+    @OneToMany(mappedBy = "restaurantTable")
     private List<Order> orderList;
 
     public int getId() {

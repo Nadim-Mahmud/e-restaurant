@@ -33,7 +33,7 @@ import java.util.Objects;
 })
 public class User extends Persistent {
 
-    protected static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
@@ -164,22 +164,5 @@ public class User extends Persistent {
 
     public boolean isNew() {
         return id == 0;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
-        return Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getEmail(), getPassword());
     }
 }

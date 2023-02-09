@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class SiteErrorController implements ErrorController {
 
-    private static String ERROR_VIEW = "error";
+    private static final String ERROR_VIEW = "error";
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, ModelMap modelMap) {

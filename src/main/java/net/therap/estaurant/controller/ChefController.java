@@ -7,10 +7,12 @@ import net.therap.estaurant.service.ItemService;
 import net.therap.estaurant.service.OrderLineItemService;
 import net.therap.estaurant.validator.CookingTimeGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -45,6 +47,11 @@ public class ChefController {
 
     @Autowired
     private OrderLineItemService orderLineItemService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
 
     @GetMapping(HOME_URL)
     public String chefHome(ModelMap modelMap) {

@@ -24,7 +24,7 @@ public class ChefFilter implements Filter {
         HttpSession httpSession = ((HttpServletRequest) request).getSession();
         User user = (User) httpSession.getAttribute(Constants.ACTIVE_USER);
 
-        if (Objects.nonNull(user) && user.getType().equals(UserType.CHEF)) {
+        if (Objects.nonNull(user) && UserType.CHEF.equals(user.getType())) {
             request.setAttribute(Constants.ACTIVE_USER, user);
             chain.doFilter(request, response);
 

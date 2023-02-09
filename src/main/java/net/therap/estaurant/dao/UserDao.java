@@ -54,7 +54,6 @@ public class UserDao extends AbstractDao<User> {
 
         if (user.isNew()) {
             entityManager.persist(user);
-            entityManager.flush();
         } else {
             user = entityManager.merge(user);
         }

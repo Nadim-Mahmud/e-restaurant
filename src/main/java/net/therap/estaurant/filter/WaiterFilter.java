@@ -24,7 +24,7 @@ public class WaiterFilter implements Filter {
         HttpSession httpSession = ((HttpServletRequest) request).getSession();
         User user = (User) httpSession.getAttribute(Constants.ACTIVE_USER);
 
-        if (Objects.nonNull(user) && user.getType().equals(UserType.WAITER)) {
+        if (Objects.nonNull(user) && UserType.WAITER.equals(user.getType())) {
             request.setAttribute(Constants.ACTIVE_USER, user);
             chain.doFilter(request, response);
 

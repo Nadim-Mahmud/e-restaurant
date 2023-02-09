@@ -45,7 +45,6 @@ public class RestaurantTableDao extends AbstractDao<RestaurantTable> {
 
         if (restaurantTable.isNew()) {
             entityManager.persist(restaurantTable);
-            entityManager.flush();
         } else {
             restaurantTable = entityManager.merge(restaurantTable);
         }

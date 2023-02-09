@@ -39,7 +39,6 @@ public class CategoryDao extends AbstractDao<Category> {
 
         if (category.isNew()) {
             entityManager.persist(category);
-            entityManager.flush();
         } else {
             category = entityManager.merge(category);
         }

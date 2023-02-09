@@ -44,7 +44,6 @@ public class ItemDao extends AbstractDao<Item> {
 
         if (item.isNew()) {
             entityManager.persist(item);
-            entityManager.flush();
         } else {
             item = entityManager.merge(item);
         }

@@ -48,7 +48,6 @@ public class OrderDao extends AbstractDao<Order> {
 
         if (order.isNew()) {
             entityManager.persist(order);
-            entityManager.flush();
         } else {
             order = entityManager.merge(order);
         }

@@ -25,7 +25,7 @@ import java.util.Objects;
 })
 public class Order extends Persistent {
 
-    protected static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderTableSeq")
@@ -39,8 +39,7 @@ public class Order extends Persistent {
     @JoinColumn(name = "restaurantTableId")
     private RestaurantTable restaurantTable;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "orderId")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "order", orphanRemoval = true)
     private List<OrderLineItem> orderLineItemList;
 
     @Transient
@@ -86,8 +85,14 @@ public class Order extends Persistent {
         return orderLineItemList;
     }
 
-    public void setOrderLineItemList(List<OrderLineItem> orderLineItemList) {
-        this.orderLineItemList = orderLineItemList;
+    public void addOrderLineItem(OrderLineItem orderLineItem){
+        orderLineItemList.add(orderLineItem);
+        orderLineItem.setOrder(this);
+    }
+
+    public void removeOrderLineItem(OrderLineItem orderLineItem){
+        orderLineItemList.remove(orderLineItem);
+        orderLineItem.setOrder(null);
     }
 
     public double totalBill() {

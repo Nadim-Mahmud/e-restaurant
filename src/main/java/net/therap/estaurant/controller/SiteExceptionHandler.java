@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class SiteExceptionHandler {
 
-    private static String ERROR_VIEW = "error";
+    private static final String ERROR_VIEW = "error";
 
     @ExceptionHandler(value = Exception.class)
     public String handleError() {

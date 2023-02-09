@@ -1,61 +1,62 @@
 package net.therap.estaurant.controller;
 
-import net.therap.estaurant.command.Credentials;
-import net.therap.estaurant.command.Password;
-import net.therap.estaurant.command.Profile;
-import net.therap.estaurant.entity.User;
+import net.therap.estaurant.entity.*;
+import net.therap.estaurant.propertyEditor.CategoryEditor;
+import net.therap.estaurant.propertyEditor.ItemEditor;
+import net.therap.estaurant.propertyEditor.RestaurantTableEditor;
 import net.therap.estaurant.service.ItemService;
+import net.therap.estaurant.service.OrderService;
+import net.therap.estaurant.service.RestaurantTableService;
 import net.therap.estaurant.service.UserService;
-import net.therap.estaurant.validator.PasswordValidator;
-import net.therap.estaurant.validator.ProfileValidator;
+import net.therap.estaurant.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static java.util.Objects.nonNull;
 import static net.therap.estaurant.constant.Constants.*;
-
 
 /**
  * @author nadimmahmud
- * @since 1/25/23
+ * @since 1/18/23
  */
 @Controller
-@SessionAttributes({PASSWORD, PROFILE})
+@RequestMapping("/admin/*")
+@SessionAttributes({CHEF, WAITER})
 public class UserController {
 
-    private static final String HOME = "/";
-    private static final String HOME_VIEW = "home";
+    private static final String CHEF_REDIRECT_URL = "admin/chef";
+    private static final String CHEF_URL = "chef";
+    private static final String CHEF_VIEW = "chef-list";
+    private static final String CHEF_FORM_URL = "chef/form";
+    private static final String CHEF_FORM_SAVE_URL = "chef/save";
+    private static final String CHEF_FORM_VIEW = "chef-form";
+    private static final String CHEF_ID_PARAM = "chefId";
+    private static final String CHEF_DELETE_URL = "chef/delete";
 
-    private static final String UPDATE_PASSWORD_URL = "update-password";
-    private static final String UPDATE_PASSWORD_VIEW = "password-form";
-    private static final String SAVE_PASSWORD_URL = "/update-password/update";
-
-    private static final String UPDATE_PROFILE_URL = "update-profile";
-    private static final String UPDATE_PROFILE_VIEW = "profile-form";
-    private static final String SAVE_PROFILE_URL = "/update-profile/update";
-
-    private static final String LOGIN = "login";
-    private static final String LOGIN_URL = "login-page";
-    private static final String LOGIN_VIEW = "login-page";
-
-    private static final String LOGOUT_URL = "logout";
-
-    @Autowired
-    private MessageSource messageSource;
+    private static final String WAITER_REDIRECT_URL = "admin/waiter";
+    private static final String WAITER_URL = "waiter";
+    private static final String WAITER_VIEW = "waiter-list";
+    private static final String WAITER_FORM_URL = "waiter/form";
+    private static final String WAITER_FORM_SAVE_URL = "waiter/save";
+    private static final String WAITER_FORM_VIEW = "waiter-form";
+    private static final String WAITER_ID_PARAM = "waiterId";
+    private static final String WAITER_DELETE_URL = "waiter/delete";
 
     @Autowired
     private UserService userService;
@@ -64,120 +65,164 @@ public class UserController {
     private ItemService itemService;
 
     @Autowired
-    private ProfileValidator profileValidator;
+    private RestaurantTableService restaurantTableService;
 
-    @InitBinder
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private RestaurantTableEditor restaurantTableEditor;
+
+    @Autowired
+    private ItemEditor itemEditor;
+
+    @Autowired
+    private CategoryEditor categoryEditor;
+
+    @Autowired
+    private EmailValidator emailValidator;
+
+    @Autowired
+    private MessageSource messageSource;
+
+    @InitBinder({WAITER, CHEF})
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
         webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+        webDataBinder.registerCustomEditor(Category.class, categoryEditor);
+        webDataBinder.registerCustomEditor(Item.class, itemEditor);
+        webDataBinder.registerCustomEditor(RestaurantTable.class, restaurantTableEditor);
+        webDataBinder.addValidators(emailValidator);
     }
 
-    @InitBinder(PASSWORD)
-    public void passwordBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(new PasswordValidator());
+    @GetMapping(CHEF_URL)
+    public String showChef(ModelMap modelMap) {
+        modelMap.put(CHEF_LIST, userService.findChef());
+        modelMap.put(NAV_ITEM, CHEF);
+
+        return CHEF_VIEW;
     }
 
-    @InitBinder(PROFILE)
-    public void profileBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(profileValidator);
+    @GetMapping(CHEF_FORM_URL)
+    public String showChefForm(@RequestParam(value = CHEF_ID_PARAM, required = false) String chefId,
+                               ModelMap modelMap
+    ) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        User chef = nonNull(chefId) ? userService.findById(Integer.parseInt(chefId)) : new User();
+        modelMap.put(CHEF, chef);
+        setupReferenceDataChefForm(modelMap, chef);
+
+        return CHEF_FORM_VIEW;
     }
 
-    @GetMapping(HOME)
-    public String guestHome(ModelMap modelMap) {
-        modelMap.put(GUEST, GUEST);
-        modelMap.put(ITEM_LIST, itemService.findAll());
-
-        return HOME_VIEW;
-    }
-
-    @GetMapping(UPDATE_PASSWORD_URL)
-    public String showPasswordUpdatePage(ModelMap modelMap, @SessionAttribute(ACTIVE_USER) User user) {
-        Password password = new Password();
-        password.setStoredUserPassword(user.getPassword());
-        modelMap.put(PASSWORD, password);
-
-        return UPDATE_PASSWORD_VIEW;
-    }
-
-    @PostMapping(SAVE_PASSWORD_URL)
-    String savePassword(@SessionAttribute(ACTIVE_USER) User user,
-                        @Valid @ModelAttribute(PASSWORD) Password password,
-                        BindingResult bindingResult) throws Exception {
+    @PostMapping(CHEF_FORM_SAVE_URL)
+    public String saveOrUpdateChef(@Valid @ModelAttribute(CHEF) User user,
+                                   BindingResult bindingResult,
+                                   ModelMap modelMap,
+                                   SessionStatus sessionStatus,
+                                   RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
+            setupReferenceDataChefForm(modelMap, user);
 
-            return UPDATE_PASSWORD_VIEW;
+            return CHEF_FORM_VIEW;
         }
 
-        user.setPassword(password.getNewPassword());
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (user.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
+        user.setType(UserType.CHEF);
         userService.saveOrUpdate(user);
+        sessionStatus.setComplete();
 
-        return REDIRECT;
+        return REDIRECT + CHEF_REDIRECT_URL;
     }
 
-    @GetMapping(UPDATE_PROFILE_URL)
-    String updateProfile(@SessionAttribute(ACTIVE_USER) User user, ModelMap modelMap) {
-        modelMap.put(PROFILE, userService.getProfileObject(user));
+    @PostMapping(CHEF_DELETE_URL)
+    public String deleteChef(@RequestParam(CHEF_ID_PARAM) int chefId,
+                             RedirectAttributes redirectAttributes) throws Exception {
+        userService.delete(chefId);
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
 
-        return UPDATE_PROFILE_VIEW;
+        return REDIRECT + CHEF_REDIRECT_URL;
     }
 
-    @PostMapping(SAVE_PROFILE_URL)
-    String saveOrUpdateProfile(@SessionAttribute(ACTIVE_USER) User user,
-                               @Valid @ModelAttribute(PROFILE) Profile profile,
-                               BindingResult bindingResult,
+    @GetMapping(WAITER_URL)
+    public String showWaiter(ModelMap modelMap) {
+        modelMap.put(WAITER_LIST, userService.findWaiter());
+        modelMap.put(NAV_ITEM, WAITER);
+
+        return WAITER_VIEW;
+    }
+
+    @GetMapping(WAITER_FORM_URL)
+    public String showWaiterForm(@RequestParam(value = WAITER_ID_PARAM, required = false) String waiterId,
+                                 ModelMap modelMap
+    ) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        User waiter = nonNull(waiterId) ? userService.findById(Integer.parseInt(waiterId)) : new User();
+        modelMap.put(WAITER, waiter);
+        setupReferenceDataWaiterForm(modelMap, waiter);
+
+        return WAITER_FORM_VIEW;
+    }
+
+    @PostMapping(WAITER_FORM_SAVE_URL)
+    public String saveOrUpdateWaiter(@Valid @ModelAttribute(WAITER) User user,
+                                     BindingResult bindingResult,
+                                     ModelMap modelMap,
+                                     SessionStatus sessionStatus,
+                                     RedirectAttributes redirectAttributes) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+            setupReferenceDataWaiterForm(modelMap, user);
+
+            return WAITER_FORM_VIEW;
+        }
+
+        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage(
+                (user.getId() == 0) ? "success.add" : "success.update", null, Locale.getDefault()));
+        user.setType(UserType.WAITER);
+        userService.saveOrUpdate(user);
+        sessionStatus.setComplete();
+
+        return REDIRECT + WAITER_REDIRECT_URL;
+    }
+
+    @PostMapping(WAITER_DELETE_URL)
+    public String deleteWaiter(@RequestParam(WAITER_ID_PARAM) int waiterId,
                                RedirectAttributes redirectAttributes) throws Exception {
 
-        if (user.getId() != profile.getId()) {
-            return REDIRECT;
+        if (orderService.findActiveOrderListByWaiterId(waiterId).size() > 0) {
+            redirectAttributes.addFlashAttribute(FAILED, messageSource.getMessage("fail.delete.waiter", null, Locale.getDefault()));
+        } else {
+            userService.delete(waiterId);
+            redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.delete", null, Locale.getDefault()));
         }
-
-        if (bindingResult.hasErrors()) {
-            return UPDATE_PROFILE_VIEW;
-        }
-
-        user = userService.updateUserByProfile(user, profile);
-        userService.saveOrUpdate(user);
-        redirectAttributes.addFlashAttribute(SUCCESS, messageSource.getMessage("success.profile.updated", null, Locale.getDefault()));
-
-        return REDIRECT;
+        return REDIRECT + WAITER_REDIRECT_URL;
     }
 
-    @GetMapping(LOGIN_URL)
-    public String showLoginPage(ModelMap modelMap) {
-        modelMap.put(CREDENTIALS, new Credentials());
-        modelMap.put(LOGIN_PAGE, LOGIN_PAGE);
+    private void setupReferenceDataChefForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        modelMap.put(ITEM_OPTION_LIST, itemService.findAll());
+        modelMap.put(NAV_ITEM, CHEF);
 
-        return LOGIN_VIEW;
-    }
-
-    @PostMapping(LOGIN)
-    public String login(@Valid @ModelAttribute(CREDENTIALS) Credentials credentials,
-                        ModelMap modelMap,
-                        HttpSession httpSession) throws Exception {
-
-        if (userService.isValidCredential(credentials)) {
-            httpSession.setAttribute(ACTIVE_USER, userService.findByEmail(credentials.getEmail()));
-
-            return REDIRECT;
+        if (!user.isNew()) {
+            modelMap.put(UPDATE_PAGE, true);
         }
 
-        modelMap.put(LOGIN_PAGE, LOGIN_PAGE);
-        modelMap.put(INVALID_LOGIN, INVALID_LOGIN);
-
-        return LOGIN_VIEW;
+        if (user.isNew()) {
+            user.setPassword("");
+        }
     }
 
-    @GetMapping(LOGOUT_URL)
-    public String logOut(HttpSession httpSession, Model model) {
-        httpSession.removeAttribute(ACTIVE_USER);
-        httpSession.invalidate();
+    private void setupReferenceDataWaiterForm(ModelMap modelMap, User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        modelMap.put(RESTAURANT_TABLE_LIST, restaurantTableService.findAll());
+        modelMap.put(NAV_ITEM, WAITER);
 
-        if (model.containsAttribute(ACTIVE_USER)) {
-            model.asMap().remove(ACTIVE_USER);
+        if (!user.isNew()) {
+            modelMap.put(UPDATE_PAGE, true);
         }
 
-        return REDIRECT;
+        if (user.isNew()) {
+            user.setPassword("");
+        }
     }
 }

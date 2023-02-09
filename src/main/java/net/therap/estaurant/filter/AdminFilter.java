@@ -24,8 +24,8 @@ public class AdminFilter implements Filter {
         HttpSession httpSession = ((HttpServletRequest) request).getSession();
         User user = (User) httpSession.getAttribute(Constants.ACTIVE_USER);
 
-        if (Objects.nonNull(user) && user.getType().equals(UserType.ADMIN)) {
-            request.setAttribute(Constants.USER, user);
+        if (Objects.nonNull(user) && UserType.ADMIN.equals(user.getType())) {
+            request.setAttribute(Constants.ACTIVE_USER, user);
             chain.doFilter(request, response);
 
             return;
